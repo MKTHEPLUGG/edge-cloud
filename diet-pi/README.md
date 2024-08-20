@@ -103,6 +103,45 @@ The first step is to identify the SD card’s boot partition so you can mount it
      ```
 
 ### **Repeat Process on Other DietPi Systems**
+
 Whenever you set up a new DietPi system that boots from an SD card and runs from an SSD, follow these steps to ensure the necessary cgroup configurations are applied.
 
 This guide ensures that your DietPi system is correctly configured to run RKE2 by enabling the required cgroup features.
+
+
+## **Deploying RKE2**
+
+
+### Basic Steps to Install RKE2 on DietPi
+
+1. **Update DietPi**:
+   ```bash
+   sudo apt update && sudo apt upgrade -y
+   ```
+
+
+3. **Download and Install RKE2**:
+   ```bash
+   curl -sfL https://get.rke2.io | sh -
+   ```
+
+4. **Enable and Start RKE2**:
+   ```bash
+   sudo systemctl enable rke2-server.service
+   sudo systemctl start rke2-server.service
+   ```
+
+5. **Check the Status**:
+   ```bash
+   sudo systemctl status rke2-server.service
+   ```
+
+6. **Configure `kubectl`**:
+   ```bash
+   export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
+   ```
+
+7. **Verify the Cluster**:
+   ```bash
+   kubectl get nodes
+   ```
