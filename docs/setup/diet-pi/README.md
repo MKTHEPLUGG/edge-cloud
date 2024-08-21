@@ -233,14 +233,63 @@ This guide ensures that your DietPi system is correctly configured to run RKE2 b
 - [Server Config Parameters](https://docs.rke2.io/reference/server_config)
 - [Agent Config Parameters](https://docs.rke2.io/reference/linux_agent_config)
 
-### My Agent Configuration
+### My Server Configuration
 
-1. **/etc/rancher/rke2/config.yaml**:
-   ```YAML
-   Placeholder
+be sure to add the lb details in the config file.
+
+1. **in ``/etc/rancher/rke2/config.yaml`` place the following**:
+   ```yaml
+   write-kubeconfig-mode: "0644"
+   tls-san:
+     - lb.meti.be
+     - 192.168.1.114
    ```
+   can be easily achieved using below cat command
+   ````shell
+   cat <<EOF | sudo tee /etc/rancher/rke2/config.yaml
+   write-kubeconfig-mode: "0644"
+   tls-san:
+     - lb.meti.be
+     - 192.168.1.114
+   EOF
+   ````
 
 
+### My Additional Servers Configuration
+
+1. **in ``/etc/rancher/rke2/config.yaml`` place the following**:
+   ```yaml
+   token: <node-token-from-first-server>
+   server: https://lb.meti.be:9345
+   write-kubeconfig-mode: "0644"
+   tls-san:
+     - lb.meti.be
+   ```
+   can be easily achieved using below cat command
+   ````shell
+   cat <<EOF | sudo tee /etc/rancher/rke2/config.yaml
+   token: <node-token-from-first-server>
+   server: https://lb.meti.be:9345
+   write-kubeconfig-mode: "0644"
+   tls-san:
+     - lb.meti.be
+   EOF
+   ````
+
+### My Workers Configuration
+
+1. **in ``/etc/rancher/rke2/config.yaml`` place the following**:
+   ```yaml
+   token: <node-token-from-first-server>
+   server: https://lb.meti.be:9345
+   ```
+   can be easily achieved using below cat command
+   ````shell
+   cat <<EOF | sudo tee /etc/rancher/rke2/config.yaml
+   token: <node-token-from-first-server>
+   server: https://lb.meti.be:9345
+   EOF
+   ````
 
 ---
 
