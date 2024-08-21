@@ -5,7 +5,7 @@
 ### **Hostname & Network Settings Configuration**
 
 Hostname & Network Settings Configuration can be semi-automated using this script on the debian based hosts.
-Dietpi Already by default offers a config while deploying so in theory this can be skipped but added a detailed script that can handle the already existing config and replace it if necessary.
+Dietpi Already by default offers a network config while deploying so in theory this can be skipped but added a detailed script that can handle the already existing config and replace it if necessary.
 
 ````shell
 #!/bin/bash
