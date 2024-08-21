@@ -153,8 +153,13 @@ This guide ensures that your DietPi system is correctly configured to run RKE2 b
 
 ## **Configuring RKE2**
 
+### References
 
-### Basic Steps to Install RKE2 on DietPi
+[Configuration Offical Docs](https://docs.rke2.io/install/configuration)
+- [Server Config Parameters](https://docs.rke2.io/reference/server_config)
+- [Agent Config Parameters](https://docs.rke2.io/reference/linux_agent_config)
+
+### My Configuration
 
 1. **Update DietPi**:
    ```bash
@@ -162,31 +167,6 @@ This guide ensures that your DietPi system is correctly configured to run RKE2 b
    ```
 
 
-3. **Download and Install RKE2**:
-   ```bash
-   curl -sfL https://get.rke2.io | sh -
-   ```
-
-4. **Enable and Start RKE2**:
-   ```bash
-   sudo systemctl enable rke2-server.service
-   sudo systemctl start rke2-server.service
-   ```
-
-5. **Check the Status**:
-   ```bash
-   sudo systemctl status rke2-server.service
-   ```
-
-6. **Configure `kubectl`**:
-   ```bash
-   export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
-   ```
-
-7. **Verify the Cluster**:
-   ```bash
-   kubectl get nodes
-   ```
 
 ---
 
@@ -423,8 +403,3 @@ If you prefer a shorter command, you can create an alias for `calicoctl`:
    ```
 
 
-### References
-
-[Configuration Offical Docs](https://docs.rke2.io/install/configuration)
-- [Server Config Parameters](https://docs.rke2.io/reference/server_config)
-- [Agent Config Parameters](https://docs.rke2.io/reference/linux_agent_config)
