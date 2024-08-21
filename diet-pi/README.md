@@ -2,6 +2,10 @@
 
 ## **Prereqs before deploying RKE2**
 
+### **Setting Network settings & Hostname**
+
+add section with either script or commands, get from old guide
+
 ### **Enabling cgroup Memory and Hierarchy on Systems Booting from SD and Running from SSD**
 
 #### **Step 1: Identify the SD Card’s Boot Partition**
@@ -235,10 +239,46 @@ If you want to make these binaries available system-wide (for all users), you ca
 
    Save the file and exit.
 
-### Step 5: Final Check
 
-Open a new terminal session and run the `kubectl` command again to ensure it's accessible without needing to specify the full path.
+
+### Step 5: (optional) Add `kubectl` Aliases
+
+In the same `.bashrc` file, add the following aliases for `kubectl`:
 
 ```bash
-kubectl get nodes
+# Kubernetes aliases
+alias k='kubectl'
+alias kga='kubectl get all'
+alias kgp='kubectl get pods'
+alias kgd='kubectl get deployments'
+alias kgs='kubectl get services'
+alias kd='kubectl describe'
+alias kdp='kubectl describe pod'
+alias kdd='kubectl describe deployment'
+alias kds='kubectl describe service'
+alias kl='kubectl logs'
+alias klf='kubectl logs -f'
+alias ke='kubectl edit'
+alias kdel='kubectl delete'
+alias ka='kubectl apply -f'
 ```
+
+### Step 3: Enable Bash Completion for `kubectl`
+
+Still in the `.bashrc` file, add the following lines to enable bash completion for `kubectl`:
+
+```bash
+# Enable kubectl bash completion
+source <(kubectl completion bash)
+alias k='kubectl'
+complete -F __start_kubectl k
+```
+
+### Step 4: Save and Reload `.bashrc`
+
+1. Save and exit the file (in `nano`, press `CTRL+X`, then `Y`, and `Enter`).
+
+2. Reload your `.bashrc` to apply the changes:
+   ```bash
+   source ~/.bashrc
+   ```
