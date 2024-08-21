@@ -2,8 +2,9 @@
 
 ## Networking Stack
 
-For the networking stack my eye has fallen on ´Canal´. There seems to be a native integration with wireguard that could be used to connect pods in different physical networks
-[CANAL WITH WG](https://docs.tigera.io/calico/latest/network-policy/encrypt-cluster-pod-traffic#enable-wireguard-for-a-cluster)
+For the networking stack my eye has fallen on ´Canal´. Because it provides easy to configure VXLAN with Flannel and the advanced features of the Calico project.
+
+- [CANAL WITH WG](https://docs.tigera.io/calico/latest/network-policy/encrypt-cluster-pod-traffic#enable-wireguard-for-a-cluster)
 
 ## Hardware Stack
 
