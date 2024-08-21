@@ -188,6 +188,99 @@ This guide ensures that your DietPi system is correctly configured to run RKE2 b
 
 ---
 
+## **Configure High Availability**
+
+To configure HA for any kubernetes setup you need to have at least 3 Master nodes.
+Infront of these master nodes we will place a Layer 4 loadbalancer that will loadbalance the TCP traffic.
+
+We will be using ``NGINX`` for this. Below you'll find an installation guide & Default Config for ``RKE2``
+
+1. **Install ``NGINX``**
+   ````shell
+   # Install
+   apt install nginx
+   
+   # Create nginx service account
+   sudo adduser --system --no-create-home --shell /bin/false --disabled-login --group nginx
+   
+   # Enable service
+   systemctl enable nginx
+   systemctl start nginx
+   ````
+
+2. **Configure ``NGINX``**
+   
+
+   ````shell
+cat <<EOF | sudo tee /etc/nginx/nginx.conf
+user nginx;
+worker_processes 4;
+worker_rlimit_nofile 40000;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+
+# Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 8192;
+}
+
+stream {
+upstream backend {
+        least_conn;
+        server <IP_NODE_1>:9345 max_fails=3 fail_timeout=5s;
+        server <IP_NODE_2>:9345 max_fails=3 fail_timeout=5s;
+        server <IP_NODE_3>:9345 max_fails=3 fail_timeout=5s;
+   }
+
+   # This server accepts all traffic to port 9345 and passes it to the upstream. 
+   # Notice that the upstream name and the proxy_pass need to match.
+   server {
+
+      listen 9345;
+
+          proxy_pass backend;
+   }
+    upstream rancher_api {
+        least_conn;
+        server <IP_NODE_1>:6443 max_fails=3 fail_timeout=5s;
+        server <IP_NODE_2>:6443 max_fails=3 fail_timeout=5s;
+        server <IP_NODE_3>:6443 max_fails=3 fail_timeout=5s;
+    }
+        server {
+        listen     6443;
+        proxy_pass rancher_api;
+        }
+    upstream rancher_http {
+        least_conn;
+        server <IP_NODE_1>:80 max_fails=3 fail_timeout=5s;
+        server <IP_NODE_2>:80 max_fails=3 fail_timeout=5s;
+        server <IP_NODE_3>:80 max_fails=3 fail_timeout=5s;
+    }
+        server {
+        listen     80;
+        proxy_pass rancher_http;
+        }
+    upstream rancher_https {
+        least_conn;
+        server <IP_NODE_1>:443 max_fails=3 fail_timeout=5s;
+        server <IP_NODE_2>:443 max_fails=3 fail_timeout=5s;
+        server <IP_NODE_3>:443 max_fails=3 fail_timeout=5s;
+    }
+        server {
+        listen     443;
+        proxy_pass rancher_https;
+        }
+}
+EOF
+
+# Restart the service afterwards
+systemctl restart nginx
+   ````
+
+---
+
 ## **Deploying RKE2**
 
 
