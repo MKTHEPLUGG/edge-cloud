@@ -2,9 +2,83 @@
 
 ## **Prereqs before deploying RKE2**
 
-### **Setting Network settings & Hostname**
+### **Hostname & Network Settings Configuration**
 
-add section with either script or commands, get from old guide
+Hostname & Network Settings Configuration can be semi-automated using this script on the debian based hosts.
+Dietpi Already by default offers a config while deploying so in theory this can be skipped but added a detailed script that can handle the already existing config and replace it if necessary.
+
+````shell
+#!/bin/bash
+
+read -p "Please provide the last digit of the IP (192.168.1.x): " ip_last_digit
+read -p "Please provide the hostname: " hostname
+
+# vars
+full_ip="192.168.1.$ip_last_digit"
+gateway="192.168.1.1"
+dns1="1.1.1.1"
+interface="eth0"  # adjust this if your network interface name is different
+dropin_path="/etc/network/interfaces.d/$interface"
+main_config="/etc/network/interfaces"
+
+# Check if the interface is already defined in the main config
+if grep -q "iface $interface inet" $main_config; then
+    echo "Interface $interface is already defined in $main_config."
+    echo "Would you like to move this configuration to a drop-in file and replace it? (y/n)"
+    read -r response
+    if [[ $response == "y" ]]; then
+        # Backup the main config file
+        cp $main_config $main_config.bak
+
+        # Remove the existing configuration for the interface
+        sed -i "/iface $interface inet/,/^$/d" $main_config
+
+        # Create the drop-in configuration file
+        cat <<EOL > $dropin_path
+
+# Static IP configuration for $interface
+auto $interface
+iface $interface inet static
+    address $full_ip
+    netmask 255.255.255.0
+    gateway $gateway
+    dns-nameservers $dns1
+
+EOL
+
+        echo "Moved configuration to drop-in file:"
+        cat $dropin_path
+    else
+        echo "Exiting without changes."
+        exit 1
+    fi
+else
+    # Create the drop-in configuration file
+    cat <<EOL > $dropin_path
+
+# Static IP configuration for $interface
+auto $interface
+iface $interface inet static
+    address $full_ip
+    netmask 255.255.255.0
+    gateway $gateway
+    dns-nameservers $dns1
+
+EOL
+
+    echo "Created drop-in file:"
+    cat $dropin_path
+fi
+
+# Restart the networking service to apply changes
+systemctl restart networking
+
+# Change hostname
+hostnamectl set-hostname $hostname
+echo "$hostname" > /etc/hostname
+
+echo "Hostname changed to $hostname"
+````
 
 ### **Enabling cgroup Memory and Hierarchy on Systems Booting from SD and Running from SSD**
 
