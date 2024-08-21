@@ -284,7 +284,7 @@ complete -F __start_kubectl k
    ```
 
 
-## **(OPTIONAL) Install CalicoCTL for troubleshooting**
+## **(Optional) Install `calicoctl` for troubleshooting**
 
 Certainly! `calicoctl` is a command-line tool that helps you manage and troubleshoot Calico networks and resources. Here’s how you can install `calicoctl` on your system.
 
