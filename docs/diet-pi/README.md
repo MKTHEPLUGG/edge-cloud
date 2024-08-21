@@ -233,11 +233,11 @@ This guide ensures that your DietPi system is correctly configured to run RKE2 b
 - [Server Config Parameters](https://docs.rke2.io/reference/server_config)
 - [Agent Config Parameters](https://docs.rke2.io/reference/linux_agent_config)
 
-### My Configuration
+### My Agent Configuration
 
-1. **Update DietPi**:
-   ```bash
-   sudo apt update && sudo apt upgrade -y
+1. **/etc/rancher/rke2/config.yaml**:
+   ```YAML
+   Placeholder
    ```
 
 

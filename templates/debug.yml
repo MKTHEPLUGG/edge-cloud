@@ -1,0 +1,12 @@
+# Debug Container Manifest File
+apiVersion: v1
+kind: Pod
+metadata:
+  name: netshoot-hbn560
+  namespace: default
+spec:
+  containers:
+  - name: netshoot
+    image: nicolaka/netshoot
+    command: ["/bin/bash"]
+    args: ["-c", "while true; do ping localhost; sleep 60;done"]
