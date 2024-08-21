@@ -1,3 +1,7 @@
+# Architecture Overview
+
+![Architecture](ClusterMode.drawio.png)
+
 # Traffic Flow Details
 
 ## Inbound Network Rules Table
