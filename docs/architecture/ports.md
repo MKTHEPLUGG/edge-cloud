@@ -99,10 +99,10 @@
 
 ### RKE2 Server Nodes to RKE2 Server Nodes:
 - Traffic on ports **2379, 2380, and 2381** is confined to the server nodes, as these are etcd-related ports used for cluster state management and data synchronization between master nodes.
-- Traffic on port **10250** and the **30000-32767** range is shared among all nodes (agents and servers), indicating that both types of nodes need to communicate for monitoring, metrics, and service exposure.
 
 ### All RKE2 Nodes:
 - Traffic on ports **8472, 9099, 51820, and 51821** flows between all RKE2 nodes, used by the Canal CNI plugin for network encapsulation, health checks, and secure communication via WireGuard.
+- Traffic on port **10250** and the **30000-32767** range is shared among all nodes indicating that both types of nodes need to communicate for monitoring, metrics, and service exposure.
 
 ### Reference
 
