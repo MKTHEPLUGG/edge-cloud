@@ -233,7 +233,7 @@ This guide ensures that your DietPi system is correctly configured to run RKE2 b
 - [Server Config Parameters](https://docs.rke2.io/reference/server_config)
 - [Agent Config Parameters](https://docs.rke2.io/reference/linux_agent_config)
 
-### My Server Configuration
+### My Initial Server Configuration
 
 be sure to add the lb details in the config file.
 
