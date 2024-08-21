@@ -145,3 +145,100 @@ This guide ensures that your DietPi system is correctly configured to run RKE2 b
    ```bash
    kubectl get nodes
    ```
+
+
+## **Post Installation Steps**
+
+after install RKE2 will add some binaries to the system that we should add to the path to be able to troubleshoot.
+
+### Step 1: Determine the Installation Path
+
+RKE2 typically installs binaries in `/var/lib/rancher/rke2/bin`. You can verify this by listing the contents of this directory:
+
+```bash
+ls /var/lib/rancher/rke2/bin
+```
+
+You should see binaries like `kubectl`, `crictl`, `ctr`, and others in this directory.
+
+### Step 2: Add the RKE2 Binaries to Your PATH
+
+You can add the RKE2 binaries directory to your `PATH` by editing your shell profile. This can be done by adding the path to the `.bashrc` or `.bash_profile` file (or `.zshrc` if you are using Zsh) in your home directory.
+
+1. **Edit the `.bashrc` file**:
+   
+   Open the `.bashrc` file in a text editor:
+   ```bash
+   nano ~/.bashrc
+   ```
+   
+2. **Add the RKE2 Binaries Path**:
+
+   Scroll to the bottom of the file and add the following line:
+   ```bash
+   export PATH=$PATH:/var/lib/rancher/rke2/bin
+   export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
+   ```
+
+3. **Save and Exit**:
+   
+   Save the file and exit the text editor (in `nano`, you can do this by pressing `CTRL+X`, then `Y`, and `Enter`).
+
+4. **Reload the Profile**:
+   
+   Apply the changes by reloading your `.bashrc` file:
+   ```bash
+   source ~/.bashrc
+   ```
+
+### Step 3: Verify the Path
+
+After reloading the profile, you can verify that the `kubectl` and other RKE2 binaries are accessible by running:
+
+```bash
+kubectl version --client
+crictl --version
+```
+
+If these commands return version information, then the binaries are correctly added to your `PATH`.
+
+### Step 4: (Optional) Apply to All Users
+
+If you want to make these binaries available system-wide (for all users), you can add the `PATH` export to `/etc/profile` or create a new file in `/etc/profile.d/`:
+
+1. **Edit `/etc/profile`**:
+   
+   ```bash
+   sudo nano /etc/profile
+   ```
+   
+   Add the following line at the end:
+   ```bash
+   export PATH=$PATH:/var/lib/rancher/rke2/bin
+   # export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
+   ```
+
+   Or,
+
+2. **Create a New Profile Script**:
+   
+   Create a new file in `/etc/profile.d/`:
+   ```bash
+   sudo nano /etc/profile.d/rke2.sh
+   ```
+   
+   Add the following line:
+   ```bash
+   export PATH=$PATH:/var/lib/rancher/rke2/bin
+   # export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
+   ```
+
+   Save the file and exit.
+
+### Step 5: Final Check
+
+Open a new terminal session and run the `kubectl` command again to ensure it's accessible without needing to specify the full path.
+
+```bash
+kubectl get nodes
+```
