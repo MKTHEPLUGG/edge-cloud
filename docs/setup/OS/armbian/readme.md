@@ -184,11 +184,11 @@ The first step is to identify the SD card’s boot partition so you can mount it
      cpuset cpu io memory pids
      ```
 
-### **Repeat Process on Other DietPi Systems**
+### **Repeat Process on Other ARMBian Systems**
 
-Whenever you set up a new DietPi system that boots from an SD card and runs from an SSD, follow these steps to ensure the necessary cgroup configurations are applied.
+Whenever you set up a new ARMBian system that boots from an SD card and runs from an SSD, follow these steps to ensure the necessary cgroup configurations are applied.
 
-This guide ensures that your DietPi system is correctly configured to run RKE2 by enabling the required cgroup features.
+This guide ensures that your ARMBian system is correctly configured to run RKE2 by enabling the required cgroup features.
 
 ---
 
