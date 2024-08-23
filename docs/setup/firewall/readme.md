@@ -34,7 +34,7 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
     Assuming you have identified your internal storage (let's say it's `/dev/sda`), the next step is to copy the OpenWRT root filesystem from the USB drive to the internal storage.
 
     ```bash
-    dd if=/dev/sdb of=/dev/sda bs=4M conv=sparse
+    dd if=/dev/sdb of=/dev/sda bs=4M
     ```
 
     3.3 **Sync and Reboot**:
