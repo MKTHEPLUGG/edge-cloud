@@ -18,7 +18,7 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
     Consult this [link](https://openwrt.org/toh/views/toh_standard_all) to find your device and correct firmware. Afterwards follow this [guide](https://openwrt.org/docs/guide-quick-start/factory_installation)
 
 3. **Set Keyboard Layout**:
-    Con
+    Still need to figure out...
 
 
 4. **Install [OpenWRT](https://openwrt.org/docs/guide-quick-start/start)**:
