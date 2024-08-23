@@ -14,5 +14,43 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
 1. **Create Bootable USB**:
     obtain the [image](https://downloads.openwrt.org/) and flash it onto a USB.
 
-2. **Install [OpenWRT](https://openwrt.org/docs/guide-quick-start/start)**:
+2. **Flash the firmware**:
+    Consult this [link](https://openwrt.org/toh/views/toh_standard_all) to find your device and correct firmware. Afterwards follow this [guide](https://openwrt.org/docs/guide-quick-start/factory_installation)
+
+
+3. **Install [OpenWRT](https://openwrt.org/docs/guide-quick-start/start)**:
     
+    3.1 **Identify Target Device**:
+        Since lsblk is not available, you can use df or cat /proc/partitions to get more information about your available disks.
+
+    ```bash
+    cat /proc/partitions
+    ```
+
+    3.2 **Prepare the Target Disk**:
+    Assuming you have identified your internal storage (let's say it's `/dev/sda`), the next step is to copy the OpenWRT root filesystem from the USB drive to the internal storage.
+
+    ```bash
+    dd if=/dev/sdb of=/dev/sda bs=4M conv=sparse
+    ```
+
+    3.3 **Sync and Reboot**:
+    After copying, ensure all data is written to the disk:
+
+    ```bash
+    sync
+    ```
+
+    Then, reboot your machine:
+
+    ```bash
+    reboot
+    ```
+
+
+## **Configure Wireguard**
+
+[docs](https://openwrt.org/docs/guide-user/services/vpn/wireguard/server)
+
+
+
