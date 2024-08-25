@@ -53,10 +53,58 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
     reboot
     ```
 
+## Configure interfaces
+
+### 1. Determine the Current LAN Interface Configuration
+
+First, you need to check the current configuration of the LAN interface.
+
+```bash
+uci show network.lan
+```
+
+This command will display the current settings for the LAN interface, including the IP address and subnet.
+
+### 2. Change the LAN IP Address and Subnet
+
+You can update the LAN interface to use a new IP range. For example, if you want to change the LAN IP address to `192.168.2.1` with a subnet mask of `255.255.255.0` (or `/24`), you can do so with the following commands:
+
+```bash
+uci set network.lan.ipaddr='192.168.2.1'
+uci set network.lan.netmask='255.255.255.0'
+```
+
+If you want to change the IP range to something else, just replace `192.168.2.1` and `255.255.255.0` with the desired IP address and subnet mask.
+
+
+### 3. Update the DHCP Range
+
+If you are using DHCP on the LAN interface, you should also update the DHCP range to match the new IP range:
+
+```bash
+uci set dhcp.lan.start='100'
+uci set dhcp.lan.limit='150'
+uci set dhcp.lan.leasetime='12h'
+uci set dhcp.lan.dhcp_option='3,192.168.2.1'
+```
+
+Replace `192.168.2.1` with your new LAN IP address, and adjust the `start`, `limit`, and `leasetime` values as needed.
+
+### 4. Apply and Commit the Changes
+
+After making the changes, you need to commit the configuration and restart the network service for the changes to take effect:
+
+```bash
+uci commit network
+uci commit dhcp
+service network restart
+service dnsmasq restart
+```
+
 
 ## **Configure Wireguard [Server](https://openwrt.org/docs/guide-user/services/vpn/wireguard/server)**
 
-### 1.1 Preparation
+### 1. Preparation
 
 Install the required packages and specify configuration parameters for the VPN server.
 
@@ -74,7 +122,7 @@ VPN_ADDR="192.168.9.1/24"
 VPN_ADDR6="fd00:9::1/64"
 ```
 
-### 1.2 Key Management
+### 2. Key Management
 
 Generate and exchange keys between the server and client.
 
@@ -98,7 +146,7 @@ VPN_PSK="$(cat wgclient.psk)"
 VPN_PUB="$(cat wgclient.pub)"
 ```
 
-### 1.3 Firewall Configuration
+### 3. Firewall Configuration
 
 Consider the VPN network as private. Assign the VPN interface to the LAN zone to minimize firewall setup. Allow access to the VPN server from the WAN zone.
 
@@ -119,7 +167,7 @@ uci commit firewall
 service firewall restart
 ```
 
-### 1.4 Network Configuration
+### 4. Network Configuration
 
 Configure the VPN interface and peers.
 
