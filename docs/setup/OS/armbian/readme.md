@@ -8,8 +8,7 @@ Images can be found at the [official download mirrors](https://fi.mirror.armbian
 
 ### **Hostname & Network Settings Configuration**
 
-Hostname & Network Settings Configuration can be semi-automated using this script on the debian based hosts.
-ARMBian Already by default offers a network config while deploying so in theory this can be skipped but added a detailed script that can handle the already existing config and replace it if necessary.
+Hostname & Network & Keyboard Settings Configuration can be automated using this script on the noble based hosts.
 
 ````shell
 #!/bin/bash
@@ -17,74 +16,49 @@ ARMBian Already by default offers a network config while deploying so in theory 
 read -p "Please provide the last digit of the IP (192.168.1.x): " ip_last_digit
 read -p "Please provide the hostname: " hostname
 
-# vars
+# Vars
 full_ip="192.168.1.$ip_last_digit"
 gateway="192.168.1.1"
 dns1="1.1.1.1"
-interface="eth0"  # adjust this if your network interface name is different
-dropin_path="/etc/network/interfaces.d/$interface"
-main_config="/etc/network/interfaces"
+interface="eth0"  # Adjust this if your network interface name is different
+netplan_config="/etc/netplan/01-netcfg.yaml"
 
-# Check if the interface is already defined in the main config
-if grep -q "iface $interface inet" $main_config; then
-    echo "Interface $interface is already defined in $main_config."
-    echo "Would you like to move this configuration to a drop-in file and replace it? (y/n)"
-    read -r response
-    if [[ $response == "y" ]]; then
-        # Backup the main config file
-        cp $main_config $main_config.bak
-
-        # Remove the existing configuration for the interface
-        sed -i "/iface $interface inet/,/^$/d" $main_config
-
-        # Create the drop-in configuration file
-        cat <<EOL > $dropin_path
-
-# Static IP configuration for $interface
-auto $interface
-iface $interface inet static
-    address $full_ip
-    netmask 255.255.255.0
-    gateway $gateway
-    dns-nameservers $dns1
-
+# Create the Netplan configuration file
+cat <<EOL > $netplan_config
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    $interface:
+      dhcp4: no
+      addresses:
+        - $full_ip/24
+      gateway4: $gateway
+      nameservers:
+        addresses:
+          - $dns1
 EOL
 
-        echo "Moved configuration to drop-in file:"
-        cat $dropin_path
-    else
-        echo "Exiting without changes."
-        exit 1
-    fi
-else
-    # Create the drop-in configuration file
-    cat <<EOL > $dropin_path
+echo "Netplan configuration file created:"
+cat $netplan_config
 
-# Static IP configuration for $interface
-auto $interface
-iface $interface inet static
-    address $full_ip
-    netmask 255.255.255.0
-    gateway $gateway
-    dns-nameservers $dns1
-
-EOL
-
-    echo "Created drop-in file:"
-    cat $dropin_path
-fi
-
-# Restart the networking service to apply changes
-systemctl restart networking
+# Apply the new Netplan configuration
+netplan apply
 
 # Change hostname
 hostnamectl set-hostname $hostname
 echo "$hostname" > /etc/hostname
 
 echo "Hostname changed to $hostname"
+
+# Configure correct keyboard layout
+sudo sed -i 's/XKBLAYOUT=.*/XKBLAYOUT="be"/' /etc/default/keyboard
+sudo setupcon
+
+echo "Configuration completed successfully."
 ````
 
-### **Enabling cgroup Memory and Hierarchy on Systems Booting from SD and Running from SSD**
+### **Enabling cgroup Memory and Hierarchy on Systems Booting from SD and Running from SSD** => seems like this won't be needed on noble based distro's, memory cgroup is enabled by default.
 
 #### **Step 1: Identify the SD Card’s Boot Partition**
 The first step is to identify the SD card’s boot partition so you can mount it and edit the boot parameters.

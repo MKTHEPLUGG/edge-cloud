@@ -44,6 +44,13 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
     sync
     ```
 
+    3.4 **Set Root Password**:
+    set a root password to secure access.:
+
+    ```bash
+    passwd
+    ```
+
     Then, reboot your machine:
 
     ```bash
