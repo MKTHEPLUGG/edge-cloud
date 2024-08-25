@@ -17,11 +17,7 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
 2. **Flash the firmware**:
     Consult this [link](https://openwrt.org/toh/views/toh_standard_all) to find your device and correct firmware. Afterwards follow this [guide](https://openwrt.org/docs/guide-quick-start/factory_installation)
 
-3. **Set Keyboard Layout**:
-    Still need to figure out...
-
-
-4. **Install [OpenWRT](https://openwrt.org/docs/guide-quick-start/start)**:
+3. **Install [OpenWRT](https://openwrt.org/docs/guide-quick-start/start)**:
     
     3.1 **Identify Target Device**:
         Since lsblk is not available, you can use `df` or `cat /proc/partitions` to get more information about your available disks.
