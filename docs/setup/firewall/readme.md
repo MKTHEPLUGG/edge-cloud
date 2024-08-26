@@ -101,6 +101,179 @@ service network restart
 service dnsmasq restart
 ```
 
+---
+
+## Configure USB Wi-Fi Adapter
+
+### 1. Obtain Correct Drivers
+
+I have a ``TP-Link AC1300 model Archer T4U``. After some research, I've found that this chipset is based on ``Realtek RTL8812AU``.
+
+### 2. Install the Driver on OpenWrt
+
+To get this USB Wi-Fi adapter working on OpenWrt, follow these steps:
+
+#### Step 1: Update the Package List
+
+First, make sure your package list is up-to-date by running the following command:
+
+```bash
+opkg update
+```
+
+#### Step 2: Install the Appropriate Driver
+
+Install the driver that supports the Realtek RTL8812AU chipset:
+
+```bash
+opkg install kmod-rtl8812au-ct
+```
+
+If this driver doesn't work, you can alternatively try:
+
+```bash
+opkg install kmod-rtl8812au
+```
+
+but it is highly recommended to use the ``CT packages`` as this stands for ``Community Tuned``. These packages are tuned by the community for OpenWRT and thus are considerd to be stable.
+
+#### Step 3: Reboot Your Device
+
+After the driver is installed, reboot your OpenWrt device to load the new driver:
+
+```bash
+reboot
+```
+
+### 3. Verify That the Device is Recognized
+
+After the reboot, you need to verify that the USB Wi-Fi adapter is recognized and functioning correctly.
+
+#### Step 1: Check USB Device Recognition
+
+You can check if the device is recognized by running:
+
+```bash
+dmesg | grep -i usb
+```
+
+Look for output lines that indicate your USB Wi-Fi adapter, such as references to the Realtek chipset or similar.
+
+#### Step 2: Check Wireless Interfaces
+
+To ensure that the wireless interface has been correctly initialized, run:
+
+```bash
+iw dev
+```
+
+This command lists all wireless interfaces. You should see a new interface, typically named `wlan0` or similar, representing your USB Wi-Fi adapter.
+
+#### Step 3: Verify Interface in LuCI
+
+Finally, you can also verify the presence of the wireless interface via the OpenWrt web interface (LuCI):
+
+1. Log into your OpenWrt LuCI web interface.
+2. Navigate to **Network > Wireless**.
+3. You should see your USB Wi-Fi adapter listed as an available wireless device.
+
+If all these checks pass, your TP-Link Archer T4U Wi-Fi adapter is successfully recognized and ready to be configured for your network.
+
+### 4. Configure the USB Adapter as an Access Point in OpenWRT via the CLI
+
+To enable our router to advertise a wireless connection we will configure the USB Adapter as an access point. This will be usefull for connecting devices to troubleshoot the router.
+
+#### Step 1: SSH into Your OpenWrt Device
+
+First, you'll need to SSH into your OpenWrt device from a terminal on your computer.
+
+```bash
+ssh root@192.168.10.1
+```
+
+Replace `192.168.10.1` with the IP address of your OpenWrt device if it's different.
+
+#### Step 2: Verify the Wireless Interface
+
+List your network interfaces to identify the wireless interface:
+
+```bash
+iw dev
+```
+
+Typically, the wireless interface will be named something like `wlan0`.
+
+#### Step 3: Install Necessary Packages (If Not Already Installed)
+
+Ensure that the necessary packages for Wi-Fi functionality are installed:
+
+```bash
+opkg update
+opkg install wpad kmod-rtl8812au-ct
+```
+
+If you already have these installed, you can skip this step.
+
+#### Step 4: Configure the Wireless Interface
+
+Edit the wireless configuration file to set up the interface as an access point:
+
+```bash
+vi /etc/config/wireless
+```
+
+In this file, you should see an existing configuration block for your `wlan0` interface. If not, you can create one. The configuration should look something like this:
+
+```bash
+config wifi-device 'radio0'
+        option type 'mac80211'
+        option path 'pci0000:00/0000:00:1d.0/usb1/1-1/1-1.2/1-1.2:1.0'
+        option channel '36'  # Keep 36 if using 5GHz; change to a 2.4GHz channel like 6 if using 2.4GHz
+        option band '5g'  # Use '2g' if switching to 2.4GHz
+        option htmode 'VHT20'  # Or VHT40/VHT80 for 5GHz, HT20/HT40 for 2.4GHz
+        option disabled '0'  # Enable the Wi-Fi
+
+config wifi-iface 'default_radio0'
+        option device 'radio0'
+        option network 'lan'
+        option mode 'ap'
+        option ssid 'OpenWrt'  # Change to your desired SSID
+        option encryption 'psk2'  # WPA2 encryption
+        option key 'yourpassword'  # Replace with a strong password
+```
+
+### Explanation of Key Options:
+- **`channel`**: Choose a channel that is not heavily used in your environment. Channel 36 is for 5GHz; if using 2.4GHz, you might select channel 6.
+- **`band`**: Specifies the frequency band (`5g` for 5GHz, `2g` for 2.4GHz).
+- **`htmode`**: High Throughput mode. For 5GHz, use `VHT20`, `VHT40`, or `VHT80`. For 2.4GHz, use `HT20` or `HT40`.
+- **`ssid`**: Set this to the name you want your Wi-Fi network to broadcast.
+- **`encryption` and `key`**: Use `psk2` for WPA2 encryption and set a strong password.
+
+#### Step 5: Configure the Network Interface
+
+This step is not needed because your `br-lan` device already acts as a bridge, automatically including all interfaces assigned to it, including the Wi-Fi interface, which we have linked to the LAN by setting the `option network 'lan'` in the wireless setup.
+#### Step 6: Commit Changes and Restart the Network
+
+After making these changes, commit the changes and restart the network services:
+
+```bash
+/etc/init.d/network restart
+```
+
+This command will apply the changes and restart the network services on your OpenWrt device.
+
+#### Step 7: Verify the Wireless AP
+
+Finally, you can verify that the Wi-Fi AP is up and running by checking the status of the wireless interface:
+
+```bash
+iw dev wlan0 info
+```
+
+This command should display information about the Wi-Fi interface, including its SSID, mode, and operational channel. You can also scan for available networks from a laptop or another device to confirm that your new Wi-Fi network is visible and accessible.
+
+
+---
 
 ## **Configure Wireguard [Server](https://openwrt.org/docs/guide-user/services/vpn/wireguard/server)**
 
