@@ -252,6 +252,7 @@ config wifi-iface 'default_radio0'
 #### Step 5: Configure the Network Interface
 
 This step is not needed because your `br-lan` device already acts as a bridge, automatically including all interfaces assigned to it, including the Wi-Fi interface, which we have linked to the LAN by setting the `option network 'lan'` in the wireless setup.
+
 #### Step 6: Commit Changes and Restart the Network
 
 After making these changes, commit the changes and restart the network services:
