@@ -194,4 +194,4 @@ uci commit network
 service network restart
 ```
 
-## **Configure Wireguard [client](https://openwrt.org/docs/guide-user/services/vpn/wireguard/client)**
+## **Configure Wireguard [Client](https://openwrt.org/docs/guide-user/services/vpn/wireguard/client)**
