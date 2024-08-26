@@ -269,6 +269,9 @@ Finally, you can verify that the Wi-Fi AP is up and running by checking the stat
 
 ```bash
 iw dev wlan0 info
+
+# or Troubleshoot
+logread | grep wlan0
 ```
 
 This command should display information about the Wi-Fi interface, including its SSID, mode, and operational channel. You can also scan for available networks from a laptop or another device to confirm that your new Wi-Fi network is visible and accessible.
