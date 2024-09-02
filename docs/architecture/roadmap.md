@@ -2,9 +2,18 @@
 
 ## Networking Stack
 
+### CNI
+
 For the networking stack my eye has fallen on ´Canal´. Because it provides easy to configure VXLAN with Flannel and the advanced features of the Calico project.
 
 - [CANAL WITH WG](https://docs.tigera.io/calico/latest/network-policy/encrypt-cluster-pod-traffic#enable-wireguard-for-a-cluster)
+
+### Firewall/Router
+
+For the router I have an old firewall that can be used. I'm trying to setup a wifi adapter to provide wifi access to the firewall. Currently need to test a driver that works in AP mode
+
+- https://github.com/gnab/rtl8812au
+- https://github.com/morrownr/8812au
 
 ## Hardware Stack
 
