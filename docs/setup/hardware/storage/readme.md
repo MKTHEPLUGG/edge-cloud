@@ -14,7 +14,7 @@ follow the guide in .create-bootable-device.md to create a bootable device.
 
 once you have created a storage device you can configure the SBC to boot from it either using an intermediate device or not if your board supports this.
 
-### Configure Direct USB boot
+### Configure
 
 ### [Rock5a](https://wiki.radxa.com/Rock5/install)
 
@@ -30,95 +30,14 @@ once you have created a storage device you can configure the SBC to boot from it
 
 
 
-### Step 2: Transfer the Armbian OS to the SSD
-1. **Mount the SSD**:
-   ```bash
-   sudo mkdir /mnt/ssd
-   sudo mount /dev/sdX1 /mnt/ssd
-   ```
-   Replace `sdX1` with your SSD’s partition identifier.
 
-2. **Copy the Root Filesystem**:
-   ```bash
-   sudo rsync -ax / /mnt/ssd
-   ```
-   This command copies the entire root filesystem to the SSD.
-
-3. **Update the `fstab` File** on the SSD:
-   - Open the `fstab` file on the SSD for editing:
-     ```bash
-     sudo nano /mnt/ssd/etc/fstab
-     ```
-   - Modify the root (`/`) entry to point to your SSD's partition (e.g., `/dev/sdX1`).
 
 
 --- 
 
 
 
-### Hybrid Setup - Boot from SD Card, Root on SSD
 
-In this hybrid setup, the SBC will use the SD card to boot but will then switch to the SSD for the root filesystem. This can provide faster boot times and reduce wear on the SD card.
-
-#### 1. Prepare the SD Card
-
-1. **Retain the Boot Partition on the SD Card**:
-   - Leave the `/boot` partition on the SD card as it is. This partition contains the bootloader and other necessary files to start the boot process.
-
-2. **Update the `cmdline.txt` on the SD Card**:
-   - The `cmdline.txt` file on the SD card tells the bootloader where to find the root filesystem.
-   - Open `cmdline.txt` for editing:
-     ```bash
-     sudo nano /boot/cmdline.txt
-     ```
-   - Modify the `root=` parameter to point to the SSD’s root partition using the `PARTUUID` you obtained earlier:
-     ```
-     root=PARTUUID=<Your-SSD-Root-PARTUUID> rootfstype=ext4 rootwait
-     ```
-   - For example, if the `PARTUUID` of the SSD's root partition is `e72d462f-02`, your `cmdline.txt` should include:
-     ```
-     root=PARTUUID=e72d462f-02 rootfstype=ext4 rootwait
-     ```
-   - Save and exit the file.
-
-#### 2. Ensure Proper Mounting of the SSD
-
-1. **Edit the `fstab` on the SSD**:
-   - Ensure that the `/boot` partition on the SD card is still mounted correctly by adding or updating the `/boot` entry in the SSD’s `fstab` file:
-     ```bash
-     sudo nano /mnt/ssd_root/etc/fstab
-     ```
-   - Add the following line to mount the SD card's boot partition:
-     ```
-     PARTUUID=<Your-SD-Card-Boot-PARTUUID> /boot vfat defaults 0 2
-     ```
-   - Replace `<Your-SD-Card-Boot-PARTUUID>` with the actual `PARTUUID` of the SD card's boot partition. You can find this by running:
-     ```bash
-     sudo blkid /dev/mmcblk0p1
-     ```
-   - Ensure the root partition on the SSD is correctly listed as `/` in the `fstab` file.
-
-2. **Unmount and Sync Changes**:
-   - After editing, ensure all filesystems are properly unmounted and synced:
-     ```bash
-     sudo umount /mnt/ssd_root
-     sudo sync
-     ```
-
-#### 3. Finalize the Setup
-
-1. **Reboot the Raspberry Pi**:
-   - With the updated `cmdline.txt` and `fstab`, reboot the Raspberry Pi:
-     ```bash
-     sudo reboot
-     ```
-
-2. **Verify the Boot Process**:
-   - After rebooting, verify that the system has successfully booted using the SD card's boot partition but is running the root filesystem from the SSD:
-     ```bash
-     lsblk
-     ```
-   - Ensure that `/boot` is mounted from the SD card and `/` is mounted from the SSD.
 
 
 

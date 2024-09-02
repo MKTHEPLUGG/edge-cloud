@@ -13,3 +13,5 @@ Less known but has great options for storage. Can be used to create a DIY Nas.
 ## [Rock5a](https://magazinmehatronika.com/en/radxa-rock-5a-review/)
 
 The main powerhouse SBC that I will use that has only been available since Q2 2023 is the **Rock5a**. In our case this SBC is perfect because it offers a lot of compute not currently available in other SBC's.
+
+---

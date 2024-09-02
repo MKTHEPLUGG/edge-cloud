@@ -372,3 +372,5 @@ service network restart
 ```
 
 ## **Configure Wireguard [Client](https://openwrt.org/docs/guide-user/services/vpn/wireguard/client)**
+
+---
