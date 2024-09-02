@@ -1,4 +1,4 @@
-# Storage
+# Storage (WIP)
 
 in this section I will show you some ways to enhance the storage experience on our SBC's.
 
@@ -11,33 +11,20 @@ This method is supported on any device with an usb port. The main drawback of th
 You'll need to configure the board to boot from the ssd. We'll be using a sd card to boot afterwards we'll mount the ssd to serve as the main OS disk. In some cases the board might support booting straight to the SSD but I haven't seen this work yet.
 
 
-### boot setup
+### Boot Guide
 
-### Guide: Flashing an SD Card with a DietPi Image on Linux
+This guide will walk you through the process of flashing an SD card with a linux image using a Linux operating system. It includes steps to clean the SD card, remove any existing partitions, prepare it as a single block, extract the `.xz` file, and flash the image.
 
-This guide will walk you through the process of flashing an SD card with a DietPi image using a Linux operating system. It includes steps to clean the SD card, remove any existing partitions, prepare it as a single block, extract the `.xz` file, and flash the image.
-
-### Step 1: Download the DietPi Image
-1. **Visit the DietPi Website**:
-   - Go to the official [DietPi website](https://dietpi.com).
-   - Navigate to the "Download" section.
-   - Select your device from the list of supported devices.
+### Step 1: Download the Image
+1. **Find an image supported by your board, my personal favorites**:
+   - [DietPi](https://dietpi.com).
+   - [ARMBian](https://fi.mirror.armbian.de/dl/).
    - Download the appropriate DietPi image file for your device, usually provided as a compressed `.xz` file.
 
-2. **Verify the Download (Optional but Recommended)**:
-   - Open a terminal and navigate to the directory where you downloaded the image:
-     ```bash
-     cd /path/to/downloads
-     ```
-   - Verify the checksum:
-     ```bash
-     sha256sum DietPi*.xz
-     ```
-   - Compare the output with the checksum provided on the DietPi website.
 
-### Step 2: Extract the DietPi Image from the .xz File
+### Step 2: Extract the Image from the .xz File
 1. **Extract the Image**:
-   - Most DietPi images are provided as compressed `.xz` files. You need to extract the `.img` file before flashing it.
+   - Most images are provided as compressed `.xz` files. You need to extract the `.img` file before flashing it.
    - Use the `unxz` command to extract the image:
      ```bash
      unxz DietPi*.xz
@@ -83,15 +70,15 @@ This guide will walk you through the process of flashing an SD card with a DietP
 
 
 
-### Step 4: Flash the DietPi Image to the SD Card
+### Step 4: Flash the Image to the SD Card
 
 1. **Flash the Image**:
    - Use the `dd` command to write the DietPi image to the SD card:
      ```bash
-     sudo dd if=/path/to/DietPi.img of=/dev/sdX bs=4M status=progress conv=fsync
+     sudo dd if=/path/to/linux.img of=/dev/sdX bs=4M status=progress conv=fsync
      ```
    - **Explanation of Options**:
-     - `if=/path/to/DietPi.img`: This specifies the input file (`if`) that you want to write to the SD card. Replace `/path/to/DietPi.img` with the path to your extracted DietPi image file.
+     - `if=/path/to/DietPi.img`: This specifies the input file (`if`) that you want to write to the SD card. Replace `/path/to/linux.img` with the path to your extracted DietPi image file.
      - `of=/dev/sdX`: This specifies the output file (`of`), which is the device path of your SD card. Replace `/dev/sdX` with the correct device path for your SD card.
      - `bs=4M`: The `bs` option sets the block size to 4 megabytes, which determines the amount of data written in each block. Using a larger block size can speed up the writing process.
      - `status=progress`: This option provides real-time progress updates, showing the amount of data written and the speed of the operation.
@@ -116,7 +103,7 @@ This guide will walk you through the process of flashing an SD card with a DietP
      sudo eject /dev/sdX
      ```
 
-### Step 6: Boot DietPi
+### Step 6: Boot your image
 1. **Insert the SD Card into Your Device**:
    - Insert the SD card into your device, such as a Raspberry Pi.
 
@@ -124,7 +111,7 @@ This guide will walk you through the process of flashing an SD card with a DietP
    - Power on your device. It should automatically boot from the SD card.
 
 3. **Initial Setup**:
-   - Follow the on-screen instructions to complete the initial setup of DietPi.
+   - Follow the on-screen instructions to complete the initial setup.
 
 ### Troubleshooting Tips
 - **Permission Denied Error**: Ensure you are using `sudo` with the `dd` command.
@@ -133,10 +120,10 @@ This guide will walk you through the process of flashing an SD card with a DietP
 
 ### Additional Resources
 - **DietPi Documentation**: For more detailed setup and configuration options, refer to the [DietPi documentation](https://dietpi.com/docs/).
-- **Community Support**: If you encounter issues, the [DietPi Forum](https://dietpi.com/phpbb/) is a helpful resource.
+- **ARMbian Documentation**: For more detailed setup and configuration options, refer to the [ARMbian documentation](https://docs.armbian.com/).
 
 
-### Step 7: Configure Raspberry Pi to Boot from SSD
+### Step 7 (optional): Configure Raspberry Pi to Boot from SSD
 
 1. **Use `raspi-config` to Set Boot Order**:
    - Open the `raspi-config` tool:
@@ -159,16 +146,12 @@ This guide will walk you through the process of flashing an SD card with a DietP
      sudo vcgencmd bootloader_config
      ```
 
-### Step 8: Prepare to Migrate DietPi from the SD Card to the SSD
+### Step 8: Prepare to Migrate your install from the SD Card to the SSD
 
 1. **Connect the SSD to the Raspberry Pi**:
    - Ensure the SSD is connected to your Raspberry Pi via a USB-to-SATA adapter or enclosure.
 
-2. **Log in to Your DietPi System**:
-   - Boot your Raspberry Pi with the SD card.
-   - Log in using SSH or directly through a keyboard and monitor connected to the Raspberry Pi.
-
-3. **Check Disk Configuration**:
+2. **Check Disk Configuration**:
    - List all connected storage devices to identify the SSD and SD card:
      ```bash
      lsblk
