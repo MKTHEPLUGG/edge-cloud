@@ -16,8 +16,6 @@
 
 ## Step 2 : Partition and Format your Storage Device
 
-**Remark**: if your image doesn't use 2 partitions just create one.
-
 1. **Partition the SSD**:
    - Open the `fdisk` tool to create two partitions on the SSD: one for `/boot` and one for `/`.
      ```bash
@@ -53,8 +51,6 @@
      sudo e2fsck -f /dev/sda1 
      ````
 ## Step 3: Copy the Operating System to the new storage device
-
-**Remark**: if your image doesn't use 2 partitions just mount 1.
 
 1. **Mount the SSD Partitions**:
    - Create mount points for the SSD partitions and mount them:
