@@ -1,4 +1,4 @@
-# Create Boot Device
+# Configure SSD as bootable device
 
 Raspberry pi and ubuntu based distro's have very nice integrated USB booting. You'll only need 2 steps
 
