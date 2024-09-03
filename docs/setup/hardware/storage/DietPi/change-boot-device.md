@@ -1,6 +1,6 @@
 # Change Boot Device
 
-## Native Boot straight from SSD.
+## Native Boot straight from SSD
 
 1. **Obtain the `PARTUUIDs` of the SSD Partitions**:
    - Run the following command to get the `PARTUUIDs` of the SSD partitions:
@@ -63,10 +63,6 @@
 
 In this hybrid setup, the SBC will use the SD card to boot but will then switch to the SSD for the root filesystem. This can provide faster boot times and reduce wear on the SD card.
 
-### ARMbian
-
-
-### DietPi
 
 #### 1. Prepare the SD Card
 

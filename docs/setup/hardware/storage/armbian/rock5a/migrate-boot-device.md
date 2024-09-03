@@ -20,7 +20,6 @@
    - Open the `fdisk` tool to create two partitions on the SSD: one for `/boot` and one for `/`.
      ```bash
      sudo fdisk /dev/sda
-
      ```
      Replace `/dev/sda` with your Storage Device's device path.
    - In `fdisk`, perform the following:

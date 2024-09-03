@@ -20,7 +20,6 @@
    - Open the `fdisk` tool to create two partitions on the SSD: one for `/boot` and one for `/`.
      ```bash
      sudo fdisk /dev/sda
-
      ```
      Replace `/dev/sda` with your Storage Device's device path.
    - In `fdisk`, perform the following:
@@ -71,7 +70,7 @@
      ```
    - Copy the contents of the `/boot` partition to the SSD’s `/boot` partition:
      ```bash
-     sudo rsync -axv --progress /boot/ /mnt/ssd_boot
+     sudo rsync -av --progress /boot/ /mnt/ssd_boot
      ```
 
 ---

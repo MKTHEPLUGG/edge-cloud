@@ -13,6 +13,7 @@ This guide will walk you through the process of flashing an Storage Device with 
 There are many tools available for this I will list a few links to commonly used ones
 
 1. **Cross-Platform**:
+   - [RPI Imager (Preferred)](https://www.raspberrypi.com/software/)
    - [Etcher](https://etcher.balena.io/)
    - [UNetbootin](https://unetbootin.github.io/)
 1. **Linux**:
