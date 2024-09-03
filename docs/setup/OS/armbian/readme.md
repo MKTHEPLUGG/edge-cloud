@@ -5,7 +5,7 @@
 [//]: # ()
 [//]: # (Images can be found at the [official download mirrors]&#40;https://fi.mirror.armbian.de/dl/rock-5a/archive/&#41;. I'm using the image ``Armbian_24.5.3_Rock-5a_noble_vendor_6.1.43_minimal.img.xz`` this one is based on ubuntu LTS. I was thinking of also trying ``Armbian_24.5.3_Rock-5a_bookworm_vendor_6.1.43_minimal.img.xz`` as this one is based on debian and probably less bloated.)
 
-Description of all the OS flavors used in this project. Ubuntu based Armbian is the main supported distro. However only a desktop version is available on ``Quartz4a`` so I will be testing out the debain based on aswell.
+Description of all the OS flavors used in this project. Ubuntu based Armbian is the main supported distro. However only a desktop version is available on ``Quartz4a`` so I will be testing out the debain based one aswell.
 
 ## Images
 
@@ -36,7 +36,7 @@ Images can be found at the [official download mirrors](https://fi.mirror.armbian
 Images can be found at the [official download mirrors](https://fi.mirror.armbian.de/dl/rock-5a/archive/). 
 
 **Debian**
-- Armbian_24.8.1_Rpi4b_bookworm_current_6.6.45_xfce_desktop.img.xz
+- Armbian_24.8.1_Rock-5a_bookworm_vendor_6.1.75_minimal.img.xz
 
 **Ubuntu**
 - Armbian_24.8.1_Rock-5a_noble_vendor_6.1.75_minimal.img.xz
