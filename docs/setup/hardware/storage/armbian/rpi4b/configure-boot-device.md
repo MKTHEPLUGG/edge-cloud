@@ -2,6 +2,18 @@
 
 Raspberry pi and ubuntu based distro's have very nice integrated USB booting. You'll only need 2 steps
 
+## **Understanding Boot Partition Requirements**
+
+### **Raspberry Pi Boot Process**
+
+- **FAT32 Partition Necessity**:
+  - **Firmware Design**: The Raspberry Pi's firmware is designed to look for boot files on a FAT32 partition. This is a requirement set by the Broadcom SoC used in Raspberry Pi devices.
+  - **Bootloader Constraints**: The primary bootloader resides in the GPU's ROM and expects to find the secondary bootloader and kernel images on a FAT32-formatted partition. This is why all standard Raspberry Pi OS images include a small FAT32 partition (commonly labeled `/boot`) and a larger ext4 partition for the root filesystem.
+
+- **USB Booting**:
+  - **EEPROM Configuration**: For Raspberry Pi 4 and later models, the ability to boot from USB devices (like SSDs) is facilitated by updating the bootloader EEPROM to support USB boot. Once configured, the bootloader still searches for the necessary boot files on a FAT32 partition on the USB device.
+
+
 ## Guide
 
 1. **Change the Boot Order**
@@ -21,3 +33,9 @@ Raspberry pi and ubuntu based distro's have very nice integrated USB booting. Yo
    - Connect the SSD to your Raspberry Pi 4.
    - **Ensure no SD card is in the Raspberry Pi.**
    - Power on the Raspberry Pi. It should boot directly from the SSD.
+
+
+
+You are correct in noticing that the Armbian image for the Rock 5B does not contain a FAT32 partition, unlike some Raspberry Pi images. This difference stems from the distinct boot processes and firmware requirements of these two boards. Let's delve deeper into understanding why this is the case and how it affects the booting mechanisms for both devices.
+
+---

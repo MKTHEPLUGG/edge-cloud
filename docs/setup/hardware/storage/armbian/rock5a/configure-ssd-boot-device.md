@@ -1,5 +1,17 @@
 # Configure SSD as bootable device
 
+## **Understanding Boot Partition Requirements**
+
+### **Rock 5B Boot Process**
+
+- **No FAT32 Partition Required**:
+  - **Bootloader Flexibility**: The Rockchip RK3588 SoC used in the Rock 5B board has a more flexible bootloader that can read from various filesystem types, including ext4. This eliminates the strict requirement for a FAT32 partition.
+  - **Unified Partition Scheme**: Armbian images for the Rock 5B typically use a single ext4 partition that contains both the boot files and the root filesystem. This simplifies the partitioning scheme and takes advantage of the SoC's capabilities.
+
+- **Bootloader Location**:
+  - **SPI Flash**: The bootloader can be installed on the board's SPI flash memory. Once installed, it knows how to locate and load the kernel and other necessary boot files from an ext4 partition on connected storage devices like NVMe SSDs.
+  - **SD Card Booting**: If booting from an SD card, the bootloader is included within the image and properly configured to boot from the ext4 partition present on the card.
+
 ### Step 1: Initial Setup on Rock 5A
 
 1. **Download and Write Armbian Image**:
@@ -75,3 +87,20 @@
 
 2. **Boot from NVMe SSD**:
    - Power on the Rock 5A again. The board should now boot directly from the NVMe SSD.
+
+---
+
+## **Conclusion**
+
+The Rock 5B's boot process is inherently more flexible compared to the Raspberry Pi, allowing it to boot directly from ext4 partitions without the need for a separate FAT32 partition. This design simplifies the setup process and leverages the capabilities of the Rockchip RK3588 SoC effectively.
+
+**Key Takeaways**:
+
+- **Raspberry Pi**:
+  - Requires a FAT32 partition for booting due to firmware constraints.
+  - Bootloader expects to find boot files on a FAT32 filesystem.
+
+- **Rock 5B**:
+  - Can boot directly from ext4 partitions.
+  - Bootloader, when installed on SPI flash, can load the system from various storage devices formatted with ext4.
+
