@@ -37,12 +37,3 @@ once you have created a storage device you can configure the SBC to boot from it
 
 
 
-
-
-
-
-````shell
-#!/bin/bash
-
-````
-

@@ -1,15 +1,29 @@
-# Create bootable device.
+# Create Boot Device
 
 This guide will walk you through the process of flashing an Storage Device with a linux image using a Linux operating system. It includes steps to clean the Storage Device, remove any existing partitions, prepare it as a single block, extract the `.xz` file, and flash the image.
 
-### Step 1: Download the Image
+## Step 1: Download the Image
 1. **Find an image supported by your board, my personal favorites**:
    - [DietPi](https://dietpi.com).
    - [ARMBian](https://fi.mirror.armbian.de/dl/).
    - Download the appropriate DietPi image file for your device, usually provided as a compressed `.xz` file.
 
+## Auto Creation
 
-### Step 2: Extract the Image from the .xz File
+There are many tools available for this I will list a few links to commonly used ones
+
+1. **Cross-Platform**:
+   - [Etcher](https://etcher.balena.io/)
+   - [UNetbootin](https://unetbootin.github.io/)
+1. **Linux**:
+   - [Popsicle](https://github.com/pop-os/popsicle)
+1. **Windows**:
+   - [Rufus](https://rufus.ie/en/)
+
+
+## Manual Creation
+
+### Step 1: Extract the Image from the .xz File
 1. **Extract the Image**:
    - Most images are provided as compressed `.xz` files. You need to extract the `.img` file before flashing it.
    - Use the `unxz` command to extract the image:
@@ -22,7 +36,7 @@ This guide will walk you through the process of flashing an Storage Device with 
      ```
    - This will extract the `.img` file from the `.xz` archive, ready for flashing.
 
-### Step 3: Prepare the Storage Device
+### Step 2: Prepare the Storage Device
 1. **Insert the Storage Device into Your Computer**:
    - Insert the Storage Device into your computer using a card reader if necessary.
    - Determine the device path for the Storage Device by running:
@@ -57,7 +71,7 @@ This guide will walk you through the process of flashing an Storage Device with 
 
 
 
-### Step 4: Flash the Image to any storage Device
+### Step 3: Flash the Image to any storage Device
 
 1. **Flash the Image**:
    - Use the `dd` command to write the DietPi image to the Storage Device:
@@ -83,14 +97,14 @@ This guide will walk you through the process of flashing an Storage Device with 
    - The `sync` command ensures that any remaining data in the buffer is fully written to the Storage Device, providing an additional layer of safety.
 
 
-### Step 5: Safely Eject the Storage
+### Step 4: Safely Eject the Storage
 1. **Eject the Storage Device**:
    - Safely eject the Storage Device from your computer:
      ```bash
      sudo eject /dev/sdX
      ```
 
-### Step 6: Boot your image
+### Step 5: Boot your image
 1. **Insert the Storage Device into Your Device**:
    - Insert the Storage Device into your device, such as a Raspberry Pi.
 
