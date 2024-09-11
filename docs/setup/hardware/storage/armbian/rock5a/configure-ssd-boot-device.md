@@ -104,3 +104,49 @@ The Rock 5B's boot process is inherently more flexible compared to the Raspberry
   - Can boot directly from ext4 partitions.
   - Bootloader, when installed on SPI flash, can load the system from various storage devices formatted with ext4.
 
+
+
+
+
+
+--- 
+
+Troubleshoot
+
+### 5. **Kernel Modules**
+
+Ensure that the necessary kernel modules for PCIe and SPI are loaded:
+
+- **List Loaded Modules**:
+  - Use the `lsmod` command to list currently loaded modules:
+    ```bash
+    lsmod
+    ```
+  - Look for modules related to PCIe (`pcie-rockchip-dwc` or similar) and SPI.
+
+- **Load Missing Modules**:
+  - If the relevant modules aren't loaded, manually load them:
+    ```bash
+    sudo modprobe pcie-rockchip-dwc
+    sudo modprobe spi-rockchip
+    ```
+
+- **Add Modules to Load at Boot**:
+  - To ensure the modules load automatically at boot, add them to `/etc/modules`:
+    ```bash
+    echo "pcie-rockchip-dwc" | sudo tee -a /etc/modules
+    echo "spi-rockchip" | sudo tee -a /etc/modules
+    ```
+
+### 6. **Check Boot Logs**
+
+Analyze boot logs for more detailed information:
+
+- **dmesg Output**:
+  - Use `dmesg` to review boot logs and identify specific errors related to PCIe or SPI:
+    ```bash
+    dmesg | grep -i pcie
+    dmesg | grep -i spi
+    ```
+  - Address any errors or warnings you find. These logs often provide hints about what might be misconfigured or failing to initialize.
+
