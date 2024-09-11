@@ -283,7 +283,7 @@ This command should display information about the Wi-Fi interface, including its
 
 ### 1. Preparation
 
-Install the required packages and specify configuration parameters for the VPN server.
+Install the required packages and specify configuration parameters for the VPN server. Login with the root user.
 
 #### Install Packages
 ```bash
@@ -306,6 +306,8 @@ Generate and exchange keys between the server and client.
 #### Generate Keys
 ```bash
 umask go=
+mkdir -p pki
+cd pki
 wg genkey | tee wgserver.key | wg pubkey > wgserver.pub
 wg genkey | tee wgclient.key | wg pubkey > wgclient.pub
 wg genpsk > wgclient.psk
@@ -329,6 +331,7 @@ Consider the VPN network as private. Assign the VPN interface to the LAN zone to
 
 #### Configure Firewall
 ```bash
+# by default zones are not used. rename your interfaces with the correct zone
 uci rename firewall.@zone[0]="lan"
 uci rename firewall.@zone[1]="wan"
 uci del_list firewall.lan.network="${VPN_IF}"
@@ -373,4 +376,92 @@ service network restart
 
 ## **Configure Wireguard [Client](https://openwrt.org/docs/guide-user/services/vpn/wireguard/client)**
 
----
+however in this case we will not be linking an openwrt router via vpn. We'll mainly be using it for desktop based clients to connect. Below some docs for this.
+
+### Step 1: Install WireGuard on the Client
+
+#### For Linux:
+```bash
+sudo apt update
+sudo apt install wireguard
+```
+
+#### For Windows:
+1. Download and install the WireGuard client from [WireGuard for Windows](https://www.wireguard.com/install/).
+2. Open the WireGuard app after installation.
+
+### Step 2: Configure the Client
+
+Now that you have the keys, the next step is to configure your client with them.
+
+#### **Create a WireGuard Client Configuration File**
+
+Create a WireGuard configuration file on the client (for Linux, place it under `/etc/wireguard/wg0.conf`; for Windows, you will paste it into the GUI). Here’s what the configuration would look like:
+
+```ini
+[Interface]
+PrivateKey = <client_private_key>        # Use the content of wgclient.key
+Address = 192.168.9.2/24, fd00:9::2/64   # IPs you assign to the client
+DNS = 192.168.9.1                       # Optional, point to the server for DNS
+
+[Peer]
+PublicKey = <server_public_key>          # Use the content of wgserver.pub
+PresharedKey = <preshared_key>           # Use wgclient.psk if you're using a pre-shared key
+Endpoint = <server_public_ip>:51820      # The public IP and port of your OpenWRT server
+AllowedIPs = 0.0.0.0/0, ::/0             # Route all traffic through the VPN
+PersistentKeepalive = 25
+```
+
+Replace the placeholders with the following:
+
+- **`<client_private_key>`**: This is the content of the `wgclient.key` file you generated earlier.
+- **`<server_public_key>`**: This is the content of the `wgserver.pub` file from the server.
+- **`<preshared_key>`**: This is optional, only include if you are using a pre-shared key (`wgclient.psk`).
+- **`<server_public_ip>`**: This should be the public IP address (or domain name) of your WireGuard server, along with the port (`51820` by default).
+
+#### **For Linux**:
+Save the configuration as `/etc/wireguard/wg0.conf`. Then, start the VPN connection:
+
+```bash
+sudo wg-quick up wg0
+```
+
+#### **For Windows**:
+1. Open the WireGuard client app.
+2. Click **Add Tunnel**, then **Create from File**.
+3. Paste the configuration file content into the editor.
+4. Click **Activate** to start the connection.
+
+### Step 3: Add the Client to the Server Configuration ( already done in server config )
+
+Now, go back to your WireGuard server (OpenWRT) and add the client as a peer to your server configuration. You can edit your server configuration file (likely `/etc/wireguard/wg0.conf`) or modify the UCI settings via the command line.
+
+#### **Add the Client Peer on the Server**:
+
+If you're using UCI to configure the server, you can add the client peer like this:
+
+```bash
+uci set network.wgclient="wireguard_vpn"
+uci set network.wgclient.public_key="<client_public_key>"      # Use wgclient.pub content
+uci set network.wgclient.preshared_key="<preshared_key>"       # Only if you're using a pre-shared key (wgclient.psk)
+uci add_list network.wgclient.allowed_ips="192.168.9.2/32"     # Client's VPN IP
+uci add_list network.wgclient.allowed_ips="fd00:9::2/128"      # Client's IPv6 VPN IP
+uci commit network
+service network restart
+```
+
+Or, if you're editing the `/etc/wireguard/wg0.conf` directly, add the following to your `wg0.conf` on the server:
+
+```ini
+[Peer]
+PublicKey = <client_public_key>          # Use wgclient.pub content
+PresharedKey = <preshared_key>           # Only if you're using a pre-shared key
+AllowedIPs = 192.168.9.2/32, fd00:9::2/128  # Client's VPN IP
+```
+
+### Step 4: Test the Connection
+
+- **On Linux**: Run `sudo wg-quick up wg0` to bring up the connection and check the status using `wg`.
+- **On Windows**: Click **Activate** in the WireGuard app to start the connection.
+
+You should now have a fully functioning VPN connection between your desktop client and your WireGuard server.
