@@ -14,44 +14,115 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
 1. **Create Bootable USB**:
     obtain the [image](https://downloads.openwrt.org/) and flash it onto a USB.
 
-2. **Flash the firmware**:
-    Consult this [link](https://openwrt.org/toh/views/toh_standard_all) to find your device and correct firmware. Afterwards follow this [guide](https://openwrt.org/docs/guide-quick-start/factory_installation)
+2. **Flash the firmware** (if needed, if you use the combined image and flash it to the interal storage with SSD you don't need to perform this step):
+    Consult this [link](https://openwrt.org/toh/views/toh_standard_all) to find your device and correct image. Afterwards follow this [guide](https://openwrt.org/docs/guide-quick-start/factory_installation)
 
 3. **Install [OpenWRT](https://openwrt.org/docs/guide-quick-start/start)**:
     
-    3.1 **Identify Target Device**:
-        Since lsblk is not available, you can use `df` or `cat /proc/partitions` to get more information about your available disks.
+   3.1 **Identify Target Device**:  
+   Since `lsblk` is not available, you can use `df` or `cat /proc/partitions` to get more information about your available disks.
 
-    ```bash
-    cat /proc/partitions
-    ```
+   ```bash
+   cat /proc/partitions
+   ```
 
-    3.2 **Prepare the Target Disk**:
-    Assuming you have identified your internal storage (let's say it's `/dev/sda`), the next step is to copy the OpenWRT root filesystem from the USB drive to the internal storage.
+   3.2 **Prepare the Target Disk**:  
+   Assuming you have identified your internal storage (let's say it's `/dev/sda`), the next step is to copy the OpenWRT root filesystem from the USB drive to the internal storage.
 
-    ```bash
-    dd if=/dev/sdb of=/dev/sda bs=4M
-    ```
+   ```bash
+   dd if=/dev/sdb of=/dev/sda bs=4M
+   ```
 
-    3.3 **Sync and Reboot**:
-    After copying, ensure all data is written to the disk:
+   3.3 **Sync and Reboot**:  
+   After copying, ensure all data is written to the disk:
 
-    ```bash
-    sync
-    ```
+   ```bash
+   sync
+   ```
 
-    3.4 **Set Root Password**:
-    set a root password to secure access.:
+   3.4 **Set Root Password**:  
+   Set a root password to secure access:
 
-    ```bash
-    passwd
-    ```
+   ```bash
+   passwd
+   ```
 
-    Then, reboot your machine:
+   Then, reboot your machine:
 
-    ```bash
-    reboot
-    ```
+   ```bash
+   reboot
+   ```
+
+   3.5 **Install `parted` and `resize2fs`**:
+   After rebooting, you will need to install the tools required to resize the partition and filesystem:
+
+   - **Update the package list** to ensure the latest packages are available:
+
+     ```bash
+     opkg update
+     ```
+
+   - **Install `parted`** to manage partition resizing:
+
+     ```bash
+     opkg install parted
+     ```
+
+   - **Install `resize2fs`** (part of the `e2fsprogs` package) to resize the ext4 filesystem:
+
+     ```bash
+     opkg install e2fsprogs
+     ```
+
+   3.6 **Resize Partition and Filesystem**:
+   Now that `parted` and `resize2fs` are installed, you can resize the partition to use the full disk space:
+
+   - **Identify the Disk Partition**:
+   
+     Use `lsblk` or `fdisk` to verify the partitions on your target disk (e.g., `/dev/sda`):
+
+     ```bash
+     lsblk
+     fdisk -l
+     ```
+
+   - **Resize the Partition Using `parted`**:
+
+     Launch `parted` to modify the partition:
+
+     ```bash
+     parted /dev/sda
+     ```
+
+     In the `parted` prompt, resize the partition to use the full disk (assuming the partition to resize is `/dev/sda2`):
+
+     ```bash
+     resizepart 2 100%
+     ```
+
+     Exit `parted`:
+
+     ```bash
+     quit
+     ```
+
+   - **Resize the Filesystem**:
+
+     Now that the partition has been resized, use `resize2fs` to expand the filesystem to fill the new partition size:
+
+     ```bash
+     resize2fs /dev/sda2
+     ```
+
+   - **Verify the Resize**:
+
+     Check that the filesystem now uses the full disk space:
+
+     ```bash
+     df -h
+     ```
+
+--- 
 
 ## Configure interfaces
 
