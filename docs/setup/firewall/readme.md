@@ -53,7 +53,7 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
    reboot
    ```
 
-   3.4 **Install `parted` and `resize2fs`**:
+   3.4 **(optional) Install `parted` and `resize2fs`**:
    After rebooting, you will need to install the tools required to resize the partition and filesystem:
 
    - **Update the package list** to ensure the latest packages are available:
@@ -66,6 +66,7 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
 
      ```bash
      opkg install parted
+     opkg install fdisk
      ```
 
    - **Install `resize2fs`** (part of the `e2fsprogs` package) to resize the ext4 filesystem:
@@ -638,6 +639,8 @@ AllowedIPs = 192.168.9.2/32, fd00:9::2/128  # Client's VPN IP
 For DNS to work we need to do some extra config for it to allow to forward dns traffic.
 
 ---
+
+**Fully tested and working apart from accessing urls, IP's work fine and dns resolution aswell but websites not reachable**
 
 **NOT NEEDED?**
 
