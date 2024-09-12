@@ -638,11 +638,71 @@ AllowedIPs = 192.168.9.2/32, fd00:9::2/128  # Client's VPN IP
 
 For DNS to work we need to do some extra config for it to allow to forward dns traffic.
 
+## extra vpn [config](https://openwrt.org/docs/guide-user/services/vpn/wireguard/extras)
+
 ---
 
 **Fully tested and working apart from accessing urls, IP's work fine and dns resolution aswell but websites not reachable**
 
 **NOT NEEDED?**
+
+config nat
+    option name 'vpn_nat'
+    option src 'lan'
+    option family 'ipv4'
+    option proto 'all'
+    option target 'MASQUERADE'
+
+
+config rule
+    option name 'Allow-DNS-Outbound'
+    option src 'lan'
+    option dest 'wan'
+    option proto 'udp'
+    option dest_port '53'
+    option target 'ACCEPT'
+
+
+### Corrected NAT Rule for `fw4`
+
+1. **Edit `/etc/config/firewall`** and adjust the NAT configuration:
+
+   ```bash
+   config nat
+       option name 'vpn_nat'
+       option src 'lan'
+       option family 'ipv4'
+       option proto 'all'
+       option src_ip '192.168.x.x/24'  # Replace with your VPN subnet
+       option target 'MASQUERADE'
+   ```
+
+   - **`src`** refers to the source zone (LAN in your case, where the VPN interface is located).
+   - **`src_ip`** should be the VPN client subnet (replace `192.168.x.x/24` with your actual VPN subnet).
+
+2. **Restart the Firewall**:
+
+   After adjusting the configuration, restart the firewall to apply the new rule:
+
+   ```bash
+   /etc/init.d/firewall restart
+   ```
+
+This should now apply the NAT rule for your VPN clients correctly without referencing the `dest` option, which isn’t needed in `fw4` for outbound NAT.
+
+Let me know if it works or if you need any further assistance!
+### Explanation:
+- The `config nat` block adds a NAT rule in the `fw4` format to masquerade traffic from the specified VPN subnet (which is in the LAN zone) when it goes to the WAN interface.
+- This allows outbound NAT for VPN clients while keeping the VPN interface in the LAN zone.
+
+If the above command works, your NAT should now be applied for VPN traffic. Let me know if you encounter any other issues!
+
+### Summary of Custom `iptables` Masquerading:
+- This approach allows you to keep the VPN interface within the LAN zone for firewall purposes.
+- It ensures that only VPN traffic is NATed while the VPN network stays integrated into the LAN zone.
+
+By using custom `iptables` rules, you can manage specific NAT rules without needing to alter the zone configuration. Let me know if you need further clarification on this!
+
 
 ### Step 1: Ensure Outbound NAT for VPN Clients
 
@@ -651,7 +711,7 @@ This step is crucial to allow VPN clients to access the internet. It ensures tha
 1. **Enable Outbound NAT (Masquerading) on the WAN Zone**:
    Ensure that masquerading is enabled on the WAN zone. This will allow traffic from your VPN clients (coming through the LAN zone) to be NATed when going out through the WAN.
 
-   Run the following commands:
+   Run the following commands: [ already enabled by default ]
    ```bash
    uci set firewall.wan.masq='1'  # Masquerading enabled for the WAN zone
    uci commit firewall
