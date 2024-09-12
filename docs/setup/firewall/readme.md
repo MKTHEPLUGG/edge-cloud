@@ -142,13 +142,18 @@ You can update the LAN interface to use a new IP range. For example, if you want
 
 ```bash
 uci set network.lan.ipaddr='192.168.2.1'
-uci set network.lan.netmask='255.255.255.0'
+uci set network.lan.netmask='255.255.255.0' # if not already set
 ```
 
 If you want to change the IP range to something else, just replace `192.168.2.1` and `255.255.255.0` with the desired IP address and subnet mask.
 
 
 ### 3. Update the DHCP Range
+
+Check your current DHCP config
+```bash
+cat /etc/config/dhcp
+```
 
 If you are using DHCP on the LAN interface, you should also update the DHCP range to match the new IP range:
 
@@ -159,9 +164,104 @@ uci set dhcp.lan.leasetime='12h'
 uci set dhcp.lan.dhcp_option='3,192.168.2.1'
 ```
 
-Replace `192.168.2.1` with your new LAN IP address, and adjust the `start`, `limit`, and `leasetime` values as needed.
+Replace `192.168.2.1` with your new LAN IP address, and adjust the `start`, `limit`, and `leasetime` values as needed. More docs about the dhcp options [here](https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml)
 
-### 4. Apply and Commit the Changes
+You can combine multiple options in one command by separating them with spaces:
+````shell
+uci set dhcp.lan.dhcp_option='3,192.168.2.1 6,8.8.8.8 42,192.168.2.5'
+````
+
+### 4. Set wan IP to static
+
+To set your WAN interface to a static IP in OpenWRT, you'll need to configure it through UCI (Unified Configuration Interface) or by directly editing the network configuration file (`/etc/config/network`).
+
+Here are the steps to set a static IP for your WAN interface:
+
+### Option 1: Using UCI Commands
+
+check your current network settings with 
+   ```bash
+   cat /etc/config/network
+   ```
+
+1. **Set the protocol to static**:
+   This tells the WAN interface to use a static IP configuration rather than DHCP.
+
+   ```bash
+   uci set network.wan.proto='static'
+   ```
+
+2. **Set the static IP address**:
+   Replace `192.168.1.2` with your desired static IP.
+
+   ```bash
+   uci set network.wan.ipaddr='192.168.1.2'
+   ```
+
+3. **Set the netmask**:
+   Specify the appropriate subnet mask.
+
+   ```bash
+   uci set network.wan.netmask='255.255.255.0'
+   ```
+
+4. **Set the gateway IP**:
+   This is the IP address of the gateway (router).
+
+   ```bash
+   uci set network.wan.gateway='192.168.1.1'
+   ```
+
+5. **Set DNS servers** (optional):
+   You can set one or more DNS servers for your WAN interface.
+
+   ```bash
+   uci set network.wan.dns='8.8.8.8 8.8.4.4'
+   ```
+
+6. **Commit the changes**:
+   This applies the new configuration.
+
+   ```bash
+   uci commit network
+   ```
+
+7. **Restart the network service**:
+
+   ```bash
+   /etc/init.d/network restart
+   ```
+
+### Option 2: Editing `/etc/config/network` Directly
+
+1. **Edit the network file**:
+
+   ```bash
+   vi /etc/config/network
+   ```
+
+2. **Modify the WAN section**:
+   Find the `config interface 'wan'` section and modify it to include the static IP settings.
+
+   Example configuration:
+   ```bash
+   config interface 'wan'
+       option proto 'static'
+       option ipaddr '192.168.1.2'
+       option netmask '255.255.255.0'
+       option gateway '192.168.1.1'
+       option dns '8.8.8.8 8.8.4.4'
+   ```
+
+3. **Save and exit**: After editing, save the file and exit the text editor.
+
+4. **Restart the network service**:
+
+   ```bash
+   /etc/init.d/network restart
+   ```
+
+### 5. Apply and Commit the Changes
 
 After making the changes, you need to commit the configuration and restart the network service for the changes to take effect:
 
