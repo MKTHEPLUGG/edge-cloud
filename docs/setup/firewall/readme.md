@@ -25,8 +25,15 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
    ```bash
    cat /proc/partitions
    ```
+   
+   3.2 **Set Root Password**:  
+   Set a root password to secure access:
 
-   3.2 **Prepare the Target Disk**:  
+   ```bash
+   passwd
+   ```
+   
+   3.2 **Flash the Target Disk**:  
    Assuming you have identified your internal storage (let's say it's `/dev/sda`), the next step is to copy the OpenWRT root filesystem from the USB drive to the internal storage.
 
    ```bash
@@ -39,21 +46,14 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
    ```bash
    sync
    ```
-
-   3.4 **Set Root Password**:  
-   Set a root password to secure access:
-
-   ```bash
-   passwd
-   ```
-
-   Then, reboot your machine:
+   
+   Then, reboot your machine and remove the USB device: 
 
    ```bash
    reboot
    ```
 
-   3.5 **Install `parted` and `resize2fs`**:
+   3.4 **Install `parted` and `resize2fs`**:
    After rebooting, you will need to install the tools required to resize the partition and filesystem:
 
    - **Update the package list** to ensure the latest packages are available:
@@ -74,7 +74,7 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
      opkg install e2fsprogs
      ```
 
-   3.6 **Resize Partition and Filesystem**:
+   3.5 **Resize Partition and Filesystem**:
    Now that `parted` and `resize2fs` are installed, you can resize the partition to use the full disk space:
 
    - **Identify the Disk Partition**:
