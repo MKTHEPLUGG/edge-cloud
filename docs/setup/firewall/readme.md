@@ -464,4 +464,112 @@ AllowedIPs = 192.168.9.2/32, fd00:9::2/128  # Client's VPN IP
 - **On Linux**: Run `sudo wg-quick up wg0` to bring up the connection and check the status using `wg`.
 - **On Windows**: Click **Activate** in the WireGuard app to start the connection.
 
-You should now have a fully functioning VPN connection between your desktop client and your WireGuard server.
+For DNS to work we need to do some extra config for it to allow to forward dns traffic.
+
+---
+
+**NOT NEEDED?**
+
+### Step 1: Ensure Outbound NAT for VPN Clients
+
+This step is crucial to allow VPN clients to access the internet. It ensures that VPN traffic can be NATed to the WAN interface so it can route to external networks.
+
+1. **Enable Outbound NAT (Masquerading) on the WAN Zone**:
+   Ensure that masquerading is enabled on the WAN zone. This will allow traffic from your VPN clients (coming through the LAN zone) to be NATed when going out through the WAN.
+
+   Run the following commands:
+   ```bash
+   uci set firewall.wan.masq='1'  # Masquerading enabled for the WAN zone
+   uci commit firewall
+   /etc/init.d/firewall restart
+   ```
+
+   This rule ensures that traffic from the VPN interface (`vpn`), which is part of the `lan` zone, is translated when going out to the internet via the WAN interface.
+
+   to delete a rule run:
+   ```bash
+   uci show firewall
+   uci delete firewall.@rule[10]  # Remove any rule
+   uci commit firewall
+   /etc/init.d/firewall restart
+   ```
+---
+
+### Step 2: Verify DNS Forwarding
+
+No additional DNS changes are needed in your setup since DNS is already functioning correctly. To verify or make any DNS-related changes:
+
+1. **Check Current DNS Forwarding**:
+   To see the upstream DNS servers your router is using, run:
+   ```bash
+   cat /tmp/resolv.conf.d/resolv.conf.auto
+   ```
+
+   This will show which DNS servers your router forwards queries to. Typically, this should list external DNS servers like `8.8.8.8`.
+
+2. **(Optional) Set a Specific Upstream DNS Server**:
+   If necessary, you can set the upstream DNS server:
+   ```bash
+   uci set dhcp.@dnsmasq[0].server='8.8.8.8'  # Google DNS as an example
+   uci commit dhcp
+   /etc/init.d/dnsmasq restart
+   ```
+
+---
+
+### Step 3: No Extra Firewall Rules Needed
+
+Since your **VPN** interface is already part of the **LAN zone** (`firewall.lan.network='lan' 'vpn'`), traffic between VPN clients and the LAN is automatically allowed. No additional firewall rules (such as `Allow-DNS-VPN`) are required.
+
+### Step 4: Testing DNS and Internet Access
+
+1. **Test DNS from VPN Client (Linux)**:
+   You can verify DNS resolution from your VPN client:
+   ```bash
+   nslookup google.com 192.168.9.1
+   ```
+
+2. **Test Internet Access from VPN Client**:
+   Verify internet access from your VPN client by using `curl` or similar tools:
+   ```bash
+   curl -I https://www.google.com
+   ```
+
+If DNS works but the internet connection fails (i.e., no access to external websites), the outbound NAT setup may be misconfigured.
+
+---
+
+### Summary of Required Configuration:
+
+- **NAT (Masquerading)** on the WAN zone:
+  ```bash
+  uci set firewall.wan.masq='1'
+  uci set firewall.wan.masq_src='192.168.9.0/24'
+  uci commit firewall
+  /etc/init.d/firewall restart
+  ```
+
+
+
+This rule ensures that traffic from the LAN (including VPN) is forwarded to the WAN interface.
+
+#### 3. Adjust MTU (Packet Size)
+VPNs can sometimes have issues with MTU (Maximum Transmission Unit) settings, which can cause problems with accessing websites if packets are too large. Since you can **ping** external IPs but not access websites, it might be worth adjusting the MTU.
+
+To set the MTU for the `vpn` interface (replace `vpn` with the actual WireGuard interface name):
+```bash
+uci set network.vpn.mtu='1420'
+uci commit network
+/etc/init.d/network restart
+```
+
+
+
+#### 5. Ensure `dnsmasq` is Configured Properly
+Although DNS seems to be working, make sure `dnsmasq` is bound to both the `br-lan` and `vpn` interfaces:
+```bash
+uci set dhcp.@dnsmasq[0].interface='br-lan vpn'
+uci commit dhcp
+/etc/init.d/dnsmasq restart
+```
+
