@@ -636,51 +636,24 @@ AllowedIPs = 192.168.9.2/32, fd00:9::2/128  # Client's VPN IP
 - **On Linux**: Run `sudo wg-quick up wg0` to bring up the connection and check the status using `wg`.
 - **On Windows**: Click **Activate** in the WireGuard app to start the connection.
 
-For DNS to work we need to do some extra config for it to allow to forward dns traffic.
+No extra config is needed all traffic is routed via the tunnel because we set 0.0.0.0/0 as allowed IP.
 
 ## extra vpn [config](https://openwrt.org/docs/guide-user/services/vpn/wireguard/extras)
 
 ---
 
-**Fully tested and working apart from accessing urls, IP's work fine and dns resolution aswell but websites not reachable**
-
-**NOT NEEDED?**
-
-config nat
-    option name 'vpn_nat'
-    option src 'lan'
-    option family 'ipv4'
-    option proto 'all'
-    option target 'MASQUERADE'
+## Troubleshooting
 
 
-config rule
-    option name 'Allow-DNS-Outbound'
-    option src 'lan'
-    option dest 'wan'
-    option proto 'udp'
-    option dest_port '53'
-    option target 'ACCEPT'
+
+### Common config files
+
+1. **`/etc/config/firewall`** rules / nat / ...
+2. **`/etc/config/network`** interfaces
+3. **`/etc/config/dhcp`** for dns and dhcp
 
 
-### Corrected NAT Rule for `fw4`
-
-1. **Edit `/etc/config/firewall`** and adjust the NAT configuration:
-
-   ```bash
-   config nat
-       option name 'vpn_nat'
-       option src 'lan'
-       option family 'ipv4'
-       option proto 'all'
-       option src_ip '192.168.x.x/24'  # Replace with your VPN subnet
-       option target 'MASQUERADE'
-   ```
-
-   - **`src`** refers to the source zone (LAN in your case, where the VPN interface is located).
-   - **`src_ip`** should be the VPN client subnet (replace `192.168.x.x/24` with your actual VPN subnet).
-
-2. **Restart the Firewall**:
+4. **Restart the Firewall**:
 
    After adjusting the configuration, restart the firewall to apply the new rule:
 
@@ -688,46 +661,52 @@ config rule
    /etc/init.d/firewall restart
    ```
 
-This should now apply the NAT rule for your VPN clients correctly without referencing the `dest` option, which isn’t needed in `fw4` for outbound NAT.
-
-Let me know if it works or if you need any further assistance!
-### Explanation:
-- The `config nat` block adds a NAT rule in the `fw4` format to masquerade traffic from the specified VPN subnet (which is in the LAN zone) when it goes to the WAN interface.
-- This allows outbound NAT for VPN clients while keeping the VPN interface in the LAN zone.
-
-If the above command works, your NAT should now be applied for VPN traffic. Let me know if you encounter any other issues!
-
-### Summary of Custom `iptables` Masquerading:
-- This approach allows you to keep the VPN interface within the LAN zone for firewall purposes.
-- It ensures that only VPN traffic is NATed while the VPN network stays integrated into the LAN zone.
-
-By using custom `iptables` rules, you can manage specific NAT rules without needing to alter the zone configuration. Let me know if you need further clarification on this!
 
 
-### Step 1: Ensure Outbound NAT for VPN Clients
 
-This step is crucial to allow VPN clients to access the internet. It ensures that VPN traffic can be NATed to the WAN interface so it can route to external networks.
 
-1. **Enable Outbound NAT (Masquerading) on the WAN Zone**:
-   Ensure that masquerading is enabled on the WAN zone. This will allow traffic from your VPN clients (coming through the LAN zone) to be NATed when going out through the WAN.
+[//]: # (### Step 1: Ensure Outbound NAT for VPN Clients)
 
-   Run the following commands: [ already enabled by default ]
-   ```bash
-   uci set firewall.wan.masq='1'  # Masquerading enabled for the WAN zone
-   uci commit firewall
-   /etc/init.d/firewall restart
-   ```
+[//]: # ()
+[//]: # (This step is crucial to allow VPN clients to access the internet. It ensures that VPN traffic can be NATed to the WAN interface so it can route to external networks.)
 
-   This rule ensures that traffic from the VPN interface (`vpn`), which is part of the `lan` zone, is translated when going out to the internet via the WAN interface.
+[//]: # ()
+[//]: # (1. **Enable Outbound NAT &#40;Masquerading&#41; on the WAN Zone**:)
 
-   to delete a rule run:
-   ```bash
-   uci show firewall
-   uci delete firewall.@rule[10]  # Remove any rule
-   uci commit firewall
-   /etc/init.d/firewall restart
-   ```
----
+[//]: # (   Ensure that masquerading is enabled on the WAN zone. This will allow traffic from your VPN clients &#40;coming through the LAN zone&#41; to be NATed when going out through the WAN.)
+
+[//]: # ()
+[//]: # (   Run the following commands: [ already enabled by default ])
+
+[//]: # (   ```bash)
+
+[//]: # (   uci set firewall.wan.masq='1'  # Masquerading enabled for the WAN zone)
+
+[//]: # (   uci commit firewall)
+
+[//]: # (   /etc/init.d/firewall restart)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (   This rule ensures that traffic from the VPN interface &#40;`vpn`&#41;, which is part of the `lan` zone, is translated when going out to the internet via the WAN interface.)
+
+[//]: # ()
+[//]: # (   to delete a rule run:)
+
+[//]: # (   ```bash)
+
+[//]: # (   uci show firewall)
+
+[//]: # (   uci delete firewall.@rule[10]  # Remove any rule)
+
+[//]: # (   uci commit firewall)
+
+[//]: # (   /etc/init.d/firewall restart)
+
+[//]: # (   ```)
+
+[//]: # (---)
 
 ### Step 2: Verify DNS Forwarding
 
@@ -769,41 +748,5 @@ Since your **VPN** interface is already part of the **LAN zone** (`firewall.lan.
    curl -I https://www.google.com
    ```
 
-If DNS works but the internet connection fails (i.e., no access to external websites), the outbound NAT setup may be misconfigured.
-
 ---
-
-### Summary of Required Configuration:
-
-- **NAT (Masquerading)** on the WAN zone:
-  ```bash
-  uci set firewall.wan.masq='1'
-  uci set firewall.wan.masq_src='192.168.9.0/24'
-  uci commit firewall
-  /etc/init.d/firewall restart
-  ```
-
-
-
-This rule ensures that traffic from the LAN (including VPN) is forwarded to the WAN interface.
-
-#### 3. Adjust MTU (Packet Size)
-VPNs can sometimes have issues with MTU (Maximum Transmission Unit) settings, which can cause problems with accessing websites if packets are too large. Since you can **ping** external IPs but not access websites, it might be worth adjusting the MTU.
-
-To set the MTU for the `vpn` interface (replace `vpn` with the actual WireGuard interface name):
-```bash
-uci set network.vpn.mtu='1420'
-uci commit network
-/etc/init.d/network restart
-```
-
-
-
-#### 5. Ensure `dnsmasq` is Configured Properly
-Although DNS seems to be working, make sure `dnsmasq` is bound to both the `br-lan` and `vpn` interfaces:
-```bash
-uci set dhcp.@dnsmasq[0].interface='br-lan vpn'
-uci commit dhcp
-/etc/init.d/dnsmasq restart
-```
 
