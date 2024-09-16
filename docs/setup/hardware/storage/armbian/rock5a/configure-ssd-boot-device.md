@@ -189,24 +189,17 @@ mtd0: 00080000 00010000 "spi-nor"
 ```
 
 #### 6. **Flash the Bootloader to SPI NOR**
+
 Once the SPI NOR is properly configured and detected as an MTD device, you can proceed with flashing a bootloader. The process typically involves erasing the flash and writing the bootloader image.
 
-1. **Erase the SPI NOR Flash:**
-   ```bash
-   sudo flash_erase /dev/mtd0 0 0
-   ```
+The Official Documentation for this can be found [here](https://wiki.radxa.com/Rock5/install/spi#3.29_Flash_the_SPI_flash)
 
-2. **Write the Bootloader:**
-   Use the appropriate bootloader image (e.g., U-Boot) and write it to the SPI NOR:
 
-   ```bash
-   sudo dd if=u-boot-rockchip.bin of=/dev/mtd0 bs=512 seek=64
-   ```
+1. **Easy Way**:
+   use armbian install docs [here](https://fieldday.io/armbian-rock5b/)
 
-   This is just an example, but the exact image and parameters may differ based on the bootloader you're using. Make sure to consult the bootloader documentation for correct offsets and commands.
-
-### Conclusion
-By enabling the `rock-5a-spi-nor-flash.dtbo` overlay, the SPI NOR flash on your Rock5A will be accessible, allowing you to flash a bootloader directly to it. After rebooting and verifying that the device is recognized as `/dev/mtd*`, you can proceed with flashing the bootloader.
+2. **Manual Way**
+   outlined in this [doc](https://wiki.radxa.com/Rock5/install/spi#3.29_Flash_the_SPI_flash)
 
 
 
