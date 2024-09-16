@@ -111,9 +111,9 @@ The Rock 5B's boot process is inherently more flexible compared to the Raspberry
 
 --- 
 
-Troubleshoot
+## Troubleshooting guide SPI module not recognized
 
-### 5. **Kernel Modules**
+### 1. **Kernel Modules**
 
 Ensure that the necessary kernel modules for PCIe and SPI are loaded:
 
@@ -138,7 +138,7 @@ Ensure that the necessary kernel modules for PCIe and SPI are loaded:
     echo "spi-rockchip" | sudo tee -a /etc/modules
     ```
 
-### 6. **Check Boot Logs**
+### 2. **Check Boot Logs**
 
 Analyze boot logs for more detailed information:
 
@@ -149,4 +149,62 @@ Analyze boot logs for more detailed information:
     dmesg | grep -i spi
     ```
   - Address any errors or warnings you find. These logs often provide hints about what might be misconfigured or failing to initialize.
+
+
+
+
+
+### 3. **SPI Device Tree (DTB) Configuration**
+You mentioned a large list of `.dtb` files, but it's unclear which one is actively in use. The SPI might not be properly configured or enabled in the active device tree.
+
+- **Steps to Explore:**
+   1. **Identify the Active Device Tree**:
+      - You can check which `.dtb` is being loaded by inspecting the bootloader configuration or environment variables.
+      - For example, check the `/boot/extlinux/extlinux.conf` or equivalent file to see which `.dtb` file is referenced.
+      - You can also run:
+        ```bash
+        cat /proc/device-tree/model
+        ```
+        This will provide insight into which board model your system is configured for.
+
+   2. **Inspect and Modify the Device Tree**:
+      - Extract the current device tree as mentioned earlier:
+        ```bash
+        dtc -I dtb -O dts -o extracted.dts /boot/<active-dtb>.dtb
+        ```
+      - **Check the SPI Node**: Look for nodes related to the SPI controller, particularly for entries like `spi@feb20000` or any other relevant SPI bus for the Rockchip platform. Ensure the node is marked as `status = "okay"` and has the correct configuration for chip select lines, clocks, and pins.
+      - If you find that the SPI node is not enabled or misconfigured, modify it, recompile it, and apply it as described previously.
+
+### 3.1. **SPI Runtime PM Issue**
+The output shows that the system has runtime power management enabled (`CONFIG_PM=y`), but no specific runtime power management options for SPI were mentioned in the config output, and no runtime errors were logged when you loaded the SPI module.
+
+- **Steps to Explore**:
+   1. **Manually Manage Power**: Since you didn't find much related to runtime in the kernel config, you can manually force the SPI device's power state:
+      ```bash
+      echo "on" > /sys/bus/spi/devices/spi2.0/power/control
+      ```
+      This disables runtime PM for this SPI device. Check `dmesg` or run the test again after performing this step to see if the SPI device comes up.
+
+   2. **Check `/sys` for SPI devices**: Even if the device isn’t appearing in `blkid`, it should still show up under `/sys/bus/spi/devices/`:
+      ```bash
+      ls /sys/bus/spi/devices/
+      ```
+      If the SPI device shows up here, then you can further investigate why it's not detected as a block device.
+
+
+
+#### 3.2 **SPI Communication Test**
+Since your SPI device (`spi2.0`) is visible in `/sys/bus/spi/devices/`, you should test communication over the SPI bus to verify if data is being transmitted correctly.
+
+- **Install spidev-tools** and run the following test:
+  ```bash
+  apt-get install spidev-tools
+  spidev_test -D /dev/spidev2.0
+  ```
+  This test sends and receives data over the SPI bus, which can verify if the bus and connected device are working as expected.
+
+#### 3.3 **Check Device-Specific Driver**
+- If your SPI device is not a generic one, make sure the specific device driver is enabled in the kernel. You may need to check if a module specific to the SPI device (e.g., a sensor or display) is loaded or built into the kernel.
+  
+- For example, if you have an external device that communicates over SPI, check its compatible drivers in the kernel configuration or load the appropriate kernel module using `modprobe`.
 
