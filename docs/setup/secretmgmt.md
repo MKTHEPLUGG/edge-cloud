@@ -1,4 +1,5 @@
-Here’s a breakdown of which providers from your list are free or can be self-hosted for use in your homelab, as supported by the External Secrets Operator (ESO):
+We need to decide which secrets provider we will be using for our setup, main requirement is for it to be supported by External Secrets Operator.
+
 
 ### Self-hosted and Free Options:
 1. **Bitwarden Secrets Manager**
