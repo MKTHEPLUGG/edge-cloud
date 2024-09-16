@@ -113,6 +113,106 @@ The Rock 5B's boot process is inherently more flexible compared to the Raspberry
 
 ## Troubleshooting guide SPI module not recognized
 
+### TLDR - Quick Fix
+
+When you install the base image of armbian the SPI controller is not configured as SPI NOR FLASH, which is what we want if we want to upload the bootloader there. To enable this functionallity you need to add an overlay to the boot env file.
+
+````shell
+ls /boot/dtb/rockchip/overlay/rock-5a-spi-nor-flash.dtbo
+echo "overlays=rock-5a-spi-nor-flash" >> /boot/armbianEnv.txt
+reboot
+lsblk   # or ls /dev/mtd*
+````
+
+
+
+### Steps to Enable the `rock-5a-spi-nor-flash.dtbo` Overlay:
+
+#### 1. **Verify the Overlay Exists**
+First, confirm that the overlay file `rock-5a-spi-nor-flash.dtbo` is available in your system:
+
+```bash
+ls /boot/dtb/rockchip/overlay/rock-5a-spi-nor-flash.dtbo
+```
+
+If the file exists, proceed with enabling it.
+
+#### 2. **Edit the `armbianEnv.txt` File**
+To enable the overlay, you need to modify the **Armbian environment file** (`/boot/armbianEnv.txt`). This file controls the configuration of the system at boot, including the device tree overlays.
+
+Open the file with a text editor:
+
+```bash
+sudo nano /boot/armbianEnv.txt
+```
+
+#### 3. **Enable the Overlay**
+Find the line that starts with `overlays=` (or add it if it doesn’t exist), and append the `rock-5a-spi-nor-flash` overlay. It should look like this:
+
+```bash
+overlays=rock-5a-spi-nor-flash
+```
+
+If there are already overlays listed, separate them with a space or comma, like so:
+
+```bash
+overlays=other-overlay rock-5a-spi-nor-flash
+```
+
+#### 4. **Save and Reboot**
+After making the change, save the file and reboot the system to apply the overlay:
+
+```bash
+sudo reboot
+```
+
+#### 5. **Verify the SPI NOR Flash is Enabled**
+After the reboot, check if the SPI NOR flash device is recognized as an MTD device:
+
+```bash
+ls /dev/mtd*
+```
+
+You should see something like `/dev/mtd0` and `/dev/mtdblock0`.
+
+Also, check `/proc/mtd` for more details:
+
+```bash
+cat /proc/mtd
+```
+
+You should see entries for the MTD partitions, like:
+
+```
+dev:    size   erasesize  name
+mtd0: 00080000 00010000 "spi-nor"
+```
+
+#### 6. **Flash the Bootloader to SPI NOR**
+Once the SPI NOR is properly configured and detected as an MTD device, you can proceed with flashing a bootloader. The process typically involves erasing the flash and writing the bootloader image.
+
+1. **Erase the SPI NOR Flash:**
+   ```bash
+   sudo flash_erase /dev/mtd0 0 0
+   ```
+
+2. **Write the Bootloader:**
+   Use the appropriate bootloader image (e.g., U-Boot) and write it to the SPI NOR:
+
+   ```bash
+   sudo dd if=u-boot-rockchip.bin of=/dev/mtd0 bs=512 seek=64
+   ```
+
+   This is just an example, but the exact image and parameters may differ based on the bootloader you're using. Make sure to consult the bootloader documentation for correct offsets and commands.
+
+### Conclusion
+By enabling the `rock-5a-spi-nor-flash.dtbo` overlay, the SPI NOR flash on your Rock5A will be accessible, allowing you to flash a bootloader directly to it. After rebooting and verifying that the device is recognized as `/dev/mtd*`, you can proceed with flashing the bootloader.
+
+
+
+
+**BELOW NOT NEEDED, KEEP INTERESTING STUFF**
+
 ### 1. **Kernel Modules**
 
 Ensure that the necessary kernel modules for PCIe and SPI are loaded:
@@ -171,6 +271,8 @@ You mentioned a large list of `.dtb` files, but it's unclear which one is active
       - Extract the current device tree as mentioned earlier:
         ```bash
         dtc -I dtb -O dts -o extracted.dts /boot/<active-dtb>.dtb
+        # in this file you can see which dtb is being used
+        cat /boot/armbianEnv.txt
         ```
       - **Check the SPI Node**: Look for nodes related to the SPI controller, particularly for entries like `spi@feb20000` or any other relevant SPI bus for the Rockchip platform. Ensure the node is marked as `status = "okay"` and has the correct configuration for chip select lines, clocks, and pins.
       - If you find that the SPI node is not enabled or misconfigured, modify it, recompile it, and apply it as described previously.
@@ -192,19 +294,219 @@ The output shows that the system has runtime power management enabled (`CONFIG_P
       If the SPI device shows up here, then you can further investigate why it's not detected as a block device.
 
 
+### Device not by default configured as SPI ROM
 
-#### 3.2 **SPI Communication Test**
-Since your SPI device (`spi2.0`) is visible in `/sys/bus/spi/devices/`, you should test communication over the SPI bus to verify if data is being transmitted correctly.
 
-- **Install spidev-tools** and run the following test:
-  ```bash
-  apt-get install spidev-tools
-  spidev_test -D /dev/spidev2.0
-  ```
-  This test sends and receives data over the SPI bus, which can verify if the bus and connected device are working as expected.
+[//]: # (#### 3.2 **SPI Communication Test**)
 
-#### 3.3 **Check Device-Specific Driver**
-- If your SPI device is not a generic one, make sure the specific device driver is enabled in the kernel. You may need to check if a module specific to the SPI device (e.g., a sensor or display) is loaded or built into the kernel.
-  
-- For example, if you have an external device that communicates over SPI, check its compatible drivers in the kernel configuration or load the appropriate kernel module using `modprobe`.
+[//]: # (Since your SPI device &#40;`spi2.0`&#41; is visible in `/sys/bus/spi/devices/`, you should test communication over the SPI bus to verify if data is being transmitted correctly.)
+
+[//]: # ()
+[//]: # (Here's a comprehensive guide on how to enable the `spidev` module, install `spi-tools`, test the SPI interface, and ensure that the `spidev` module persists across reboots.)
+
+[//]: # ()
+[//]: # (### Step 1: **Enable `spidev` Kernel Module**)
+
+[//]: # ()
+[//]: # (The `spidev` module is essential for exposing SPI devices as character devices in `/dev`. Follow these steps to enable it:)
+
+[//]: # ()
+[//]: # (1. **Check if `spidev` is loaded:**)
+
+[//]: # (   Open a terminal and run:)
+
+[//]: # (   ```bash)
+
+[//]: # (   lsmod | grep spidev)
+
+[//]: # (   ```)
+
+[//]: # (   If no output is returned, the `spidev` module isn't loaded.)
+
+[//]: # ()
+[//]: # (2. **Load the `spidev` module:**)
+
+[//]: # (   To load the `spidev` module manually:)
+
+[//]: # (   ```bash)
+
+[//]: # (   sudo modprobe spidev)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (3. **Verify the Module:**)
+
+[//]: # (   After loading the module, confirm that `spidev` is now active:)
+
+[//]: # (   ```bash)
+
+[//]: # (   lsmod | grep spidev)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (4. **Check for SPI Devices:**)
+
+[//]: # (   Once the module is loaded, check `/dev/` for `spidevX.Y` entries:)
+
+[//]: # (   ```bash)
+
+[//]: # (   ls /dev/spidev*)
+
+[//]: # (   ```)
+
+[//]: # (### Step 2: **Install SPI-Tools**)
+
+[//]: # ()
+[//]: # (`spi-tools` is a package containing tools that help in interacting with SPI devices. Here’s how to download, build, and install it.)
+
+[//]: # ()
+[//]: # (1. **Install via package manager:**)
+
+[//]: # (   ```bash)
+
+[//]: # (   apt install spi-tools)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (2. **Confirm Installation:**)
+
+[//]: # (   After installation, you should be able to use the `spi-config` and `spi-pipe` tools:)
+
+[//]: # (   ```bash)
+
+[//]: # (   spi-config -h)
+
+[//]: # (   spi-pipe -h)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (### Step 3: **Test the SPI Device**)
+
+[//]: # ()
+[//]: # (You can now use `spi-tools` to test your SPI device.)
+
+[//]: # ()
+[//]: # (#### 1. **Check the current configuration of an SPI device:**)
+
+[//]: # ()
+[//]: # (   You can use the `spi-config` command to check the SPI device's current configuration. Replace `X.Y` with the actual SPI bus and chip select number &#40;for example, `spidev2.0`&#41;:)
+
+[//]: # (   ```bash)
+
+[//]: # (   spi-config -d /dev/spidevX.Y -q)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (   This command will output the mode, speed, bits per word, etc.)
+
+[//]: # ()
+[//]: # (#### 2. **Change the SPI device’s configuration &#40;optional&#41;:**)
+
+[//]: # ()
+[//]: # (   To change the SPI device’s clock speed or mode, you can use the `spi-config` tool as follows:)
+
+[//]: # (   ```bash)
+
+[//]: # (   spi-config -d /dev/spidevX.Y -s 1000000 -m 0)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (   This sets the speed to 1 MHz and mode to 0.)
+
+[//]: # ()
+[//]: # (#### 3. **Send and receive data using `spi-pipe`:**)
+
+[//]: # ()
+[//]: # (   You can use `spi-pipe` to send and receive data. Here's how you can send data from one process and receive it in another:)
+
+[//]: # ()
+[//]: # (   ```bash)
+
+[//]: # (   echo "test data" | spi-pipe -d /dev/spidevX.Y)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (   To receive data from the SPI device, use:)
+
+[//]: # (   ```bash)
+
+[//]: # (   spi-pipe -d /dev/spidevX.Y < /dev/zero)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (### Step 4: **Make the `spidev` Module Persistent Across Reboots**)
+
+[//]: # ()
+[//]: # (By default, the `spidev` module will not be loaded automatically upon reboot. To make sure it loads at boot time, follow these steps:)
+
+[//]: # ()
+[//]: # (1. **Edit the `modules` file:**)
+
+[//]: # ()
+[//]: # (   Add `spidev` to the list of modules to be loaded at boot. Open the `/etc/modules` file in a text editor:)
+
+[//]: # (   ```bash)
+
+[//]: # (   sudo nano /etc/modules)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (   Add the following line:)
+
+[//]: # (   ```bash)
+
+[//]: # (   spidev)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (2. **Update the `initramfs`:**)
+
+[//]: # ()
+[//]: # (   After editing the `modules` file, regenerate the `initramfs` to ensure the module is loaded during boot:)
+
+[//]: # (   ```bash)
+
+[//]: # (   sudo update-initramfs -u)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (3. **Reboot and Verify:**)
+
+[//]: # ()
+[//]: # (   Reboot your system:)
+
+[//]: # (   ```bash)
+
+[//]: # (   sudo reboot)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (   After rebooting, verify that the `spidev` module is loaded and the SPI device is present in `/dev/`:)
+
+[//]: # (   ```bash)
+
+[//]: # (   lsmod | grep spidev)
+
+[//]: # (   ls /dev/spidev*)
+
+[//]: # (   ```)
+
+
+### Verify Kernal Configuration
+
+````shell
+zcat /proc/config.gz | grep MTD
+````
 

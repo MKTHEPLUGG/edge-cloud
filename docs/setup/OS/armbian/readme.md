@@ -51,12 +51,12 @@ Hostname & Network & Keyboard Settings Configuration can be automated using this
 ````shell
 #!/bin/bash
 
-read -p "Please provide the last digit of the IP (192.168.1.x): " ip_last_digit
+read -p "Please provide the last digit of the IP (192.168.10.x): " ip_last_digit
 read -p "Please provide the hostname: " hostname
 
 # Vars
-full_ip="192.168.1.$ip_last_digit"
-gateway="192.168.1.1"
+full_ip="192.168.10.$ip_last_digit"
+gateway="192.168.10.1"
 dns1="1.1.1.1"
 interface="eth0"  # Adjust this if your network interface name is different
 netplan_config="/etc/netplan/01-netcfg.yaml"
@@ -99,6 +99,10 @@ sudo sed -i 's/XKBLAYOUT=.*/XKBLAYOUT="be"/' /etc/default/keyboard
 sudo setupcon
 
 echo "Configuration completed successfully."
+
+# set date and time
+sudo timedatectl set-timezone Europe/Brussels
+date
 ````
 
 
