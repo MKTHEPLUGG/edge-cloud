@@ -200,6 +200,9 @@ The Official Documentation for this can be found [here](https://wiki.radxa.com/R
 
 2. **Manual Way**
    outlined in this [doc](https://wiki.radxa.com/Rock5/install/spi#3.29_Flash_the_SPI_flash)
+    - first dd existing partition to SSD
+    - then flash bootloader onto SPI
+    - then set bootloader on spi to boot SSD
 
 
 
