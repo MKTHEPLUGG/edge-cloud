@@ -61,11 +61,11 @@ network:
   version: 2
   renderer: networkd
   ethernets:
-    eth0:
+    enp0s31f6:      # be sure to specify your actual wan interface
       dhcp4: no     # Disable DHCP on the physical interface
   bridges:
     br0:
-      interfaces: [eth0]
+      interfaces: [enp0s31f6] # be sure to specify your actual wan interface
       dhcp4: yes    # Enable DHCP on the bridge
       parameters:
         stp: false  # Disable Spanning Tree Protocol for faster convergence
