@@ -35,8 +35,11 @@ sudo virsh list --all
 To operate the vm some example commands
 
 ````shell
-sudo virsh start <vm-name>
-sudo virsh shutdown <vm-name>
+sudo virsh start <vm-name>           # start
+sudo virsh shutdown <vm-name>        # graceful shutdown
+sudo virsh destroy <vm-name>         # forced shutdown
+sudo virsh console <vm-name>         # access the console
+sudo virsh undefine <vm-name>        # fully remove VM
 ````
 
 This will display an empty list if there are no VMs running, but it confirms the setup is working.
