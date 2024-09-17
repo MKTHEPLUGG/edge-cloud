@@ -268,7 +268,6 @@ You can force `virt-customize` to use a specific backend, such as `direct` mode,
 
 ```bash
 export LIBGUESTFS_BACKEND=direct
-sudo virt-customize -a /var/lib/libvirt/images/focal-server-cloudimg-amd64.img --root-password password:test
 ```
 
 This can help avoid the use of the `libguestfs` appliance, which sometimes causes issues in more restricted environments.
@@ -278,7 +277,6 @@ If the appliance is running out of memory, you can try increasing the memory all
 
 ```bash
 export LIBGUESTFS_MEMSIZE=1024
-sudo virt-customize -a /var/lib/libvirt/images/focal-server-cloudimg-amd64.img --root-password password:test
 ```
 
 

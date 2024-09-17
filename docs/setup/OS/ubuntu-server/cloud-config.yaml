@@ -2,6 +2,8 @@
 hostname: default-hostname
 manage_etc_hosts: true
 
+# TODO: add default config for kubectl alias and auto completion.
+
 # Dynamic hostname generation: fixed prefix + random 6-character suffix
 # Dynamic hostname generation: "node" + architecture + random number (1-100)
 runcmd:
