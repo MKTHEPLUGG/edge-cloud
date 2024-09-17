@@ -213,117 +213,233 @@ Once you’ve created your configuration file, you can start by testing it local
 2. **Cloud-init Logs**:
    Cloud-init writes logs to `/var/log/cloud-init.log` and `/var/log/cloud-init-output.log`, where you can verify if all steps executed as expected.
 
-### Next Steps:
-Once you’re happy with the dynamic Cloud-init configuration, you can move on to creating custom images for each architecture (Armbian and x86 Ubuntu). We can automate this process and integrate it with your local cloud setup, ensuring that every new deployment picks up these dynamic settings.
-
-Would you like help with automating the image creation process or further customization in your `cloud-config`?
 
 ## Create the image
 
-Yes, you can absolutely take the official Ubuntu Server image, add your Cloud-init configuration files directly to the `/etc` directory, and then use that image for deployment! This is a simpler and more direct approach. Here’s how you can do that:
+[//]: # (Yes, you can absolutely take the official Ubuntu Server image, add your Cloud-init configuration files directly to the `/etc` directory, and then use that image for deployment! This is a simpler and more direct approach. Here’s how you can do that:)
 
-### Steps to Modify the Official Ubuntu Server Image with Cloud-Init
+[//]: # ()
+[//]: # (### Steps to Modify the Official Ubuntu Server Image with Cloud-Init)
 
-1. **Download the Official Ubuntu Server Image**
+[//]: # ()
+[//]: # (1. **Download the Official Ubuntu Server Cloud Image**)
 
-You can download the Ubuntu Server image (for example, Ubuntu 20.04) directly from the official website:
+[//]: # ()
+[//]: # (You can download the Ubuntu Server image &#40;for example, Ubuntu 20.04&#41; directly from the official website:)
 
-```bash
-wget https://ubuntu.com/download/server/thank-you?version=24.04.1&architecture=amd64&lts=true
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (wget https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-amd64.img)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (You can also use a more recent version if necessary.)
+
+[//]: # ()
+[//]: # (### 2. **Mount the ISO and Extract Files**)
+
+[//]: # ()
+[//]: # (To modify the image, you'll need to extract it and modify the contents.)
+
+[//]: # ()
+[//]: # (1. **Mount the ISO**:)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (mkdir /mnt/iso)
+
+[//]: # (sudo mount -o loop ubuntu-24.04-server-cloudimg-amd64.img /mnt/iso)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (2. **Copy the Files** to a working directory:)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (mkdir ~/ubuntu-custom)
+
+[//]: # (cp -r /mnt/iso/* ~/ubuntu-custom/)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (3. **Unmount the ISO**:)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (sudo umount /mnt/iso)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (### 3. **Modify the Cloud-Init Configuration**)
+
+[//]: # ()
+[//]: # (Now, let's add your Cloud-init configuration files to the extracted image.)
+
+[//]: # ()
+[//]: # (1. **Navigate to the `~/ubuntu-custom` directory** where you copied the files:)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (cd ~/ubuntu-custom)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (2. **Create the Cloud-init configuration files** inside the appropriate directories:)
+
+[//]: # ()
+[//]: # (- **Create `user-data`** in `/etc/cloud/cloud.cfg.d/99_custom.cfg`:)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (nano ~/ubuntu-custom/etc/cloud/cloud.cfg.d/99_custom.cfg)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (Add your Cloud-init logic here:)
+
+[//]: # ()
+[//]: # ()
+[//]: # (This will allow your Cloud-init configuration to be applied on first boot.)
+
+[//]: # ()
+[//]: # (### 4. **Rebuild the ISO**)
+
+[//]: # ()
+[//]: # (Now that you've modified the image and added your Cloud-init configuration, you need to rebuild the ISO file.)
+
+[//]: # ()
+[//]: # (1. **Create the new ISO**:)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (cd ~/ubuntu-custom)
+
+[//]: # (mkisofs -o ~/ubuntu-custom-server.iso -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -J -R -V "Custom Ubuntu Server" .)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (This command creates a bootable ISO named `ubuntu-custom-server.iso` with your Cloud-init configuration included.)
+
+[//]: # ()
+[//]: # ()
+
+
+### Use Ubuntu Cloud Images
+
+Ubuntu Cloud Images are designed to work with Cloud-init out of the box and are ideal for creating custom deployments. You can download them, modify them, and directly write them to a USB drive.
+
+[Ubuntu pre-installed images download page](https://cloud-images.ubuntu.com/releases/).
+
+1. **Download the Ubuntu Cloud Image**:
+   
+   You can get the cloud image for Ubuntu Server (e.g., 20.04 LTS) from here:
+
+   ```bash
+   wget https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
+   ```
+
+2. **Modify the Image with Cloud-init Configuration**:
+   
+   Once downloaded, you can modify the image by adding your `user-data` configuration to the image or using a "seed" ISO for the Cloud-init configuration.
+
+   - **Mount the Image** (using `guestmount` or `libguestfs`):
+   
+     ```bash
+     sudo apt-get install libguestfs-tools
+     sudo guestmount -a focal-server-cloudimg-amd64.img -i --rw /mnt/ubuntu
+     ```
+   
+   - **Copy your Cloud-init configuration** to `/etc/cloud/cloud.cfg.d/99_custom.cfg`:
+
+     ```bash
+     sudo cp user-data /mnt/ubuntu/etc/cloud/cloud.cfg.d/99_custom.cfg
+     ```
+
+   - **Unmount the Image**:
+
+     ```bash
+     sudo umount /mnt/ubuntu
+     ```
+
+3. **Write the Image to USB**:
+
+   You can now directly write the image to a USB drive using `dd`:
+
+   ```bash
+   sudo dd if=focal-server-cloudimg-amd64.img of=/dev/sdX bs=4M status=progress && sync
+   ```
+
+   Replace `/dev/sdX` with the correct device path for your USB drive.
+
+
+4. **Check format and convert if needed**:
+
+    You can check the format to see if it needs to be changed with
+    ````shell
+    qemu-img info <path-to-your-image>
+    ````
+
+
+
+
+
+
+### Output Example:
+
+You’ll see something like this:
+
+```
+image: ubuntu-24.04-server-cloudimg-amd64.img
+file format: qcow2
+virtual size: 2.0G (2147483648 bytes)
+disk size: 1.3G
+cluster_size: 65536
 ```
 
-You can also use a more recent version if necessary.
+### Key Points to Check:
+- **File format**: This will tell you the format of the image. Common formats are:
+  - `qcow2`: QEMU Copy-On-Write version 2, a flexible and space-efficient image format.
+  - `raw`: A simple raw disk image without any special features.
+  
+- **Virtual size**: The virtual size of the image.
+  
+- **Disk size**: The actual space taken by the image on your disk.
 
-### 2. **Mount the ISO and Extract Files**
+### Next Steps:
+- **If the image is in `qcow2` format** (or any format other than `raw`), and you plan to write the image directly to an SSD, you should convert it to `raw`.
+  
+- **If the image is already in `raw` format**, you can directly write it to your SSD using `dd`.
 
-To modify the image, you'll need to extract it and modify the contents.
-
-1. **Mount the ISO**:
-
-```bash
-mkdir /mnt/iso
-sudo mount -o loop ubuntu-20.04.5-live-server-amd64.iso /mnt/iso
-```
-
-2. **Copy the Files** to a working directory:
-
-```bash
-mkdir ~/ubuntu-custom
-cp -r /mnt/iso/* ~/ubuntu-custom/
-```
-
-3. **Unmount the ISO**:
+### To Convert (If Needed, was needed in my case):
 
 ```bash
-sudo umount /mnt/iso
+qemu-img convert -f qcow2 -O raw <source-image> <output-raw-image>
 ```
 
-### 3. **Modify the Cloud-Init Configuration**
-
-Now, let's add your Cloud-init configuration files to the extracted image.
-
-1. **Navigate to the `~/ubuntu-custom` directory** where you copied the files:
+For example:
 
 ```bash
-cd ~/ubuntu-custom
+qemu-img convert -f qcow2 -O raw ubuntu-24.04-server-cloudimg-amd64.img ubuntu-24.04-server-cloudimg-amd64.raw
 ```
 
-2. **Create the Cloud-init configuration files** inside the appropriate directories:
+This will create a `raw` format image that you can write to the SSD.
 
-- **Create `user-data`** in `/etc/cloud/cloud.cfg.d/99_custom.cfg`:
-
-```bash
-nano ~/ubuntu-custom/etc/cloud/cloud.cfg.d/99_custom.cfg
-```
-
-Add your Cloud-init logic here:
-
-
-This will allow your Cloud-init configuration to be applied on first boot.
-
-### 4. **Rebuild the ISO**
-
-Now that you've modified the image and added your Cloud-init configuration, you need to rebuild the ISO file.
-
-1. **Create the new ISO**:
-
-```bash
-cd ~/ubuntu-custom
-mkisofs -o ~/ubuntu-custom-server.iso -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -J -R -V "Custom Ubuntu Server" .
-```
-
-This command creates a bootable ISO named `ubuntu-custom-server.iso` with your Cloud-init configuration included.
-
-### 5. **Write the ISO to USB**
-
-Once the custom ISO is created, you can write it to a USB drive using `dd`:
-
-1. **Find your USB drive**:
-
-```bash
-lsblk
-```
-
-2. **Write the image to the USB**:
-
-```bash
-sudo dd if=~/ubuntu-custom-server.iso of=/dev/sdX bs=4M status=progress && sync
-```
-
-Replace `/dev/sdX` with the correct device path for your USB drive.
-
-### 6. **Boot from the USB**
-
-Once you've written the custom image to your USB drive, you can boot from it on your target machine. Cloud-init will run on the first boot, applying your custom configuration (hostname generation, user setup, etc.).
-
-### Summary:
-1. Download the official Ubuntu Server ISO.
-2. Mount and extract the ISO files.
-3. Add your Cloud-init configuration in `/etc/cloud/cloud.cfg.d/99_custom.cfg`.
-4. Rebuild the ISO with the custom Cloud-init.
-5. Write the ISO to a USB drive and boot your system.
-
-This method allows you to easily customize the official Ubuntu image with your configuration without having to build a VM or go through complex steps. Let me know if you need help with any step!
-
+---
 
 ## automate image  creation
+
+The creation of this image should be automated in a pipeline or something. Maybe use something like packer.

@@ -48,6 +48,11 @@ users:
 package_update: true
 package_upgrade: true
 
+growpart:
+  mode: auto
+  devices: ['/']
+  ignore_growroot_disabled: false
+
 packages:
   - net-tools
   - curl
