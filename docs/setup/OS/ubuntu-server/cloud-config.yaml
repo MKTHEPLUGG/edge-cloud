@@ -1,0 +1,56 @@
+#cloud-config
+hostname: default-hostname
+manage_etc_hosts: true
+
+# Dynamic hostname generation: fixed prefix + random 6-character suffix
+# Dynamic hostname generation: "node" + architecture + random number (1-100)
+runcmd:
+  - |
+    # Set the prefix to 'node'
+    PREFIX="node"
+
+    # Detect architecture (arm, x86, etc.)
+    ARCH=$(uname -m)
+
+    # Generate a random number between 1 and 100
+    RANDOM_NUMBER=$((RANDOM % 100 + 1))
+
+    # Form the new hostname: "node" + "arch" + random number
+    NEW_HOSTNAME="${PREFIX}-${ARCH}-${RANDOM_NUMBER}"
+    
+    # Set the hostname
+    hostnamectl set-hostname $NEW_HOSTNAME
+    
+    # Update /etc/hosts
+    sed -i "s/default-hostname/$NEW_HOSTNAME/g" /etc/hosts
+    echo "Hostname set to: $NEW_HOSTNAME"
+    
+    # Configure correct keyboard layout
+    sudo sed -i 's/XKBLAYOUT=.*/XKBLAYOUT="be"/' /etc/default/keyboard
+    sudo setupcon
+    
+    # set date and time
+    sudo timedatectl set-timezone Europe/Brussels
+    date
+
+    # disable password authentication
+    # sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+    # systemctl reload sshd
+
+users:
+  - name: sysadmin
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh-authorized-keys:
+      - 'AAAAB3NzaC1yc2EAAAADAQABAAACAQDlP/4lJptihdac/RmC+ZWH/XAh7vCehd6yC6/Zist2D+VlWl6v3p0zRE54Gn3wk5DOymhh4sUTT3zuMIokZMPvwinCo+zR6gD7wU0ATYeRZgX8nn6TLEaMXXYjyCIYZPjUXTs4vYJyHVVaZn6cfATk1DG7VtQBgbveyawp9PpLb0G989gt7wxlAaQx1qVpBywwUB7867DNCmYWJH/1gbsz5jNlKgbbn/og/2RMGL3rrgxJ3BQ9O9GjAYb99AqLdeOSx7TKW1vOL+8JDkPpps2RgTINTexwVZWivyEM/3WeFGyOaZVqSpXSTvhEm8E4AmvuvZNJRxQ0JNZd1io/aMpb5Zo1xV/aunX7voLQZ0V1pWNlBvXBjIVUrT7R7Mwmeub5CT1jr+70qhlKP8z4GA/yZXJNlS88mnTqhwngbXU5jdJdFOlFkCbsR/ofOs2n6q5G+H9HtWs8I0S4iJhXSgqDPknaWUZrGH/HT0ux4KJAjdji7TwA5iJvPeV6SJs4F4hz1enW6UQDRhkIRZi1s4CKWGEAPQwULWq+Lxde6TmPnlLoEJzydNohM8AP7e+EQcGYdjEr7rBmV+ihwpvl1QwF6ToPksShX88kWBAL/AaD1hRE7McAeworojhKOoRQ5/O4P9zuY5BJFxmbNXSwHyMBTmJEGmIRQjI4CKxf1XomjQ=='
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - net-tools
+  - curl
+  - nfs-common
+
+#runcmd:
+#  - systemctl enable docker
+#  - echo "Cloud-init configuration complete." > /var/log/cloud-init-done.log
