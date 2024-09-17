@@ -12,7 +12,7 @@ Untill I can try flashing the hardware with latest firmware I was thinking about
 ## **Install OpenWRT**
 
 1. **Create Bootable USB**:
-    obtain the [image](https://downloads.openwrt.org/) and flash it onto a USB.
+    obtain the [image](https://downloads.openwrt.org/), look for your specific [device](https://openwrt.org/toh/views/toh_standard_all)  and flash it onto a USB.
 
 2. **Flash the firmware** (if needed, if you use the combined image and flash it to the interal storage with SSD you don't need to perform this step):
     Consult this [link](https://openwrt.org/toh/views/toh_standard_all) to find your device and correct image. Afterwards follow this [guide](https://openwrt.org/docs/guide-quick-start/factory_installation)
