@@ -1,6 +1,6 @@
 {
   "variables": {
-    "iso_url": "https://fi.mirror.armbian.de/dl/rock-5a/archive/Armbian_24.8.1_Rock-5a_jammy_vendor_6.1.75.img.xz"
+    "iso_url": "https://fi.mirror.armbian.de/dl/rock-5a/archive/Armbian_24.8.1_Rock-5a_noble_vendor_6.1.75_minimal.img.xz"
   },
   "builders": [
     {
@@ -11,7 +11,7 @@
       "format": "raw",
       "headless": true,
       "qemuargs": [["-m", "2048"]],
-      "iso_checksum": "file:https://fi.mirror.armbian.de/dl/rock-5a/archive/Armbian_24.8.1_Rock-5a_jammy_vendor_6.1.75.img.xz.sha",
+      "iso_checksum": "file:https://fi.mirror.armbian.de/dl/rock-5a/archive/Armbian_24.8.1_Rock-5a_noble_vendor_6.1.75_minimal.img.xz.sha",
       "ssh_username": "root",
       "ssh_password" : "1234"
     }
