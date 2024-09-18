@@ -1,0 +1,46 @@
+{
+  "variables": {
+    "iso_url": "https://fi.mirror.armbian.de/dl/rock-5a/archive/Armbian_24.8.1_Rock-5a_bookworm_vendor_6.1.75_minimal.img.xz"
+  },
+  "builders": [
+    {
+      "type": "qemu",
+      "iso_url": "{{user `iso_url`}}",
+      "output_directory": "output-armbian-image",
+      "disk_size": 20000,
+      "format": "raw",
+      "headless": true,
+      "qemuargs": [["-m", "2048"]],
+      "iso_checksum": "97a2fe032bab04dfd725c85646bf381f305c75d38d52675d83b188af61773662",
+      "iso_checksum_type": "sha256"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "environment_vars": [
+        "IMAGE_NAME=$(basename {{user `iso_url`}})"
+      ],
+      "inline": [
+        "sudo apt-get update",
+        "sudo apt-get install -y unxz",
+        "unxz -v $IMAGE_NAME",
+        "echo 'Decompression complete!'",
+        "sudo cloud-init clean"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "cloud-config.yaml",
+      "destination": "/etc/cloud/cloud.cfg.d/99_custom.cfg"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "shell-local",
+      "inline": [
+        "qemu-img convert -O raw output-armbian-image/packer-qemu output-armbian-image/armbian-custom-image.raw"
+      ]
+    }
+  ]
+}

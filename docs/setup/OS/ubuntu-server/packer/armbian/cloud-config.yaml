@@ -35,9 +35,15 @@ runcmd:
     sudo timedatectl set-timezone Europe/Brussels
     date
 
-    # disable password authentication
-    # sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-    # systemctl reload sshd
+    # Ensure SSH key authentication is enabled, and password authentication is disabled
+    sudo sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+    sudo sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
+    sudo sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+    sudo systemctl reload sshd
+    
+    # Set correct permissions for the .ssh directory and authorized_keys file
+    sudo chmod 700 /home/sysadmin/.ssh
+    sudo chmod 600 /home/sysadmin/.ssh/authorized_keys
 
 users:
   - name: sysadmin

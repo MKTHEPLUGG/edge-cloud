@@ -1,0 +1,37 @@
+   {
+     "builders": [
+       {
+         "type": "qemu",
+         "iso_url": "https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img",
+         "output_directory": "output-ubuntu-image",
+         "disk_size": 20000,
+         "format": "raw",
+         "headless": true,
+         "qemuargs": [["-m", "2048"]]
+       }
+     ],
+     "provisioners": [
+       {
+         "type": "shell",
+         "inline": [
+           "sudo apt-get update",
+           "sudo apt-get install -y curl",
+           "echo 'Customizing the image'",
+           "sudo cloud-init clean"
+         ]
+       },
+       {
+         "type": "file",
+         "source": "user-data",
+         "destination": "/etc/cloud/cloud.cfg.d/99_custom.cfg"
+       }
+     ],
+     "post-processors": [
+       {
+         "type": "shell-local",
+         "inline": [
+           "qemu-img convert -O raw output-ubuntu-image/packer-qemu output-ubuntu-image/ubuntu-custom-image.raw"
+         ]
+       }
+     ]
+   }
