@@ -109,7 +109,6 @@ Cloud-init will allow you to create a base configuration that can be applied acr
 
 To achieve a dynamic configuration where hostnames are unique but follow a specific pattern, you can leverage the flexibility of Cloud-init. You can create a config that dynamically sets the hostname, for example by using a combination of a fixed prefix and a randomly generated suffix.
 
-Let’s start with the Cloud-init configuration for a dynamic hostname, and then build on that for other dynamic requirements.
 
 ### 1. **Dynamic Hostname Generation**:
 You can use Cloud-init's `hostname` directive and combine it with built-in shell commands to generate a unique, random hostname on boot.
