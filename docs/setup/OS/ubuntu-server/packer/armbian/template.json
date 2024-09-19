@@ -34,6 +34,11 @@
       "type": "file",
       "source": "cloud-config.yaml",
       "destination": "/etc/cloud/cloud.cfg.d/99_custom.cfg"
+    },
+    {
+      "type": "file",
+      "source": "p10k.zsh",
+      "destination": "/home/sysadmin/.p10k.zsh"
     }
   ],
   "post-processors": [
