@@ -92,6 +92,9 @@ Packer uses **builders** to create images, **provisioners** to configure the sys
 
    Once you have the Packer template, you can automate your builds. You can integrate it with CI/CD pipelines (e.g., GitHub Actions, Jenkins) to rebuild the image whenever changes are made to the configuration.
 
+
+
+
 ### Example Workflow
 
 - **Builders**: Define the base image (e.g., Ubuntu Cloud Image) and settings (memory, disk size, etc.).
@@ -103,3 +106,166 @@ Packer uses **builders** to create images, **provisioners** to configure the sys
 ### Next Steps
 - Automate the image creation by integrating Packer into a CI/CD pipeline or scheduling builds as needed.
 
+---
+
+look into adding below stuff to above filtered docs.
+
+7. **When packer is building use VNC to connect to the Host**
+
+
+Yes, you can use a VNC client from your shell to connect to the VNC server at `vnc://127.0.0.1:5956`. Here are the common ways you can do this depending on your environment:
+
+### 1. **Using `vncviewer` (from the `tigervnc` package)**
+
+If you're on a Linux system, you can use the `tigervnc` package, which includes the `vncviewer` command-line tool.
+
+1. **Install TigerVNC Viewer** if you don’t already have it installed:
+   - On Ubuntu/Debian:
+     ```bash
+     sudo apt-get install tigervnc-viewer
+     ```
+   - On Fedora:
+     ```bash
+     sudo dnf install tigervnc
+     ```
+
+2. **Connect to the VNC server:**
+   Run the following command to connect to the VNC server at `127.0.0.1:5956`:
+   ```bash
+   vncviewer 127.0.0.1:5956
+   ```
+
+   This will open a graphical VNC session in a new window where you can view the virtual machine's display.
+
+### 2. **Using `xvnc4viewer` (RealVNC)**
+
+You can also use RealVNC's `xvnc4viewer` command-line tool.
+
+1. **Install RealVNC Viewer:**
+   - On Ubuntu/Debian:
+     ```bash
+     sudo apt-get install xvnc4viewer
+     ```
+
+2. **Connect to the VNC server:**
+   ```bash
+   xvnc4viewer 127.0.0.1:5956
+   ```
+
+   This will also open a graphical window where you can interact with the VM.
+
+### 3. **SSH Tunnel for Remote Shell Use**
+
+If you are using a remote machine and want to use VNC from your local machine, you can forward the VNC port over SSH.
+
+1. **Create an SSH tunnel** from your local machine (replace `remote_user` and `remote_host` with your credentials):
+   ```bash
+   ssh -L 5956:127.0.0.1:5956 remote_user@remote_host
+   ```
+
+2. **Connect via VNC**:
+   Run the `vncviewer` command locally to connect:
+   ```bash
+   vncviewer 127.0.0.1:5956
+   ```
+
+This method forwards port `5956` from the remote host to your local machine, so you can use a VNC viewer from your local machine as if the VM were running locally.
+
+### 4. **Using `xfreerdp` with VNC**
+
+Alternatively, if you prefer using FreeRDP, you can install it and use it to connect to the VNC server.
+
+1. **Install FreeRDP**:
+   ```bash
+   sudo apt-get install freerdp2-x11
+   ```
+
+2. **Connect to the VNC server**:
+   ```bash
+   xfreerdp /v:127.0.0.1:5956
+   ```
+
+### Summary:
+- Use `vncviewer` or `xvnc4viewer` to connect to the VNC server running on `127.0.0.1:5956`.
+- If you're working remotely, you may need to set up SSH port forwarding to view VNC locally.
+  
+Let me know how it goes or if you encounter any issues!
+
+
+The error message "Can't open display" typically means that the `vncviewer` is unable to open a graphical window to display the VNC session. This is likely because you're running the command in a terminal without graphical environment support, such as when you're using SSH without X11 forwarding, or your system doesn't have an active graphical session.
+
+Here are a few solutions to address this issue:
+
+### 1. **Ensure X11 Forwarding is Enabled (For Remote SSH Sessions)**
+   If you're running this on a remote machine via SSH, you'll need X11 forwarding to open graphical applications.
+
+   1. **Enable X11 Forwarding in SSH**:
+      When you connect via SSH, add the `-X` (or `-Y` for trusted forwarding) flag to enable X11 forwarding:
+      ```bash
+      ssh -X remote_user@remote_host
+      ```
+
+   2. **Install `xauth` on the Remote System**:
+      If `xauth` is missing on the remote system, install it:
+      - On Ubuntu/Debian:
+        ```bash
+        sudo apt-get install xauth
+        ```
+      - On Fedora/CentOS:
+        ```bash
+        sudo dnf install xorg-x11-xauth
+        ```
+
+   3. **Ensure Your Local Machine Supports X11**:
+      Ensure your local machine has an X server running (e.g., `XQuartz` on macOS, `VcXsrv` or `Xming` on Windows).
+
+### 2. **Using `Xvfb` for Headless VNC Connection**
+   If you're working in a completely headless environment without access to a graphical session (like a remote server), you can use `Xvfb` (X Virtual Framebuffer) to emulate a display.
+
+   1. **Install `Xvfb`:**
+      - On Ubuntu/Debian:
+        ```bash
+        sudo apt-get install xvfb
+        ```
+
+   2. **Run `Xvfb` to Create a Virtual Display:**
+      You can start a virtual framebuffer display on display number `:1`:
+      ```bash
+      Xvfb :1 -screen 0 1024x768x16 &
+      export DISPLAY=:1
+      ```
+
+   3. **Run `vncviewer`:**
+      Now, you should be able to launch `vncviewer` using the virtual display:
+      ```bash
+      vncviewer 127.0.0.1:5956
+      ```
+
+### 3. **Using VNC from Another Local Machine**
+   If your current environment is fully headless, and graphical applications won't work, you can run the VNC session from another machine that supports graphical applications (like your personal computer or laptop).
+
+   1. **Set Up SSH Tunnel**:
+      If your VM is remote, create an SSH tunnel for VNC forwarding:
+      ```bash
+      ssh -L 5956:127.0.0.1:5956 remote_user@remote_host
+      ```
+
+   2. **Run `vncviewer` Locally**:
+      Run the `vncviewer` on your local machine, and connect to `127.0.0.1:5956`.
+
+### 4. **Running VNC in a Desktop Session**
+   If you are working in a local environment with a desktop environment but still face this issue, make sure your system has a running graphical environment (e.g., GNOME, KDE, etc.).
+
+   - If you are on a headless environment but want to run GUI applications, you can install a minimal desktop environment and use `vncviewer` in it.
+
+   - For Ubuntu, for example, you can install a minimal desktop environment:
+     ```bash
+     sudo apt-get install ubuntu-desktop
+     ```
+
+### Summary of Options:
+- **X11 Forwarding**: Use `ssh -X` if you're connecting to a remote machine and need graphical applications forwarded.
+- **Xvfb**: Use `Xvfb` to create a virtual display if your environment is entirely headless.
+- **Local VNC Viewer**: Forward VNC traffic through an SSH tunnel and use a local VNC viewer if possible.
+
+Let me know if you need further assistance with any of these steps!

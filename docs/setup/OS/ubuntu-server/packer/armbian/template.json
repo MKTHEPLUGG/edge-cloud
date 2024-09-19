@@ -10,8 +10,13 @@
       "disk_size": 20000,
       "format": "raw",
       "headless": true,
-      "qemuargs": [["-m", "2048"]],
+        "qemuargs": [
+          ["-m", "2048"],
+          ["-net", "user,hostfwd=tcp::2222-:22"],
+          ["-net", "nic"]
+        ],
       "iso_checksum": "sha256:15dd545fb0c829b1e8fd3ddd431cf4e42614baed99910a60f33d50e4caf9cde9",
+      "ssh_port": 2222,
       "ssh_username": "root",
       "ssh_password" : "1234"
     }
@@ -27,7 +32,8 @@
         "sudo apt-get install -y unxz",
         "unxz -v $IMAGE_NAME",
         "echo 'Decompression complete!'",
-        "sudo cloud-init clean"
+        "sudo cloud-init clean",
+        "sudo chmod +x /home/sysadmin/custom-script.sh"
       ]
     },
     {
@@ -39,6 +45,11 @@
       "type": "file",
       "source": "p10k.zsh",
       "destination": "/home/sysadmin/.p10k.zsh"
+    },
+    {
+      "type": "file",
+      "source": "deploy-script.sh",
+      "destination": "/home/sysadmin/deploy-script.sh"
     }
   ],
   "post-processors": [
