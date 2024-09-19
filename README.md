@@ -71,6 +71,8 @@ The local cloud will be able to host various managed services like PaaS (Platfor
 
 - Look into cloud-init (done) => automate with packer => pipeline for packer, local host the runners.
 - Netboot / usb/nvme boot => Raspberry Pi done, Rock5a issues with SPI boot (likely power delivery issue).
-- Create [Storage Docs](docs/storage/nas.md) => NAS config
-- Create [RKE Docs](docs/software/rke.md)
+- Create [Storage Docs](docs/setup/hardware/storage/NAS/readme.md) => NAS config
+- Create RKE2 setup docs
+- find secret management solution
+- explore wake on lan capabilities
 - ~~Create Firewall Docs~~
