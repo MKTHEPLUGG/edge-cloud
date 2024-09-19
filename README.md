@@ -76,3 +76,4 @@ The local cloud will be able to host various managed services like PaaS (Platfor
 - find secret management solution
 - explore wake on lan capabilities
 - ~~Create Firewall Docs~~
+- encrypt openwrt admin interface with ssl
