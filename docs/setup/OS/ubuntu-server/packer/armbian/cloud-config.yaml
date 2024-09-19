@@ -64,6 +64,10 @@ packages:
   - curl
   - nfs-common
 
+
+
+# add ohmyzsh config 
+
 #runcmd:
 #  - systemctl enable docker
 #  - echo "Cloud-init configuration complete." > /var/log/cloud-init-done.log
