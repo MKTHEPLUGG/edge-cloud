@@ -9,3 +9,5 @@ I have 4 SSD Drivers each 240gb. I'll be creating a high throughput array using 
 I also have 2 HDD's of 1tb, this storage will be used more for archiving and static storage.
 
 Raid 10 always seems the best to me in terms of performance and fault tolerance. Yes we'll be losing alot of the disk space but I don't have that much requirements for disk space at the moment. In the future is this were to evovle we'd ofcourse create a more extensive storage layer, but for now this will do just fine.
+
+## Expose RAID as NFS Share + hardening
