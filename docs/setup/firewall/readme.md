@@ -8,6 +8,10 @@ To achieve a multi-site setup we'll ofcourse need a firewall capable of creating
 
 Untill I can try flashing the hardware with latest firmware I was thinking about using OpenWRT instead, as it offers the same functionality and is more lightweight. Since we will have multiple sites and possibily need firewalls everywhere it looks best to me to base it on as few resources as possibly needed.
 
+## improvements:
+
+- add ssl config to admin interface
+
 
 ## **Install OpenWRT**
 
