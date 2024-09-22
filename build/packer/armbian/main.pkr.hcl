@@ -14,7 +14,8 @@ source "qemu" "armbian" {
   format            = "raw"
   headless          = true
   qemuargs          = [
-    ["-display", "none"],
+    ["-display", "vnc=:1"],  # binds VNC to display 1
+    ["-serial", "mon:stdio"], # enables serial output
     ["-m", "2048"],
     ["-net", "user,hostfwd=tcp::2222-:22"],
     ["-net", "nic"]
