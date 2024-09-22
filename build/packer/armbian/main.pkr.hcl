@@ -14,6 +14,7 @@ source "qemu" "armbian" {
   format            = "raw"
   headless          = true
   qemuargs          = [
+    ["-display", "none"],
     ["-m", "2048"],
     ["-net", "user,hostfwd=tcp::2222-:22"],
     ["-net", "nic"]
