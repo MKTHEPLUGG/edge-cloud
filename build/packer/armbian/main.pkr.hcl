@@ -37,7 +37,7 @@ build {
       "unxz -v $IMAGE_NAME",
       "echo 'Decompression complete!'",
       "sudo cloud-init clean",
-      "sudo chmod +x /home/sysadmin/custom-script.sh"
+      "sudo chmod +x /home/sysadmin/deploy-script.sh"
     ]
   }
 
