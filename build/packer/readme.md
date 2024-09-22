@@ -1,3 +1,19 @@
+## Script Architecture
+
+## Required software to install / preconfigure
+
+1. **Software**
+   - net-tools
+   - nfs-common
+   - fail2ban
+   - zsh / ohmyzsh
+
+2. **Config**
+   - hostname
+   - keyboard / locales / time
+   - sshd config
+   - zsh config + theme
+
 ## automate image creation with packer
 
 ### How Packer Works
