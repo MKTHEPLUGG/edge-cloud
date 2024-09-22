@@ -294,9 +294,40 @@ Here are a few solutions to address this issue:
 
 ---
 
-sudo apt install xvfb
+Actual accurate docs to be made here
+
+---
+
+# Troubleshooting
 
 
+
+### 1. **Why VNC is Not Showing Anything**
+The VNC server that Packer starts is attempting to connect to a display, but since your server doesn’t have a graphical environment (like GNOME, KDE, or even a basic X server), there is no graphical output to show. The VNC is essentially connected to a "blank" screen, because the VM doesn't know what to display.
+
+### 2. **Steps to Resolve the VNC Blank Screen**
+
+#### Option 1: Use VNC for Console Output
+If you don’t need a GUI but want to see the **console output** (text-based terminal) in VNC, you can configure QEMU to output the console over VNC. By default, VNC may not be configured to display the console or text output.
+
+1. **Modify your Packer configuration to use a QEMU serial console with VNC**. Add the following to your `qemuargs` section:
+
+   ```json
+   ["-display", "vnc=:1"],  # binds VNC to display 1
+   ["-serial", "mon:stdio"] # enables serial output
+   ```
+
+   This tells QEMU to show the serial console (a basic terminal) in the VNC session. Now, when you connect via VNC, you should see the console output of your VM.
+
+2. **Restart your Packer build**, and try connecting again with VNC:
+
+   ```bash
+   vncviewer 127.0.0.1:5918
+   ```
+
+   You should now see the terminal output instead of a blank screen.
+
+--
 
 ---
 

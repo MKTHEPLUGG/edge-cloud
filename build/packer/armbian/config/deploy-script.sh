@@ -61,7 +61,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Enable plugins (git is commonly used, you can add more as needed)
-plugins=(git)
+plugins=(git history)
 
 #source the theme
 source ~/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
