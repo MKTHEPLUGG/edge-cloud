@@ -268,4 +268,8 @@ Here are a few solutions to address this issue:
 - **Xvfb**: Use `Xvfb` to create a virtual display if your environment is entirely headless.
 - **Local VNC Viewer**: Forward VNC traffic through an SSH tunnel and use a local VNC viewer if possible.
 
-Let me know if you need further assistance with any of these steps!
+---
+
+Reference :
+
+- [Official Qemu Docs](https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu)
