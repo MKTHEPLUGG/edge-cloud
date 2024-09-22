@@ -7,7 +7,7 @@ packer {
   }
 }
 
-source "qemu" "armbian" {
+source "qemu" "ubuntu" {
   iso_url           = var.iso_url
   output_directory  = "output-ubuntu-image"
   disk_size         = 20000
