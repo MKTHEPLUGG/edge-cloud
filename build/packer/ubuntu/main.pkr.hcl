@@ -13,18 +13,18 @@ source "qemu" "ubuntu" {
   disk_size         = 20000
   format            = "raw"
   headless          = true
-  qemuargs          = [
-    ["-display", "vnc=:1"],  # binds VNC to display 1
-    ["-serial", "mon:stdio"], # enables serial output
-    ["-m", "2048"],
-    ["-net", "user,hostfwd=tcp::2222-:22"],
-    ["-net", "nic"]
-  ]
+//   qemuargs          = [
+//     ["-display", "vnc=:1"],  # binds VNC to display 1
+//     ["-serial", "mon:stdio"], # enables serial output
+//     ["-m", "2048"],
+//     ["-net", "user,hostfwd=tcp::2222-:22"],
+//     ["-net", "nic"]
+//   ]
   iso_checksum      = "sha256:e240e4b801f7bb68c20d1356b60968ad0c33a41d00d828e74ceb3364a0317be9"
   ssh_port          = 2222
   ssh_username      = var.ssh_username
   ssh_password      = var.ssh_password
-  ssh_timeout            = "20m"
+  ssh_timeout       = "20m"
 }
 
 build {
