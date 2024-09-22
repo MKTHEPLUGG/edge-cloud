@@ -177,22 +177,6 @@ If you're on a Linux system, you can use the `tigervnc` package, which includes 
 
    This will open a graphical VNC session in a new window where you can view the virtual machine's display.
 
-### 2. **Using `xvnc4viewer` (RealVNC)**
-
-You can also use RealVNC's `xvnc4viewer` command-line tool.
-
-1. **Install RealVNC Viewer:**
-   - On Ubuntu/Debian:
-     ```bash
-     sudo apt-get install xvnc4viewer
-     ```
-
-2. **Connect to the VNC server:**
-   ```bash
-   xvnc4viewer 127.0.0.1:5956
-   ```
-
-   This will also open a graphical window where you can interact with the VM.
 
 ### 3. **SSH Tunnel for Remote Shell Use**
 
