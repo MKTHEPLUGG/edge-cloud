@@ -17,11 +17,11 @@ source "qemu" "ubuntu" {
     ["-display", "vnc=:1"],  # binds VNC to display 1
     ["-serial", "mon:stdio"], # enables serial output
     ["-m", "2048"],
-    ["-net", "user,hostfwd=tcp::2222-:22"],
+//     ["-net", "user,hostfwd=tcp::2222-:22"],
     ["-net", "nic"]
   ]
   iso_checksum      = "sha256:500a4be0e6dda27d911a3b658ceaad09595b81f10b602b58afb630904a8b04f4"
-  ssh_port          = 2222
+//   ssh_port          = 2222
   ssh_username      = var.ssh_username
   ssh_password      = var.ssh_password
   ssh_timeout            = "20m"
