@@ -17,7 +17,7 @@ source "qemu" "ubuntu" {
     ["-display", "vnc=:1"],  # binds VNC to display 1
     ["-serial", "mon:stdio"], # enables serial output
     ["-m", "2048"],
-     ["-net", "user,hostfwd=tcp::2222-:22"],
+    ["-net", "user,hostfwd=tcp::2222-:22"],
     ["-net", "nic"]
   ]
   iso_checksum      = "sha256:78547d336e4c8f98864fd3088a7ab393d7ab970885263578404bad7fc7c5e5d8"
@@ -38,7 +38,7 @@ build {
       "sudo apt-get update -y && sudo apt upgrade -y",
       "sudo apt install -y openssh-server",
       "sudo systemctl enable ssh",
-      "sudo systemctl start ssh"
+      "sudo systemctl start ssh",
       "sudo cloud-init clean",
       "sudo chmod +x /home/sysadmin/deploy-script.sh"
     ]
