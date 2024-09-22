@@ -286,6 +286,12 @@ Here are a few solutions to address this issue:
 
 ---
 
+sudo apt install xvfb
+
+
+
+---
+
 Reference :
 
 - [Official Qemu Docs](https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu)
