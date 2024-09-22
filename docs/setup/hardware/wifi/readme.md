@@ -1,0 +1,3 @@
+# Wireless setup
+
+I'm using ubiquity AP's around my house so I need to run the [Unifi network app](https://www.ui.com/download/unifi) somewhere on my new network to be able to host the control plane. Go to the [URL](https://dl.ui.com/unifi/8.4.62/unifi_sysvinit_all.deb) or search for unifi network application in the list. Probably best to add this to the main tooling server or check for container options. maybe even run on firewall ?
