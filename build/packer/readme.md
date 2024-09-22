@@ -19,6 +19,12 @@
 ### How Packer Works
 Packer uses **builders** to create images, **provisioners** to configure the system (install software, set up users, etc.), and **post-processors** to handle the output (convert the image, compress, etc.). You can define the process in a single JSON or HCL configuration file.
 
+
+### Images
+
+You can find the ubuntu cloud images at this [location](https://cloud-images.ubuntu.com/releases/)
+
+
 ### Steps to Automate Image Creation with Packer
 
 1. **Install Packer**
@@ -333,4 +339,5 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
 
 Reference :
 
+- [Guide](https://akashrajvanshi.medium.com/step-by-step-guide-creating-a-ready-to-use-ubuntu-cloud-image-on-proxmox-03d057f04fb2)
 - [Official Qemu Docs](https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu)
