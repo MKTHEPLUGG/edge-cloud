@@ -3,12 +3,12 @@ variable "iso_url" {
   default = "https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img"
 }
 
-// variable "ssh_username" {
-//   type    = string
-//   default = "root"
-// }
-//
-// variable "ssh_password" {
-//   type    = string
-//   default = "1234"
-// }
+variable "ssh_username" {
+  type    = string
+  default = "ubuntu"
+}
+
+variable "ssh_password" {
+  type    = string
+  default = "ubuntu"
+}

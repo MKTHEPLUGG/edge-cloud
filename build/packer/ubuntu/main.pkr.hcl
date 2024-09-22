@@ -22,8 +22,8 @@ source "qemu" "ubuntu" {
   ]
   iso_checksum      = "sha256:15dd545fb0c829b1e8fd3ddd431cf4e42614baed99910a60f33d50e4caf9cde9"
   ssh_port          = 2222
-//   ssh_username      = var.ssh_username
-//   ssh_password      = var.ssh_password
+  ssh_username      = var.ssh_username
+  ssh_password      = var.ssh_password
   ssh_timeout            = "20m"
 }
 
