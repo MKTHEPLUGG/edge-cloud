@@ -45,17 +45,17 @@ build {
   }
 
   provisioner "file" {
-    source      = "config/cloud-config.yaml"
+    source      = "./config/cloud-config.yaml"
     destination = "/etc/cloud/cloud.cfg.d/99_custom.cfg"
   }
 
   provisioner "file" {
-    source      = "config/p10k.zsh"
+    source      = "./config/p10k.zsh"
     destination = "/home/sysadmin/.p10k.zsh"
   }
 
   provisioner "file" {
-    source      = "config/deploy-script.sh"
+    source      = "./config/deploy-script.sh"
     destination = "/home/sysadmin/deploy-script.sh"
   }
 
