@@ -24,7 +24,7 @@ source "qemu" "ubuntu" {
   ssh_port          = 2222
   ssh_username      = var.ssh_username
   ssh_password      = var.ssh_password
-  ssh_timeout       = "30m"
+  ssh_timeout       = "60m"
 }
 
 build {
