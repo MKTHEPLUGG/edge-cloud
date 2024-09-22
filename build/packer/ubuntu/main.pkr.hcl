@@ -20,7 +20,7 @@ source "qemu" "ubuntu" {
     ["-net", "user,hostfwd=tcp::2222-:22"],
     ["-net", "nic"]
   ]
-  iso_checksum      = "sha256:78547d336e4c8f98864fd3088a7ab393d7ab970885263578404bad7fc7c5e5d8"
+  iso_checksum      = "sha256:e240e4b801f7bb68c20d1356b60968ad0c33a41d00d828e74ceb3364a0317be9"
    ssh_port          = 2222
   ssh_username      = var.ssh_username
   ssh_password      = var.ssh_password
