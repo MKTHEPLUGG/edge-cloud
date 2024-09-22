@@ -23,6 +23,7 @@ source "qemu" "armbian" {
   ssh_port          = 2222
   ssh_username      = var.ssh_username
   ssh_password      = var.ssh_password
+  ssh_timeout            = "20m"
 }
 
 build {

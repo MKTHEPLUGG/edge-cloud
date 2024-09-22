@@ -243,7 +243,7 @@ Here are a few solutions to address this issue:
    3. **Ensure Your Local Machine Supports X11**:
       Ensure your local machine has an X server running (e.g., `XQuartz` on macOS, `VcXsrv` or `Xming` on Windows).
 
-### 2. **Using `Xvfb` for Headless VNC Connection**
+### 2. **Using `Xvfb` for Headless VNC Connection** WORKS
    If you're working in a completely headless environment without access to a graphical session (like a remote server), you can use `Xvfb` (X Virtual Framebuffer) to emulate a display.
 
    1. **Install `Xvfb`:**
