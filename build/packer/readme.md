@@ -367,3 +367,10 @@ Reference :
 
 - [Guide](https://akashrajvanshi.medium.com/step-by-step-guide-creating-a-ready-to-use-ubuntu-cloud-image-on-proxmox-03d057f04fb2)
 - [Official Qemu Docs](https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu)
+
+- **[Example](https://shantanoo-desai.github.io/posts/technology/packer-ubuntu-qemu/)**
+
+- **[Example 2](https://github.com/rlaun/packer-ubuntu-22.04/blob/master/ubuntu-22.04.json)**
+
+- https://github.com/shantanoo-desai/packer-ubuntu-server-uefi/blob/main/templates/ubuntu.pkr.hcl
+- https://github.com/shantanoo-desai/packer-ubuntu-server-uefi

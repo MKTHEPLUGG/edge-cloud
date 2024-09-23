@@ -20,18 +20,21 @@ source "qemu" "ubuntu" {
     ["-net", "user,hostfwd=tcp::2222-:22"],
 //     ["-net", "nic"]
   ]
-  iso_checksum      = "sha256:e240e4b801f7bb68c20d1356b60968ad0c33a41d00d828e74ceb3364a0317be9"
+  iso_checksum      = "file:${var.iso_checksum}"
   ssh_port          = 2222
   ssh_username      = var.ssh_username
   ssh_password      = var.ssh_password
   ssh_timeout       = "60m"
+  efi_firmware_code = "/usr/share/OVMF/OVMF_CODE_4M.fd"
+  efi_firmware_vars = "/usr/share/OVMF/OVMF_VARS_4M.fd"
+  efi_boot = true
 
   boot_command = [
-    "<esc><wait>",
-    "linux /casper/vmlinuz --- autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ",
-    "<enter><wait>",
-    "initrd /casper/initrd<enter><wait>",
-    "boot<enter>"
+    "<spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait>",
+    "e<wait>",
+    "<down><down><down><end>",
+    " autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
+    "<f10>"
   ]
 }
 
@@ -44,11 +47,10 @@ build {
     ]
     inline = [
       "sudo apt-get update -y && sudo apt upgrade -y",
-      "sudo apt install -y openssh-server python3",
       "sudo systemctl enable ssh",
       "sudo systemctl start ssh",
-      "sudo chmod +x /home/sysadmin/deploy-script.sh",
-      "python3 -m http.server {{ .HTTPPort }} --directory /etc/cloud/cloud.cfg.d/"
+      "sudo chmod +x /home/sysadmin/deploy-script.sh"
+      "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for Cloud-Init...'; sleep 1; done"
     ]
   }
 

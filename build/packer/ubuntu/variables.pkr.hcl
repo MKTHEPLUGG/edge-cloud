@@ -3,6 +3,11 @@ variable "iso_url" {
   default = "https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-amd64.img"
 }
 
+variable "iso_checksum" {
+  type    = string
+  default = "https://cloud-images.ubuntu.com/releases/noble/release/SHA256SUMS"
+}
+
 # "https://ubuntu.cu.be/24.04/ubuntu-24.04.1-live-server-amd64.iso"
 # https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-amd64.img
 
