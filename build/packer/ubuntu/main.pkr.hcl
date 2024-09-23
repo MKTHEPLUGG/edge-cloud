@@ -27,11 +27,11 @@ source "qemu" "ubuntu" {
   ssh_timeout       = "60m"
 
   boot_command = [
-    "e<wait>",
-    "<down><down><down>",
-    "<end><bs><bs><bs><bs><wait>",
-    "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ---<wait>",
-    "<f10><wait>"
+    "<esc><wait>",
+    "linux /casper/vmlinuz --- autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ",
+    "<enter><wait>",
+    "initrd /casper/initrd<enter><wait>",
+    "boot<enter>"
   ]
 }
 
