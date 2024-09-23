@@ -14,7 +14,7 @@ source "qemu" "ubuntu" {
   format            = "raw"
   headless          = true
   qemuargs          = [
-//     ["-display", "vnc=:1"],  # binds VNC to display 1
+    ["-vnc", "0.0.0.0:1"],  # Explicit VNC argument for port 5901
 //     ["-serial", "mon:stdio"], # enables serial output
 //     ["-m", "2048"],
     ["-net", "user,hostfwd=tcp::2222-:22"],
