@@ -11,7 +11,7 @@ source "qemu" "custom_image" {
     vm_name     = "test"
     
     iso_url      = var.iso_url
-    iso_checksum = var.iso_checksum
+    iso_checksum = "file:${var.iso_checksum}"
 
     # Location of Cloud-Init / Autoinstall Configuration files
     # Will be served via an HTTP Server from Packer
