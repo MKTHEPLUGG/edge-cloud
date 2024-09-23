@@ -25,8 +25,8 @@ source "qemu" "ubuntu" {
   ssh_username      = var.ssh_username
   ssh_password      = var.ssh_password
   ssh_timeout       = "60m"
-  efi_firmware_code = "/usr/share/OVMF/OVMF_CODE_4M.fd"
-  efi_firmware_vars = "/usr/share/OVMF/OVMF_VARS_4M.fd"
+//   efi_firmware_code = "/usr/share/OVMF/OVMF_CODE_4M.fd"
+//   efi_firmware_vars = "/usr/share/OVMF/OVMF_VARS_4M.fd"
 //   efi_boot = true
 
   http_directory = "./config"  # Serving files from the 'config' directory, packer will use this to serve the config file via http
