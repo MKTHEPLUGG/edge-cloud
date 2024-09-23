@@ -1,3 +1,4 @@
+# https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main
 packer {
   required_plugins {
     qemu = {
