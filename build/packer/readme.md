@@ -1,4 +1,4 @@
-# WIP - Start with normal ubuntu live image and find working examples online
+# WIP - found and created fork of working exampe in ubuntu-cloud-image customize this to fit our needs.
 
 [//]: # (- https://sekureco42.ch/posts/deploy-ubuntu-24.04-with-autoinstall-to-proxmox/)
 - https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main
