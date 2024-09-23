@@ -201,30 +201,38 @@ If you are using a remote machine and want to use VNC from your local machine, y
 
 This method forwards port `5956` from the remote host to your local machine, so you can use a VNC viewer from your local machine as if the VM were running locally.
 
-### 4. **Using `xfreerdp` with VNC**
+[//]: # (### 4. **Using `xfreerdp` with VNC**)
 
-Alternatively, if you prefer using FreeRDP, you can install it and use it to connect to the VNC server.
+[//]: # ()
+[//]: # (Alternatively, if you prefer using FreeRDP, you can install it and use it to connect to the VNC server.)
 
-1. **Install FreeRDP**:
-   ```bash
-   sudo apt-get install freerdp2-x11
-   ```
+[//]: # ()
+[//]: # (1. **Install FreeRDP**:)
 
-2. **Connect to the VNC server**:
-   ```bash
-   xfreerdp /v:127.0.0.1:5956
-   ```
+[//]: # (   ```bash)
 
-### Summary:
-- Use `vncviewer` or `xvnc4viewer` to connect to the VNC server running on `127.0.0.1:5956`.
-- If you're working remotely, you may need to set up SSH port forwarding to view VNC locally.
-  
-Let me know how it goes or if you encounter any issues!
+[//]: # (   sudo apt-get install freerdp2-x11)
 
+[//]: # (   ```)
 
-The error message "Can't open display" typically means that the `vncviewer` is unable to open a graphical window to display the VNC session. This is likely because you're running the command in a terminal without graphical environment support, such as when you're using SSH without X11 forwarding, or your system doesn't have an active graphical session.
+[//]: # ()
+[//]: # (2. **Connect to the VNC server**:)
 
-Here are a few solutions to address this issue:
+[//]: # (   ```bash)
+
+[//]: # (   xfreerdp /v:127.0.0.1:5956)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (### Summary:)
+
+[//]: # (- Use `vncviewer` or `xvnc4viewer` to connect to the VNC server running on `127.0.0.1:5956`.)
+
+[//]: # (- If you're working remotely, you may need to set up SSH port forwarding to view VNC locally.)
+
+[//]: # (  )
+
 
 ### 1. **Ensure X11 Forwarding is Enabled (For Remote SSH Sessions)**
    If you're running this on a remote machine via SSH, you'll need X11 forwarding to open graphical applications.
@@ -249,27 +257,44 @@ Here are a few solutions to address this issue:
    3. **Ensure Your Local Machine Supports X11**:
       Ensure your local machine has an X server running (e.g., `XQuartz` on macOS, `VcXsrv` or `Xming` on Windows).
 
-### 2. **Using `Xvfb` for Headless VNC Connection** WORKS
-   If you're working in a completely headless environment without access to a graphical session (like a remote server), you can use `Xvfb` (X Virtual Framebuffer) to emulate a display.
+[//]: # (### 2. **Using `Xvfb` for Headless VNC Connection** WORKS)
 
-   1. **Install `Xvfb`:**
-      - On Ubuntu/Debian:
-        ```bash
-        sudo apt-get install xvfb
-        ```
+[//]: # (   If you're working in a completely headless environment without access to a graphical session &#40;like a remote server&#41;, you can use `Xvfb` &#40;X Virtual Framebuffer&#41; to emulate a display.)
 
-   2. **Run `Xvfb` to Create a Virtual Display:**
-      You can start a virtual framebuffer display on display number `:1`:
-      ```bash
-      Xvfb :1 -screen 0 1024x768x16 &
-      export DISPLAY=:1
-      ```
+[//]: # ()
+[//]: # (   1. **Install `Xvfb`:**)
 
-   3. **Run `vncviewer`:**
-      Now, you should be able to launch `vncviewer` using the virtual display:
-      ```bash
-      vncviewer 127.0.0.1:5956
-      ```
+[//]: # (      - On Ubuntu/Debian:)
+
+[//]: # (        ```bash)
+
+[//]: # (        sudo apt-get install xvfb)
+
+[//]: # (        ```)
+
+[//]: # ()
+[//]: # (   2. **Run `Xvfb` to Create a Virtual Display:**)
+
+[//]: # (      You can start a virtual framebuffer display on display number `:1`:)
+
+[//]: # (      ```bash)
+
+[//]: # (      Xvfb :1 -screen 0 1024x768x16 &)
+
+[//]: # (      export DISPLAY=:1)
+
+[//]: # (      ```)
+
+[//]: # ()
+[//]: # (   3. **Run `vncviewer`:**)
+
+[//]: # (      Now, you should be able to launch `vncviewer` using the virtual display:)
+
+[//]: # (      ```bash)
+
+[//]: # (      vncviewer 127.0.0.1:5956)
+
+[//]: # (      ```)
 
 ### 3. **Using VNC from Another Local Machine**
    If your current environment is fully headless, and graphical applications won't work, you can run the VNC session from another machine that supports graphical applications (like your personal computer or laptop).
