@@ -44,10 +44,11 @@ build {
     ]
     inline = [
       "sudo apt-get update -y && sudo apt upgrade -y",
-      "sudo apt install -y openssh-server",
+      "sudo apt install -y openssh-server python3",
       "sudo systemctl enable ssh",
       "sudo systemctl start ssh",
-      "sudo chmod +x /home/sysadmin/deploy-script.sh"
+      "sudo chmod +x /home/sysadmin/deploy-script.sh",
+      "python3 -m http.server {{ .HTTPPort }} --directory /etc/cloud/cloud.cfg.d/"
     ]
   }
 
