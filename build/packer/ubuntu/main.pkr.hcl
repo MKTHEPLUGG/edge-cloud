@@ -51,7 +51,7 @@ build {
       "sudo apt-get update -y && sudo apt upgrade -y",
       "sudo systemctl enable ssh",
       "sudo systemctl start ssh",
-      "sudo chmod +x /home/sysadmin/deploy-script.sh"
+      "sudo chmod +x /home/sysadmin/deploy-script.sh",
       "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for Cloud-Init...'; sleep 1; done"
     ]
   }
