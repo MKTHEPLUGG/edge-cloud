@@ -41,7 +41,7 @@ source "qemu" "custom_image" {
 
 
     # Final Image will be available in `output/packerubuntu-*/`
-    output_directory = "${local.output_dir}"
+    output_directory = "output/"
 
     # SSH configuration so that Packer can log into the Image
     ssh_password    = "packerubuntu"
