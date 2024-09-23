@@ -5,6 +5,8 @@
 
 - look into auto install / cloud init & autoinstall ( full os automation not only config after like cloud config ) / packer / ...
 
+- add proper install docs for qemu env with virtman and kvm etc
+
 ## Script Architecture
 
 ## Required software to install / preconfigure
