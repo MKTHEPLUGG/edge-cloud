@@ -39,7 +39,6 @@ build {
       "sudo apt install -y openssh-server",
       "sudo systemctl enable ssh",
       "sudo systemctl start ssh",
-      "sudo cloud-init clean",
       "sudo chmod +x /home/sysadmin/deploy-script.sh"
     ]
   }
