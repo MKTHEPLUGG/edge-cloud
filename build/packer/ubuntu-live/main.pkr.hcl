@@ -15,7 +15,7 @@ source "qemu" "custom_image" {
 
     # Location of Cloud-Init / Autoinstall Configuration files
     # Will be served via an HTTP Server from Packer
-    http_directory = "config/"
+    http_directory = "http/"
 
     # Boot Commands when Loading the ISO file with OVMF.fd file (Tianocore) / GrubV2
     boot_command = [
