@@ -1,3 +1,5 @@
+# WIP - Start with normal ubuntu live image and find working examples online
+
 ## Script Architecture
 
 ## Required software to install / preconfigure
