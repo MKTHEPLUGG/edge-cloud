@@ -25,6 +25,14 @@ source "qemu" "ubuntu" {
   ssh_username      = var.ssh_username
   ssh_password      = var.ssh_password
   ssh_timeout       = "60m"
+
+  boot_command = [
+    "e<wait>",
+    "<down><down><down>",
+    "<end><bs><bs><bs><bs><wait>",
+    "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ---<wait>",
+    "<f10><wait>"
+  ]
 }
 
 build {
