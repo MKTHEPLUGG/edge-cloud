@@ -1,8 +1,9 @@
 # WIP - Start with normal ubuntu live image and find working examples online
 
-- https://sekureco42.ch/posts/deploy-ubuntu-24.04-with-autoinstall-to-proxmox/
+[//]: # (- https://sekureco42.ch/posts/deploy-ubuntu-24.04-with-autoinstall-to-proxmox/)
+- https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main
 
-look into auto install / cloud init / packer / ...
+- look into auto install / cloud init & autoinstall ( full os automation not only config after like cloud config ) / packer / ...
 
 ## Script Architecture
 
