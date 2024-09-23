@@ -381,3 +381,57 @@ Reference :
 
 - https://github.com/shantanoo-desai/packer-ubuntu-server-uefi/blob/main/templates/ubuntu.pkr.hcl
 - https://github.com/shantanoo-desai/packer-ubuntu-server-uefi
+
+---
+
+
+### 1. **Autoinstall vs Cloud-Init**
+
+- **Autoinstall**: The `autoinstall` directive is part of Ubuntu's Subiquity installer (used for server installs). It handles the initial installation process, including partitioning, user setup, and other system-wide configurations during installation.
+- **Cloud-Init**: The `user-data` part of Cloud-Init configures the instance after the system has been installed, including user setup, package installation, and other runtime configurations.
+
+If you're using the autoinstall method (via Subiquity), the `autoinstall` block is necessary to automate the server installation process. If your system is already installed and you're focusing on Cloud-Init, you only need the `#cloud-config` file (no `autoinstall` block).
+
+### 2. **Combining the Working Cloud-Init with Locale Setup**
+
+Since your second configuration works, you can simply add the locale settings to it. Here's how you can modify the working `user-data` file to include locale setup:
+
+### Example of Working Cloud-Init with Locale and Keyboard Setup:
+
+```yaml
+#cloud-config
+password: ubuntu
+ssh_pwauth: true
+chpasswd:
+  expire: false
+
+# Set the locale and keyboard layout
+locale: nl_BE.UTF-8
+keyboard:
+  layout: be
+
+# Timezone setup
+timezone: Europe/Brussels
+
+# Preserve hostname
+preserve_hostname: false
+
+# Update and upgrade packages on first boot
+package_update: true
+package_upgrade: true
+```
+
+### Explanation:
+
+- **locale**: Sets the system locale to `nl_BE.UTF-8`.
+- **keyboard**: Configures the keyboard layout to Belgian (`be`).
+- **timezone**: Sets the system timezone to `Europe/Brussels`.
+- **package_update** and **package_upgrade**: Ensures the system is updated on first boot.
+
+### 3. **Do You Need the Autoinstall Section?**
+
+You **don't need** the `autoinstall` section in a standard Cloud-Init file. The `autoinstall` block is only needed if you’re using the Subiquity installer to automate the entire OS installation process (not just configuration after install).
+
+### Next Steps:
+- If you're focusing on post-installation configuration (e.g., user setup, locale, SSH settings), the second working configuration with added locale setup is sufficient.
+- If you want to automate the full OS installation process (pre-partitioning, user creation during install), then the `autoinstall` block would be used in a separate pre-install configuration file.
