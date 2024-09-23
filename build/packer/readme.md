@@ -1,5 +1,9 @@
 # WIP - Start with normal ubuntu live image and find working examples online
 
+- https://sekureco42.ch/posts/deploy-ubuntu-24.04-with-autoinstall-to-proxmox/
+
+look into auto install / cloud init / packer / ...
+
 ## Script Architecture
 
 ## Required software to install / preconfigure
