@@ -10,8 +10,8 @@ packer {
 source "qemu" "custom_image" {
     vm_name     = "test"
     
-    iso_url      = "${iso_url}"
-    iso_checksum = "file:${iso_checksum}"
+    iso_url      = var.iso_url
+    iso_checksum = var.iso_checksum
 
     # Location of Cloud-Init / Autoinstall Configuration files
     # Will be served via an HTTP Server from Packer
@@ -63,9 +63,9 @@ build {
     }
 
     # Finally Generate a Checksum (SHA256) which can be used for further stages in the `output` directory
-    post-processor "checksum" {
-        checksum_types      = [ "sha256" ]
-        output              = "${local.output_dir}/${local.vm_name}.{{.ChecksumType}}"
-        keep_input_artifact = true
-    }
+//     post-processor "checksum" {
+//         checksum_types      = [ "sha256" ]
+//         output              = "${local.output_dir}/${local.vm_name}.{{.ChecksumType}}"
+//         keep_input_artifact = true
+//     }
 }
