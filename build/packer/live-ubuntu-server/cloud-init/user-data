@@ -3,3 +3,18 @@ password: ubuntu
 ssh_pwauth: true
 chpasswd:
   expire: false
+
+# Set the locale and keyboard layout
+locale: nl_BE.UTF-8
+keyboard:
+  layout: be
+
+# Timezone setup
+timezone: Europe/Brussels
+
+# Preserve hostname
+preserve_hostname: false
+
+# Update and upgrade packages on first boot
+package_update: true
+package_upgrade: true
