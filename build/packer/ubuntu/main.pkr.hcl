@@ -32,7 +32,6 @@ source "qemu" "ubuntu" {
   http_directory = "./config"  # Serving files from the 'config' directory, packer will use this to serve the config file via http
 
   boot_command = [
-    "<spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait>",
     "e<wait>",
     "<down><down><down><end>",
     " autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
