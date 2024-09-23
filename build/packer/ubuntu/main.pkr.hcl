@@ -29,6 +29,8 @@ source "qemu" "ubuntu" {
   efi_firmware_vars = "/usr/share/OVMF/OVMF_VARS_4M.fd"
   efi_boot = true
 
+  http_directory = "./config"  # Serving files from the 'config' directory, packer will use this to serve the config file via http
+
   boot_command = [
     "<spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait>",
     "e<wait>",
@@ -54,10 +56,10 @@ build {
     ]
   }
 
-  provisioner "file" {
-    source      = "./config/cloud-config.yaml"
-    destination = "/etc/cloud/cloud.cfg.d/99_custom.cfg"
-  }
+//   provisioner "file" {
+//     source      = "./config/cloud-config.yaml"
+//     destination = "/etc/cloud/cloud.cfg.d/99_custom.cfg"
+//   }
 
   provisioner "file" {
     source      = "./config/p10k.zsh"
