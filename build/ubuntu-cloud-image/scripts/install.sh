@@ -8,6 +8,9 @@ LOG="/var/log/cloud-init.log"
 # Detect architecture (arm, x86, etc) used in hostname generation
 ARCH=$(uname -m)
 
+# Create vars for hostname generation
+source /etc/profile.d/hostname_vars.sh
+NEW_HOSTNAME="${ROLE}-${ARCH}-${ENV}-${COUNTER}"
 
 echo "==> waiting for cloud-init to finish"
 while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
@@ -16,13 +19,21 @@ while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
 done
 
 # Configure hostname via variables supplied in the user-data file during the cloud init process.
-source /etc/profile.d/hostname_vars.sh
-NEW_HOSTNAME="${ROLE}-${ARCH}-${ENV}-${COUNTER}"
-# Set the hostname
-hostnamectl set-hostname "$NEW_HOSTNAME"
-# Update /etc/hosts
-sed -i "s/default-hostname/$NEW_HOSTNAME/g" /etc/hosts
-echo "Hostname set to: $NEW_HOSTNAME"
+if [ -n "$NEW_HOSTNAME" ]; then
+  echo "new hostname detected: $NEW_HOSTNAME" >> $LOG
+  # Set the hostname
+  hostnamectl set-hostname "$NEW_HOSTNAME"
+  # Update /etc/hosts
+  sed -i "s/default-hostname/$NEW_HOSTNAME/g" /etc/hosts
+  echo "Hostname set to: $NEW_HOSTNAME" >> $LOG
+else
+  echo "The variable for hostname generation was empty. Cannot set hostname" >> $LOG
+fi
+
+
+
+
+echo "Cloud-init configuration complete." > /var/log/cloud-init-done.log
 
 # ---
 
@@ -80,7 +91,5 @@ echo "Hostname set to: $NEW_HOSTNAME"
 # #apply
 #source ~/.zshrc
 
-
-echo "Cloud-init configuration complete." > /var/log/cloud-init-done.log
 
 # post cloud deployment script by MKTHEPLUGG
