@@ -1,19 +1,40 @@
 #!/bin/bash -eux
 
+# --- Environment Variables ---
+LOG="/var/log/cloud-init.log"
+
+# Official Mikeshop deploy script for ubuntu-cloud-image-x86
 echo "==> waiting for cloud-init to finish"
 while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
     echo 'Waiting for Cloud-Init...'
-    sleep 1
+    sleep 5
 done
 
-echo "==> updating apt cache"
+
+# --- Package Section ---
+
+# Set the path to the packages file, this file should be in the script directory
+PACKAGE_LIST="packages.txt"
+
+# update the system
+echo "==> updating apt cache" >> $LOG
 sudo apt-get update -qq
 
-echo "==> upgrade apt packages"
+# upgrade the system
+echo "==> upgrade apt packages" >> $LOG
 sudo apt-get upgrade -y -qq
 
-echo "==> installing qemu-guest-agent"
-sudo apt-get install -y -qq qemu-guest-agent
+
+
+# Check if the package list file exists & execute install commands
+if [ -f "$PACKAGE_LIST" ]; then
+    echo "==> installing apt packages from $PACKAGE_LIST" >> $LOG
+    xargs -a "$PACKAGE_LIST" sudo apt-get install -y -qq
+else
+    echo "Package list file not found: $PACKAGE_LIST" >> $LOG
+    exit 1
+fi
+
 
 # ---
 
@@ -48,17 +69,17 @@ echo "Hostname set to: $NEW_HOSTNAME"
 
 # Propely configure ssh, only accessable with private public keypair
 # Ensure SSH key authentication is enabled, and password authentication is disabled
-sudo sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-sudo sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
-sudo sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
-sudo systemctl reload sshd
+#sudo sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+#sudo sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
+#sudo sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+#sudo systemctl reload ssh
+#
+## Set correct permissions for the .ssh directory and authorized_keys file
+#sudo chmod 700 /home/sysadmin/.ssh
+#sudo chmod 600 /home/sysadmin/.ssh/authorized_keys
 
-# Set correct permissions for the .ssh directory and authorized_keys file
-sudo chmod 700 /home/sysadmin/.ssh
-sudo chmod 600 /home/sysadmin/.ssh/authorized_keys
-
-# install ohmyzsh
-sudo apt install zsh build-essential curl file git -y
+# install ohmyzsh => handeled in initial package setup
+# sudo apt install zsh build-essential curl file git -y
 
 # set as default shell
 sudo chsh -s "$(which zsh)"
