@@ -1,6 +1,6 @@
 variable "output_raw" {
   type        = bool
-  default     = false
+  default     = true
   description = "Set to true if you want the output in raw format."
 }
 
