@@ -24,8 +24,6 @@ sudo apt-get update -qq
 echo "==> upgrade apt packages" >> $LOG
 sudo apt-get upgrade -y -qq
 
-
-
 # Check if the package list file exists & execute install commands
 if [ -f "$PACKAGE_LIST" ]; then
     echo "==> installing apt packages from $PACKAGE_LIST" >> $LOG
