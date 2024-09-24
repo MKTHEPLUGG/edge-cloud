@@ -18,3 +18,10 @@ preserve_hostname: false
 # Update and upgrade packages on first boot
 package_update: true
 package_upgrade: true
+
+# Install packages
+packages:
+  - qemu-guest-agent
+  - git
+  - net-tools
+  - nfs-common
