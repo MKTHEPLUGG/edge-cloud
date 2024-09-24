@@ -284,6 +284,76 @@ This method forwards port `5956` from the remote host to your local machine, so 
 
 Actual accurate docs to be made here
 
+## Gain shell access to image after creation
+
+To quickly get a shell inside the image, you can mount the image and use `chroot` to access the filesystem as if you're inside that environment. Here's how to do it:
+
+### Steps to Access the Shell Inside the Image
+
+1. **Create a directory to mount the image**:
+   ```bash
+   sudo mkdir /mnt/image
+   ```
+
+2. **Mount the image file** (assuming the image is in raw format):
+   ```bash
+   sudo mount -o loop /path/to/your/image.raw /mnt/image
+   ```
+
+   If it's still in `.img` format, you can still mount it similarly:
+   ```bash
+   sudo mount -o loop /path/to/your/image.img /mnt/image
+   ```
+
+3. **Enter a chroot environment**:
+   Now you can change your root directory to the mounted image's filesystem using `chroot`:
+
+   ```bash
+   sudo chroot /mnt/image /bin/bash
+   ```
+
+   This gives you a shell inside the mounted image. You can verify and test configurations as if you're running inside the image's root filesystem.
+
+4. **Check your configurations**:
+   Once inside the chroot environment, you can inspect files, verify installations, and troubleshoot any issues.
+
+### Exiting and Unmounting
+After you're done, exit the chroot environment:
+
+```bash
+exit
+```
+
+Then, unmount the image:
+
+```bash
+sudo umount /mnt/image
+```
+
+### If the Image Uses Partitions
+If your image has multiple partitions (common with more complex images), you can first check the partitions using `fdisk` or `parted`:
+
+```bash
+sudo fdisk -l /path/to/your/image.img
+```
+
+You'll see the partition offsets, and you can mount the specific partition like this:
+
+```bash
+sudo mount -o loop,offset=<partition-offset> /path/to/your/image.img /mnt/image
+```
+
+Replace `<partition-offset>` with the appropriate offset, which can be calculated from the `fdisk` output (usually in bytes).
+
+### EASIEST: Use QEMU to Boot and Access the Shell
+
+Alternatively, if you prefer to boot the image directly and access the shell from a running system, you can use QEMU:
+
+```bash
+sudo qemu-system-x86_64 -m 2048 -drive file=./output-noble/ubuntu-noble.raw,format=raw -nographic -serial mon:stdio
+```
+
+
 ---
 
 # Troubleshooting
