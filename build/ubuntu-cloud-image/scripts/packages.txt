@@ -1,8 +1,0 @@
-qemu-guest-agent
-git
-net-tools
-nfs-common
-curl
-file
-build-essential
-zsh
