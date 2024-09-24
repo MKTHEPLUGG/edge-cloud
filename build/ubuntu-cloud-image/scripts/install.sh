@@ -31,13 +31,6 @@ echo "Hostname set to: $NEW_HOSTNAME"
 
 
 
-## Configure correct keyboard layout
-#sudo sed -i 's/XKBLAYOUT=.*/XKBLAYOUT="be"/' /etc/default/keyboard
-#sudo setupcon
-
-## set date and time
-#sudo timedatectl set-timezone Europe/Brussels
-#date
 
 # Propely configure ssh, only accessable with private public keypair
 # Ensure SSH key authentication is enabled, and password authentication is disabled

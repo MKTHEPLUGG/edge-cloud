@@ -71,3 +71,12 @@ sudo apt-get install -y \
 #NEW_HOSTNAME="${PREFIX}-${ARCH}-${RANDOM_NUMBER}"
 
 # Ditching above way in favor of setting via user-data
+
+# below handled by cloud init
+## Configure correct keyboard layout
+#sudo sed -i 's/XKBLAYOUT=.*/XKBLAYOUT="be"/' /etc/default/keyboard
+#sudo setupcon
+
+## set date and time
+#sudo timedatectl set-timezone Europe/Brussels
+#date
