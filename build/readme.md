@@ -48,6 +48,8 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
    sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
    sudo apt-get update && sudo apt-get install packer
    packer plugins install github.com/hashicorp/qemu
+   
+   # optional package list: qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager genisoimage guestfs-tools
    ```
 
 2. **Create a Packer Template**
