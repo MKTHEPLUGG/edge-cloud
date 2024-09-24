@@ -82,38 +82,39 @@ echo "Hostname set to: $NEW_HOSTNAME"
 # install ohmyzsh => handeled in initial package setup
 # sudo apt install zsh build-essential curl file git -y
 
-# set as default shell
-sudo chsh -s "$(which zsh)"
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# install theme
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
-
-cat <<EOF | sudo tee ~/.zshrc
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-# Set theme to Powerlevel10k
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Enable Powerlevel10k instant prompt to reduce load time
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# Enable plugins (git is commonly used, you can add more as needed)
-plugins=(git history)
-
-#source the theme
-source ~/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
-EOF
+# **Figure Out how to properly configure ohmyzsh**
+## set as default shell
+#sudo chsh -s "$(which zsh)"
+#sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+#
+## install theme
+#git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
+#
+#cat <<EOF | sudo tee ~/.zshrc
+## Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+## Initialization code that may require console input (password prompts, [y/n]
+## confirmations, etc.) must go above this block; everything else may go below.
+#if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+#fi
+#
+## Set theme to Powerlevel10k
+#ZSH_THEME="powerlevel10k/powerlevel10k"
+#
+## Enable Powerlevel10k instant prompt to reduce load time
+#[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+#
+## Enable plugins (git is commonly used, you can add more as needed)
+#plugins=(git history)
+#
+##source the theme
+#source ~/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
+#EOF
 
 # get the font = https://github.com/romkatv/powerlevel10k#manual-font-installation
 
-#apply
-source ~/.zshrc
+# #apply
+#source ~/.zshrc
 
 
 echo "Cloud-init configuration complete." > /var/log/cloud-init-done.log
