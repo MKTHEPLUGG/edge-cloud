@@ -1,4 +1,11 @@
 #cloud-config
+write_files:
+  - path: /etc/profile.d/hostname_vars.sh
+    content: |
+      export ROLE="main"
+      export ENV="prd"
+      export COUNTER=01
+
 password: ubuntu
 ssh_pwauth: true
 chpasswd:

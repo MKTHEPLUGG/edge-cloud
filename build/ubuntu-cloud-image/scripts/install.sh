@@ -45,10 +45,13 @@ PREFIX="node"
 ARCH=$(uname -m)
 
 # Generate a random number between 1 and 100
-RANDOM_NUMBER=$((RANDOM % 100 + 1))
-
+#RANDOM_NUMBER=$((RANDOM % 100 + 1))
 # Form the new hostname: "node" + "arch" + random number
-NEW_HOSTNAME="${PREFIX}-${ARCH}-${RANDOM_NUMBER}"
+#NEW_HOSTNAME="${PREFIX}-${ARCH}-${RANDOM_NUMBER}"
+# Ditching above way in favor of setting via user-data
+source /etc/profile.d/hostname_vars.sh
+NEW_HOSTNAME="${ROLE}-${ENV}-${COUNTER}"
+
 
 # Set the hostname
 hostnamectl set-hostname "$NEW_HOSTNAME"

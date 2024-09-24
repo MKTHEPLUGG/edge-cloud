@@ -23,6 +23,7 @@
 ## Script Architecture
 
 1. **Config**
+   - users (seems to break cloud init ssh when trying to provision users via cloud config => investigate or put in script )
    - hostname
    - sshd config
    - zsh config + theme
