@@ -60,3 +60,14 @@ sudo apt-get install -y \
 #    echo "Package list file not found: $PACKAGE_LIST" >> $LOG
 #    exit 1
 #fi
+
+# way to generate name
+# Set the prefix to 'node'
+#PREFIX="node"
+
+# Generate a random number between 1 and 100
+#RANDOM_NUMBER=$((RANDOM % 100 + 1))
+# Form the new hostname: "node" + "arch" + random number
+#NEW_HOSTNAME="${PREFIX}-${ARCH}-${RANDOM_NUMBER}"
+
+# Ditching above way in favor of setting via user-data

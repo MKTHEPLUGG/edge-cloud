@@ -15,31 +15,21 @@ while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
     sleep 5
 done
 
+# Configure hostname via variables supplied in the user-data file during the cloud init process.
+source /etc/profile.d/hostname_vars.sh
+NEW_HOSTNAME="${ROLE}-${ARCH}-${ENV}-${COUNTER}"
+# Set the hostname
+hostnamectl set-hostname "$NEW_HOSTNAME"
+# Update /etc/hosts
+sed -i "s/default-hostname/$NEW_HOSTNAME/g" /etc/hosts
+echo "Hostname set to: $NEW_HOSTNAME"
 
 # ---
 
 # Rework from here, add below section
 
-# Set the prefix to 'node'
-#PREFIX="node"
 
 
-
-# Generate a random number between 1 and 100
-#RANDOM_NUMBER=$((RANDOM % 100 + 1))
-# Form the new hostname: "node" + "arch" + random number
-#NEW_HOSTNAME="${PREFIX}-${ARCH}-${RANDOM_NUMBER}"
-
-# Ditching above way in favor of setting via user-data
-source /etc/profile.d/hostname_vars.sh
-NEW_HOSTNAME="${ROLE}-${ARCH}-${ENV}-${COUNTER}"
-
-# Set the hostname
-hostnamectl set-hostname "$NEW_HOSTNAME"
-
-# Update /etc/hosts
-sed -i "s/default-hostname/$NEW_HOSTNAME/g" /etc/hosts
-echo "Hostname set to: $NEW_HOSTNAME"
 
 ## Configure correct keyboard layout
 #sudo sed -i 's/XKBLAYOUT=.*/XKBLAYOUT="be"/' /etc/default/keyboard
