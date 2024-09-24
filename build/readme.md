@@ -8,10 +8,7 @@
 - add proper install docs for qemu env with virtman and kvm etc
 
 - add deep dive docs in how cloud init works with the cdrom and label etc, since this is the solution we used to pack the vm and also check the other options ( http etc )
-
-## Script Architecture
-
-## Required software to install / preconfigure
+## Cloud-config Architecture
 
 1. **Software**
    - net-tools
@@ -20,8 +17,13 @@
    - zsh / ohmyzsh
 
 2. **Config**
-   - hostname
    - keyboard / locales / time
+
+
+## Script Architecture
+
+1. **Config**
+   - hostname
    - sshd config
    - zsh config + theme
    - custom MODT Message
