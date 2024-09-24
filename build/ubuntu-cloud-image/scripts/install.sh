@@ -1,9 +1,14 @@
 #!/bin/bash -eux
 
-# --- Environment Variables ---
+# --  Environment Variables  --
+
+# set var to log path
 LOG="/var/log/cloud-init.log"
 
-# Official Mikeshop deploy script for ubuntu-cloud-image-x86
+# Detect architecture (arm, x86, etc) used in hostname generation
+ARCH=$(uname -m)
+
+
 echo "==> waiting for cloud-init to finish"
 while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
     echo 'Waiting for Cloud-Init...'
@@ -11,38 +16,14 @@ while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
 done
 
 
-# --- Package Section --- => move to cloud init
-
-## Set the path to the packages file, this file should be in the script directory
-#PACKAGE_LIST="packages.txt"
-#
-## update the system
-#echo "==> updating apt cache" >> $LOG
-#sudo apt-get update -qq
-#
-## upgrade the system
-#echo "==> upgrade apt packages" >> $LOG
-#sudo apt-get upgrade -y -qq
-#
-## Check if the package list file exists & execute install commands
-#if [ -f "$PACKAGE_LIST" ]; then
-#    echo "==> installing apt packages from $PACKAGE_LIST" >> $LOG
-#    xargs -a "$PACKAGE_LIST" sudo apt-get install -y -qq
-#else
-#    echo "Package list file not found: $PACKAGE_LIST" >> $LOG
-#    exit 1
-#fi
-
-
 # ---
 
 # Rework from here, add below section
 
 # Set the prefix to 'node'
-PREFIX="node"
+#PREFIX="node"
 
-# Detect architecture (arm, x86, etc.)
-ARCH=$(uname -m)
+
 
 # Generate a random number between 1 and 100
 #RANDOM_NUMBER=$((RANDOM % 100 + 1))
@@ -118,3 +99,5 @@ echo "Hostname set to: $NEW_HOSTNAME"
 
 
 echo "Cloud-init configuration complete." > /var/log/cloud-init-done.log
+
+# post cloud deployment script by MKTHEPLUGG

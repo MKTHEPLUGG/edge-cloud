@@ -38,3 +38,25 @@ sudo apt-get install -y \
     docker-ce-cli \
     containerd.io \
     docker-compose-plugin
+
+# --- Package Section --- => moved to cloud init
+
+## Set the path to the packages file, this file should be in the script directory
+#PACKAGE_LIST="packages.txt"
+#
+## update the system
+#echo "==> updating apt cache" >> $LOG
+#sudo apt-get update -qq
+#
+## upgrade the system
+#echo "==> upgrade apt packages" >> $LOG
+#sudo apt-get upgrade -y -qq
+#
+## Check if the package list file exists & execute install commands
+#if [ -f "$PACKAGE_LIST" ]; then
+#    echo "==> installing apt packages from $PACKAGE_LIST" >> $LOG
+#    xargs -a "$PACKAGE_LIST" sudo apt-get install -y -qq
+#else
+#    echo "Package list file not found: $PACKAGE_LIST" >> $LOG
+#    exit 1
+#fi
