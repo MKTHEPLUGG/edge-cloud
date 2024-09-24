@@ -1,9 +1,8 @@
-variable "output_format" {
-  type        = string
-  default     = "img"
-  description = "Choose the output format: 'raw' for raw format or 'img' for regular image."
+variable "output_raw" {
+  type        = bool
+  default     = false
+  description = "Set to true if you want the output in raw format."
 }
-
 
 variable "qemu_accelerator" {
   type        = string

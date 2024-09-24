@@ -43,8 +43,8 @@ build {
     ]
   }
 
-  post-processor "qemu" {
-    format = "${var.output_format}"
-    only = ["qemu"] # Ensures the post-processor is applied only to the QEMU build.
-  }
+  post-processor "shell-local" {
+    inline = [
+      "if [ \"${var.output_raw}\" = true ]; then qemu-img convert -f qcow2 -O raw output-${var.ubuntu_version}/ubuntu-${var.ubuntu_version}.img output-${var.ubuntu_version}/ubuntu-${var.ubuntu_version}.raw; fi"
+    ]
 }
