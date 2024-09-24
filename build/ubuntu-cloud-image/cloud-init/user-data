@@ -1,4 +1,6 @@
 #cloud-config
+
+# Use these variables to generate a hostname, hostname governance is "${ROLE}-${ARCH}-${ENV}-${COUNTER}". These vars will be used by the script to configure the hostname.
 write_files:
   - path: /etc/profile.d/hostname_vars.sh
     content: |
