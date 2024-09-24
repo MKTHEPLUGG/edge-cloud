@@ -24,6 +24,7 @@
    - keyboard / locales / time
    - sshd config
    - zsh config + theme
+   - custom MODT Message
 
 ## automate image creation with packer
 
