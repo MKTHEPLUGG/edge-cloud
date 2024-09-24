@@ -50,7 +50,7 @@ ARCH=$(uname -m)
 #NEW_HOSTNAME="${PREFIX}-${ARCH}-${RANDOM_NUMBER}"
 # Ditching above way in favor of setting via user-data
 source /etc/profile.d/hostname_vars.sh
-NEW_HOSTNAME="${ROLE}-${ENV}-${COUNTER}"
+NEW_HOSTNAME="${ROLE}-${ARCH}-${ENV}-${COUNTER}"
 
 
 # Set the hostname
