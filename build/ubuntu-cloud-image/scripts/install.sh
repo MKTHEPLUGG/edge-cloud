@@ -58,7 +58,7 @@ EOF
 # Make the new MOTD script executable
 sudo chmod +x $CUSTOM_SCRIPT
 
-echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR."
+echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR." >> $LOG
 # ---
 
 # Rework from here, add below section
