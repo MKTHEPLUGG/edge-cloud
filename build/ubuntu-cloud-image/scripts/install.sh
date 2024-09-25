@@ -24,17 +24,9 @@ CUSTOM_SCRIPT="${MOTD_DIR}/00-mikeshop"
 #    sleep 5
 #done
 
-echo -n "==> Waiting for Cloud-Init to finish "
-# Spinner for visual feedback
-spinner="/-\|"
-while cloud-init status --wait &>/dev/null; do
-    for i in {0..3}; do
-        echo -ne "${spinner:$i:1}" "\r"
-        sleep 0.2
-    done
-done
+echo "==> Waiting for Cloud-Init to finish..."
+cloud-init status --wait
 echo "Cloud-Init finished."
-
 
 # Configure hostname via variables supplied in the user-data file during the cloud init process.
 if [ -n "$NEW_HOSTNAME" ]; then
