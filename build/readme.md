@@ -11,10 +11,10 @@
 ## Cloud-config Architecture
 
 1. **Software**
-   - net-tools
-   - nfs-common
-   - fail2ban
-   - zsh / ohmyzsh
+   - net-tools (done)
+   - nfs-common (done)
+   - fail2ban (TO DO)
+   - zsh / ohmyzsh (TO DO)
 
 2. **Config**
    - keyboard / locales / time

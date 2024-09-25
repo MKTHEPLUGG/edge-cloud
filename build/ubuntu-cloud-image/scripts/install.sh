@@ -12,6 +12,11 @@ ARCH=$(uname -m)
 source /etc/profile.d/hostname_vars.sh
 NEW_HOSTNAME="${ROLE}-${ARCH}-${ENV}-${COUNTER}"
 
+# vars for custom motd message
+MOTD_DIR="/etc/update-motd.d"
+BACKUP_DIR="/etc/update-motd.d/backup"
+CUSTOM_SCRIPT="${MOTD_DIR}/00-mikeshop"
+
 echo "==> waiting for cloud-init to finish"
 while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
     echo 'Waiting for Cloud-Init...'
@@ -32,8 +37,27 @@ fi
 
 
 
+# Check if /etc/update-motd.d exists and has files in it
+if [ -d "$MOTD_DIR" ] && [ "$(ls -A $MOTD_DIR)" ]; then
+    # Create a backup folder and move all files there
+    echo "Backing up existing MOTD scripts to $BACKUP_DIR..."
+    sudo mkdir -p "$BACKUP_DIR"
+    sudo mv ${MOTD_DIR}/* ${BACKUP_DIR}/
+else
+    echo "No existing MOTD scripts found, proceeding without backup."
+fi
 
-echo "Cloud-init configuration complete." > /var/log/cloud-init-done.log
+# Create a custom neofetch MOTD script
+echo "Setting up neofetch as the new MOTD..."
+cat <<EOF | sudo tee $CUSTOM_SCRIPT
+#!/bin/bash
+neofetch
+EOF
+
+# Make the new MOTD script executable
+sudo chmod +x $CUSTOM_SCRIPT
+
+echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR."
 
 # ---
 

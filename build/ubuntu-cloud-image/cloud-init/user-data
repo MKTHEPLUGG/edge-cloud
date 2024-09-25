@@ -38,3 +38,4 @@ packages:
   - file
   - build-essential
   - zsh
+  - neofetch
