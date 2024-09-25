@@ -1,4 +1,13 @@
 #!/bin/bash -eux
+
+# -- Shell Config --
+
+# Redirect stderr to stdout for the entire script, this will get rid of most of the red in my terminal because in Packer,
+# the output from the script section (provisioners) is shown in red because it's directed to stderr, which Packer highlights in red.
+exec 2>&1
+
+# -- Main Script Section --
+
 echo "==> remove SSH keys used for building"
 rm -f /home/ubuntu/.ssh/authorized_keys
 rm -f /root/.ssh/authorized_keys

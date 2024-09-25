@@ -2,7 +2,7 @@
 
 # -- Shell Config --
 
-# Redirect stderr to stdout for the entire script, this will get rid of all the red in my terminal because in Packer,
+# Redirect stderr to stdout for the entire script, this will get rid of most of the red in my terminal because in Packer,
 # the output from the script section (provisioners) is shown in red because it's directed to stderr, which Packer highlights in red.
 exec 2>&1
 # Enable extended globbing
@@ -39,7 +39,6 @@ if [ -n "$NEW_HOSTNAME" ]; then
 else
   echo "The variable for hostname generation was empty. Cannot set hostname" >> $LOG
 fi
-
 
 
 # Create a backup folder
