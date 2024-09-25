@@ -37,14 +37,15 @@ fi
 
 
 
-# Check if /etc/update-motd.d exists and has files in it
-if [ -d "$MOTD_DIR" ] && [ "$(ls -A $MOTD_DIR)" ]; then
-    # Create a backup folder and move all files there
+# Create a backup folder
+sudo mkdir -p "$BACKUP_DIR"
+
+# Check if there are files in the MOTD directory, excluding the backup directory, and move them
+if [ "$(ls -A $MOTD_DIR | grep -v 'backup')" ]; then
     echo "Backing up existing MOTD scripts to $BACKUP_DIR..."
-    sudo mkdir -p "$BACKUP_DIR"
-    sudo mv ${MOTD_DIR}/* ${BACKUP_DIR}/
+    sudo mv ${MOTD_DIR}/!(backup) "$BACKUP_DIR"/
 else
-    echo "No existing MOTD scripts found, proceeding without backup."
+    echo "No existing MOTD scripts to back up."
 fi
 
 # Create a custom neofetch MOTD script
@@ -58,7 +59,6 @@ EOF
 sudo chmod +x $CUSTOM_SCRIPT
 
 echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR."
-
 # ---
 
 # Rework from here, add below section
