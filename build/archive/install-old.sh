@@ -39,6 +39,14 @@ sudo apt-get install -y \
     containerd.io \
     docker-compose-plugin
 
+
+# old check
+#echo "==> waiting for cloud-init to finish"
+#while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
+#    echo 'Waiting for Cloud-Init...'
+#    sleep 5
+#done
+
 # --- Package Section --- => moved to cloud init
 
 ## Set the path to the packages file, this file should be in the script directory

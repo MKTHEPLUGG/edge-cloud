@@ -2,6 +2,9 @@
 
 # -- Shell Config --
 
+# Redirect stderr to stdout for the entire script, this will get rid of all the red in my terminal because in Packer,
+# the output from the script section (provisioners) is shown in red because it's directed to stderr, which Packer highlights in red.
+exec 2>&1
 # Enable extended globbing
 shopt -s extglob
 
@@ -9,25 +12,17 @@ shopt -s extglob
 
 # set var to log path
 LOG="/var/log/cloud-init.log"
-
 # Detect architecture (arm, x86, etc) used in hostname generation
 ARCH=$(uname -m)
-
 # Create vars for hostname generation
 source /etc/profile.d/hostname_vars.sh
 NEW_HOSTNAME="${ROLE}-${ARCH}-${ENV}-${COUNTER}"
-
 # vars for custom motd message
 MOTD_DIR="/etc/update-motd.d"
 BACKUP_DIR="/etc/update-motd.d/backup"
 CUSTOM_SCRIPT="${MOTD_DIR}/00-mikeshop"
 
-# old check
-#echo "==> waiting for cloud-init to finish"
-#while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
-#    echo 'Waiting for Cloud-Init...'
-#    sleep 5
-#done
+# -- Main Script Section --
 
 echo "==> Waiting for Cloud-Init to finish..."
 cloud-init status --wait
