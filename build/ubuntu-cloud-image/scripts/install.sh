@@ -17,11 +17,24 @@ MOTD_DIR="/etc/update-motd.d"
 BACKUP_DIR="/etc/update-motd.d/backup"
 CUSTOM_SCRIPT="${MOTD_DIR}/00-mikeshop"
 
-echo "==> waiting for cloud-init to finish"
-while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
-    echo 'Waiting for Cloud-Init...'
-    sleep 5
+# old check
+#echo "==> waiting for cloud-init to finish"
+#while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
+#    echo 'Waiting for Cloud-Init...'
+#    sleep 5
+#done
+
+echo -n "==> Waiting for Cloud-Init to finish "
+# Spinner for visual feedback
+spinner="/-\|"
+while cloud-init status --wait &>/dev/null; do
+    for i in {0..3}; do
+        echo -ne "${spinner:$i:1}" "\r"
+        sleep 0.2
+    done
 done
+echo "Cloud-Init finished."
+
 
 # Configure hostname via variables supplied in the user-data file during the cloud init process.
 if [ -n "$NEW_HOSTNAME" ]; then
