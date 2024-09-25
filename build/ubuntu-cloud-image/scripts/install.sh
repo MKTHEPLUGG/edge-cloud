@@ -1,5 +1,10 @@
 #!/bin/bash -eux
 
+# -- Shell Config --
+
+# Enable extended globbing
+shopt -s extglob
+
 # --  Environment Variables  --
 
 # set var to log path
@@ -46,9 +51,9 @@ fi
 sudo mkdir -p "$BACKUP_DIR"
 
 # Check if there are files in the MOTD directory, excluding the backup directory, and move them
-if [ "$(ls -A $MOTD_DIR | grep -v 'backup')" ]; then
+if ls -A "$MOTD_DIR" | grep -q -v 'backup'; then
     echo "Backing up existing MOTD scripts to $BACKUP_DIR..."
-    sudo mv ${MOTD_DIR}/!(backup) "$BACKUP_DIR"/
+    sudo mv "$MOTD_DIR"/!(backup) "$BACKUP_DIR"/
 else
     echo "No existing MOTD scripts to back up."
 fi
