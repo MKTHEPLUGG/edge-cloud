@@ -45,7 +45,7 @@ build {
     ]
 
     environment_vars = [
-      "USER_PASSWORD={{user `user_password`}}"
+      "USER_PASSWORD=${var.user_password}"
     ]
   }
 
