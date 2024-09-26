@@ -68,6 +68,26 @@ sudo chmod +x $CUSTOM_SCRIPT
 echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR." >> $LOG
 
 
+# z-shell setup
+# install zi ( package manager for zsh )
+sh -c "$(curl -fsSL https://git.io/get-zi)"
+source ~/.zshrc
+
+cat <<EOF | sudo tee -a ~/.zshrc
+# Initialize zi
+# zi init
+
+# Load plugins
+zi load romkatv/powerlevel10k
+zi load zsh-users/zsh-syntax-highlighting
+zi load zsh-users/zsh-autosuggestions
+
+# update
+# zi update
+EOF
+
+
+
 # -- Security Hardening --
 
 # Disable password auth and root login

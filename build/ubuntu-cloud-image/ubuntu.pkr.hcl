@@ -35,6 +35,12 @@ source "qemu" "ubuntu" {
 build {
   sources = ["source.qemu.ubuntu"]
 
+  provisioner "file" {
+  source      = "scripts/.p10k.zsh"       # Local path relative to Packer host
+  destination = "~/.p10k.zsh"             # Destination on the VM/instance being provisioned
+  }
+
+
   provisioner "shell" {
     // run scripts with sudo, as the default cloud image user is unprivileged
     execute_command = "echo 'packer' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
