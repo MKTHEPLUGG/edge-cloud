@@ -359,6 +359,7 @@ sudo qemu-system-x86_64 -m 2048 -drive file=./output-noble/ubuntu-noble.raw,form
 # Zi a package manager for zsh
 
 https://github.com/z-shell/zi
+[zi install](https://wiki.zshell.dev/docs/getting_started/installation)
 ---
 
 # Troubleshooting
