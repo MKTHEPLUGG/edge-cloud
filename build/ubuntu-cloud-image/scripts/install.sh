@@ -28,6 +28,7 @@ SSH_PUBLIC_KEY="AAAAB3NzaC1yc2EAAAADAQABAAACAQDlP/4lJptihdac/RmC+ZWH/XAh7vCehd6y
 
 
 # -- Main Script Section --
+apt install git
 
 # wait until cloud-init config has been completed
 echo "==> Waiting for Cloud-Init to finish..."

@@ -37,7 +37,7 @@ build {
 
   provisioner "file" {
   source      = "scripts/.p10k.zsh"       # Local path relative to Packer host
-  destination = "~/.p10k.zsh"             # Destination on the VM/instance being provisioned
+  destination = "~/.p10k.zsh"             # copy to ubuntu user home dir
   }
 
 
