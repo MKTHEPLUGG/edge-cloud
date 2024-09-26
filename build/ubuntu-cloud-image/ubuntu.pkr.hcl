@@ -1,4 +1,6 @@
 # https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main
+# when building this template supply a variable for the password of the ubuntu user
+# packer build -var 'user_password=YOUR_PASSWORD'
 packer {
   required_plugins {
     qemu = {
@@ -40,6 +42,10 @@ build {
     scripts = [
       "scripts/install.sh",
       "scripts/cleanup.sh"
+    ]
+
+    environment_vars = [
+      "USER_PASSWORD={{user `user_password`}}"
     ]
   }
 

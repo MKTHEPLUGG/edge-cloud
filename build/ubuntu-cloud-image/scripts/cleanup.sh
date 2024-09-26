@@ -6,6 +6,14 @@
 # the output from the script section (provisioners) is shown in red because it's directed to stderr, which Packer highlights in red.
 exec 2>&1
 
+
+# --  Environment Variables  --
+
+# set var to log path
+LOG="/var/log/cloud-init.log"
+# set to default ubuntu user
+USER_NAME="ubuntu"
+
 # -- Main Script Section --
 
 echo "==> remove SSH keys used for building"
@@ -40,5 +48,14 @@ rm -f /var/lib/systemd/random-seed
 
 echo "==> Clear the history so our install isn't there"
 rm -f /root/.wget-hsts
+
+# reconfigure password of default ubuntu isntall user
+# Set the user password from Packer variable
+echo "Setting password for $USER_NAME..."
+echo "${USER_NAME}:${USER_PASSWORD}" | sudo chpasswd
+
+# Log that password has been set, but do not log the password itself
+echo "Password for $USER_NAME set." >> $LOG
+
 
 export HISTSIZE=0

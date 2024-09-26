@@ -15,3 +15,8 @@ variable "ubuntu_version" {
   default     = "noble"
   description = "Ubuntu codename version (i.e. 20.04 is focal and 22.04 is jammy)"
 }
+
+variable "user_password" {
+  description = "For initial deployment we use the default user & pass, when cleaning up the deployment we need to change this password to a new value"
+  type        = string
+}
