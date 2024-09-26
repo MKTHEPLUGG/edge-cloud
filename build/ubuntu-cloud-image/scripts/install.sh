@@ -68,9 +68,7 @@ neofetch
 EOF
 # Make the new MOTD script executable
 sudo chmod +x $CUSTOM_SCRIPT
-
 echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR." >> $LOG
-
 
 # z-shell setup
 # install zi ( package manager for zsh )
