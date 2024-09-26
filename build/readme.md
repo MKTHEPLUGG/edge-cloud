@@ -356,7 +356,9 @@ Alternatively, if you prefer to boot the image directly and access the shell fro
 sudo qemu-system-x86_64 -m 2048 -drive file=./output-noble/ubuntu-noble.raw,format=raw -nographic -serial mon:stdio
 ```
 
+# Zi a package manager for zsh
 
+https://github.com/z-shell/zi
 ---
 
 # Troubleshooting
