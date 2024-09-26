@@ -119,5 +119,9 @@ echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR
 # #apply
 #source ~/.zshrc
 
+# first create file with ascii art generator then use this command to convert to login script
+# echo '#!/bin/bash'; while IFS= read -r line; do echo "echo '$line'"; done < filename > mymotd.sh
+# afterwards place the script in correct dir with
+# sudo cp mymotd.sh /etc/profile.d/ && chmod +x /etc/profile.d/mymotd.sh
 
 # post cloud deployment script by MKTHEPLUGG

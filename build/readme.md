@@ -392,8 +392,9 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
 
 ---
 
-Reference :
+## Reference :
 
+- [Customize MOTD](https://www.putorius.net/custom-motd-login-screen-linux.html)
 - [Guide](https://akashrajvanshi.medium.com/step-by-step-guide-creating-a-ready-to-use-ubuntu-cloud-image-on-proxmox-03d057f04fb2)
 - [Official Qemu Docs](https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu)
 
