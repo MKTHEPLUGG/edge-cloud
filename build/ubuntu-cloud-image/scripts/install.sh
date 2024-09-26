@@ -15,7 +15,7 @@ shopt -s extglob
 LOG="/var/log/cloud-init.log"
 # Detect architecture (arm, x86, etc) used in hostname generation
 ARCH=$(uname -m)
-# Create vars for hostname generation
+# fetch vars for hostname generation from file created during cloud-init
 source /etc/profile.d/hostname_vars.sh
 NEW_HOSTNAME="${ROLE}-${ARCH}-${ENV}-${COUNTER}"
 # vars for custom motd message
