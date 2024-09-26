@@ -19,4 +19,5 @@ variable "ubuntu_version" {
 variable "user_password" {
   description = "For initial deployment we use the default user & pass, when cleaning up the deployment we need to change this password to a new value"
   type        = string
+  default = "changme"
 }
