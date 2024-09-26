@@ -31,15 +31,17 @@ export ZDOTDIR=$HOME
 export ZI_HOME=$HOME/.zi
 
 # -- Main Script Section --
-zsh --version
-sudo apt update -y && apt upgrade -y
-sudo apt install git zsh
-zsh --version
 
 # wait until cloud-init config has been completed
 echo "==> Waiting for Cloud-Init to finish..."
 cloud-init status --wait
 echo "Cloud-Init finished."
+
+zsh --version
+sudo apt update -y && apt upgrade -y
+sudo apt install git zsh
+zsh --version
+
 
 # Configure hostname via variables supplied in the user-data file during the cloud init process.
 if [ -n "$NEW_HOSTNAME" ]; then
