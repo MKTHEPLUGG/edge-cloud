@@ -29,6 +29,7 @@ SSH_PUBLIC_KEY="AAAAB3NzaC1yc2EAAAADAQABAAACAQDlP/4lJptihdac/RmC+ZWH/XAh7vCehd6y
 
 # -- Main Script Section --
 
+# wait until cloud-init config has been completed
 echo "==> Waiting for Cloud-Init to finish..."
 cloud-init status --wait
 echo "Cloud-Init finished."
@@ -44,9 +45,10 @@ if [ -n "$NEW_HOSTNAME" ]; then
 else
   echo "The variable for hostname generation was empty. Cannot set hostname" >> $LOG
 fi
+
+# Configure Custom MOTD
 # Create a backup folder
 sudo mkdir -p "$BACKUP_DIR"
-
 # Check if there are files in the MOTD directory, excluding the backup directory, and move them
 if ls -A "$MOTD_DIR" | grep -q -v 'backup'; then
     echo "Backing up existing MOTD scripts to $BACKUP_DIR..."
