@@ -75,8 +75,8 @@ echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR
 # z-shell setup
 # install zi ( package manager for zsh )
 git clone --depth=1 https://github.com/z-shell/zi.git $ZI_HOME/bin
-sh -c "$(curl -fsSL https://git.io/get-zi)"
-source /home/ubuntu/.zshrc
+sh -c "$(curl -fsSL get.zshell.dev)" --
+#source /home/ubuntu/.zshrc
 #chown -R ubuntu:ubuntu /home/ubuntu/.zi
 
 cat <<EOF | sudo tee -a /home/ubuntu/.zshrc
