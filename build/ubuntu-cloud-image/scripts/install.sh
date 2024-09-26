@@ -26,9 +26,9 @@ CUSTOM_SCRIPT="${MOTD_DIR}/00-mikeshop"
 USER_NAME="sysadmin"  # Replace with the username you want to create
 SSH_PUBLIC_KEY="AAAAB3NzaC1yc2EAAAADAQABAAACAQDlP/4lJptihdac/RmC+ZWH/XAh7vCehd6yC6/Zist2D+VlWl6v3p0zRE54Gn3wk5DOymhh4sUTT3zuMIokZMPvwinCo+zR6gD7wU0ATYeRZgX8nn6TLEaMXXYjyCIYZPjUXTs4vYJyHVVaZn6cfATk1DG7VtQBgbveyawp9PpLb0G989gt7wxlAaQx1qVpBywwUB7867DNCmYWJH/1gbsz5jNlKgbbn/og/2RMGL3rrgxJ3BQ9O9GjAYb99AqLdeOSx7TKW1vOL+8JDkPpps2RgTINTexwVZWivyEM/3WeFGyOaZVqSpXSTvhEm8E4AmvuvZNJRxQ0JNZd1io/aMpb5Zo1xV/aunX7voLQZ0V1pWNlBvXBjIVUrT7R7Mwmeub5CT1jr+70qhlKP8z4GA/yZXJNlS88mnTqhwngbXU5jdJdFOlFkCbsR/ofOs2n6q5G+H9HtWs8I0S4iJhXSgqDPknaWUZrGH/HT0ux4KJAjdji7TwA5iJvPeV6SJs4F4hz1enW6UQDRhkIRZi1s4CKWGEAPQwULWq+Lxde6TmPnlLoEJzydNohM8AP7e+EQcGYdjEr7rBmV+ihwpvl1QwF6ToPksShX88kWBAL/AaD1hRE7McAeworojhKOoRQ5/O4P9zuY5BJFxmbNXSwHyMBTmJEGmIRQjI4CKxf1XomjQ=="  # Replace with your actual public key
 # zi env vars
-export HOME=/home/ubuntu
-export ZDOTDIR=$HOME
-export ZI_HOME=$HOME/.zi
+#export HOME=/home/ubuntu
+#export ZDOTDIR=$HOME
+#export ZI_HOME=$HOME/.zi
 
 # -- Main Script Section --
 
@@ -72,24 +72,26 @@ echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR
 
 # z-shell setup
 # install zi ( package manager for zsh )
-git clone --depth=1 https://github.com/z-shell/zi.git $ZI_HOME/bin
-sh -c "$(curl -fsSL get.zshell.dev)" --
-cat /home/ubuntu/.zshrc
-#source /home/ubuntu/.zshrc
+#git clone --depth=1 https://github.com/z-shell/zi.git $ZI_HOME/bin
+#sh -c "$(curl -fsSL get.zshell.dev)" --
 #chown -R ubuntu:ubuntu /home/ubuntu/.zi
-
-cat <<EOF | sudo tee -a /home/ubuntu/.zshrc
-# Initialize zi
-# zi init
-
-# Load plugins
-zi load romkatv/powerlevel10k
-zi load zsh-users/zsh-syntax-highlighting
-zi load zsh-users/zsh-autosuggestions
-
-# update
-# zi update
-EOF
+#chown -R ubuntu:ubuntu /home/ubuntu/.zshrc
+#cat /home/ubuntu/.zshrc
+##source /home/ubuntu/.zshrc
+#
+#
+#cat <<EOF | sudo tee -a /home/ubuntu/.zshrc
+## Initialize zi
+## zi init
+#
+## Load plugins
+#zi load romkatv/powerlevel10k
+#zi load zsh-users/zsh-syntax-highlighting
+#zi load zsh-users/zsh-autosuggestions
+#
+## update
+## zi update
+#EOF
 
 # -- Security Hardening --
 
