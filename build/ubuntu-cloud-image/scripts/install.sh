@@ -56,6 +56,26 @@ fi
 echo "Setting up neofetch as the new MOTD..."
 cat <<EOF | sudo tee $CUSTOM_SCRIPT
 #!/bin/bash
+echo '             __                      __                         ___         __     '
+echo ' /'\_/`\  __/\ \                    /\ \                      /'___`\     /'__`\   '
+echo '/\      \/\_\ \ \/'\      __    ____\ \ \___     ___   _____ /\_\ /\ \   /\ \/\ \  '
+echo '\ \ \__\ \/\ \ \ , <    /'__`\ /',__\ \  _ `\  / __`\/\ '__`\/_/// /__  \ \ \ \ \ '
+echo ' \ \ \_/\ \ \ \ \ \`\ /\  __//\__, `\ \ \ \ \/\ \L\ \ \ \L\ \ // /_\ \__\ \ \_\ \'
+echo '  \ \_\ \_\ \_\ \_\ \_\ \____\/\____/ \ \_\ \_\ \____/\ \ ,__//\______/\_\ \____/'
+echo '   \/_/ \/_/\/_/\/_/\/_/\/____/\/___/   \/_/\/_/\/___/  \ \ \/ \/_____/\/_/ \/___/ '
+echo '                                                         \ \_\                     '
+echo '                                                          \/_/                     '
+echo ' ____                                     __             '
+echo '/\  _`\                                  /\ \__          '
+echo '\ \ \L\ \_ __    __    ____     __    ___\ \ ,_\   ____  '
+echo ' \ \ ,__/\`'__\/'__`\ /',__\  /'__`\/' _ `\ \ \/  /',__\ '
+echo '  \ \ \/\ \ \//\  __//\__, `\/\  __//\ \/\ \ \ \_/\__, `\'
+echo '   \ \_\ \ \_\ \____\/\____/\ \____\ \_\ \_\ \__\/\____/'
+echo '    \/_/  \/_/ \/____/\/___/  \/____/\/_/\/_/\/__/\/___/ '
+echo '                                                         '
+echo '                                                         '
+
+
 neofetch
 EOF
 
@@ -121,7 +141,6 @@ echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR
 
 # first create file with ascii art generator then use this command to convert to login script
 # echo '#!/bin/bash'; while IFS= read -r line; do echo "echo '$line'"; done < filename > mymotd.sh
-# afterwards place the script in correct dir with
-# sudo cp mymotd.sh /etc/profile.d/ && chmod +x /etc/profile.d/mymotd.sh
+# afterwards copy the content to motd section of script
 
 # post cloud deployment script by MKTHEPLUGG
