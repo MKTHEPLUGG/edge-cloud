@@ -28,8 +28,8 @@ SSH_PUBLIC_KEY="AAAAB3NzaC1yc2EAAAADAQABAAACAQDlP/4lJptihdac/RmC+ZWH/XAh7vCehd6y
 
 
 # -- Main Script Section --
-sudo apt update -y && apt upgrade -y
-sudo apt install git zsh
+#sudo apt update -y && apt upgrade -y
+#sudo apt install git zsh
 
 # wait until cloud-init config has been completed
 echo "==> Waiting for Cloud-Init to finish..."
@@ -74,6 +74,8 @@ echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR
 # install zi ( package manager for zsh )
 export ZI_HOME=/home/ubuntu/.zi
 sh -c "$(curl -fsSL https://git.io/get-zi)"
+sleep 25
+source /home/ubuntu/.zshrc
 
 cat <<EOF | sudo tee -a /home/ubuntu/.zshrc
 # Initialize zi
@@ -87,6 +89,10 @@ zi load zsh-users/zsh-autosuggestions
 # update
 # zi update
 EOF
+
+cat /root/.zshrc
+
+sleep 20
 
 source /home/ubuntu/.zshrc
 
