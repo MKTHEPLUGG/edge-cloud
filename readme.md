@@ -1,4 +1,4 @@
-# <img src="./docs/src/edgecloud.png" alt="EdgeCloud Logo" width="300"/>
+# <img src="./docs/src/edgecloud.png" alt="EdgeCloud Logo" width="250"/>
 
 
 
