@@ -18,6 +18,7 @@
 
 - x86 custom ubuntu server main tooling host
 - SBC & other edge devices downstream
+- dedicated loadbalancer (nginx/rpi 4gb?)
 - dual-boot docs
 - storage docs
   - DIY NAS on main host
@@ -39,8 +40,8 @@
   - Create Custom Image using packer
   - [cloud init test environment](./2_setup/infrastructure/OS/ubuntu-server/cloud-init-test-env.md)
 
-## [Software](./2_setup/software/)
 
+## [Software](./2_setup/software/)
 
 ### Build tools
 - Packer
@@ -49,15 +50,17 @@
 ### [GitOps](./2_setup/software/GitOps)
 - External Secrets
 - ArgoCD
+  - rootapp setup
 
-# kubernetes
+# [kubernetes](./2_setup/software/kubernetes)
 - RKE2
 - envoy gateway
 - metalLB
+- reloader
 
 ### Infrastack
 - Longhorn
-
+- key management system = to decide, hashicorp vault? look at integrations.
 
 ---
 
