@@ -1,4 +1,4 @@
-# <img src="./docs/src/edgecloud.webp" alt="EdgeCloud Logo" width="50"/> Edge Cloud
+# <img src="./docs/src/edgecloud.png" alt="EdgeCloud Logo" width="100"/> Edge Cloud
 
 
 
