@@ -1,6 +1,6 @@
 # Mikeshop Project
 
-## Project Overview
+## Overview
 
 In this project, I will detail how to set up a local cloud from scratch using Linux and Rancher Kubernetes environment 2 (RKE2).
 
