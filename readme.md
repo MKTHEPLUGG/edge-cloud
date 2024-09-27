@@ -1,4 +1,6 @@
-# Edge Cloud
+# <img src="./docs/src/edgecloud.webp" alt="EdgeCloud Logo" width="50"/> Edge Cloud
+
+
 
 ## Overview
 
