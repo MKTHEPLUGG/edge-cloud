@@ -8,6 +8,9 @@
 - add proper install docs for qemu env with virtman and kvm etc
 
 - add deep dive docs in how cloud init works with the cdrom and label etc, since this is the solution we used to pack the vm and also check the other options ( http etc )
+
+- Create proper guide 1. Architecture / 2. Setup environment / 3. Detail configuration / 4. Troubleshooting + extra's / 5. Automation via pipelines.
+
 ## Cloud-config Architecture
 
 1. **Software**
@@ -398,15 +401,21 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
 ## Reference :
 
 - [Customize MOTD](https://www.putorius.net/custom-motd-login-screen-linux.html)
-- [Guide](https://akashrajvanshi.medium.com/step-by-step-guide-creating-a-ready-to-use-ubuntu-cloud-image-on-proxmox-03d057f04fb2)
-- [Official Qemu Docs](https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu)
+- [Original Repo Reference For Packer Config](https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main)
 
-- **[Example](https://shantanoo-desai.github.io/posts/technology/packer-ubuntu-qemu/)**
+[//]: # (- [Guide]&#40;https://akashrajvanshi.medium.com/step-by-step-guide-creating-a-ready-to-use-ubuntu-cloud-image-on-proxmox-03d057f04fb2&#41;)
 
-- **[Example 2](https://github.com/rlaun/packer-ubuntu-22.04/blob/master/ubuntu-22.04.json)**
+[//]: # (- [Official Qemu Docs]&#40;https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu&#41;)
 
-- https://github.com/shantanoo-desai/packer-ubuntu-server-uefi/blob/main/templates/ubuntu.pkr.hcl
-- https://github.com/shantanoo-desai/packer-ubuntu-server-uefi
+[//]: # ()
+[//]: # (- **[Example]&#40;https://shantanoo-desai.github.io/posts/technology/packer-ubuntu-qemu/&#41;**)
+
+[//]: # ()
+[//]: # (- **[Example 2]&#40;https://github.com/rlaun/packer-ubuntu-22.04/blob/master/ubuntu-22.04.json&#41;**)
+
+[//]: # (- https://github.com/shantanoo-desai/packer-ubuntu-server-uefi/blob/main/templates/ubuntu.pkr.hcl)
+
+[//]: # (- https://github.com/shantanoo-desai/packer-ubuntu-server-uefi)
 
 ---
 
@@ -458,6 +467,8 @@ package_upgrade: true
 
 You **don't need** the `autoinstall` section in a standard Cloud-Init file. The `autoinstall` block is only needed if you’re using the Subiquity installer to automate the entire OS installation process (not just configuration after install).
 
-### Next Steps:
-- If you're focusing on post-installation configuration (e.g., user setup, locale, SSH settings), the second working configuration with added locale setup is sufficient.
-- If you want to automate the full OS installation process (pre-partitioning, user creation during install), then the `autoinstall` block would be used in a separate pre-install configuration file.
+[//]: # (### Next Steps:)
+
+[//]: # (- If you're focusing on post-installation configuration &#40;e.g., user setup, locale, SSH settings&#41;, the second working configuration with added locale setup is sufficient.)
+
+[//]: # (- If you want to automate the full OS installation process &#40;pre-partitioning, user creation during install&#41;, then the `autoinstall` block would be used in a separate pre-install configuration file.)
