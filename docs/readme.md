@@ -1,8 +1,10 @@
 # Official Documentation for the cluster-mode / mikeshop2.0 project
 
-**Create table of contents for all the documentation here**
+**Description for the documentation here**
 
----
+**table of contents for all the documentation Below**
+
+
 # 1. Architecture
 
 1. Main Architecture Drawing
@@ -11,10 +13,10 @@
 
 ## 2. [Roadmap](./roadmap)
 
----
 
----
-#3. [Setup](./setup/)
+
+
+## 3. [Setup](./setup/)
 
 ## [Infrastructure](./setup/infrastructure)
 
@@ -56,7 +58,7 @@
   - rootapp setup
   - Kustomize
 
-# [kubernetes](./setup/software/kubernetes)
+### [kubernetes](./setup/software/kubernetes)
 - RKE2
   - security hardening
     - oidc
