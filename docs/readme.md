@@ -1,18 +1,27 @@
 # Official Documentation for the cluster-mode / mikeshop2.0 project
 
 **Create table of contents for all the documentation here**
+
 ---
-## Architecture
+## 1. Architecture
+
+1. Main Architecture Drawing
+2. Hardware / network layout + devices
+3. Flows overview 
+
+---
+## 2. Setup
 
 ### Hardware Layer
 
-#### Single Board Servers
-
-#### Regular servers
+- x86 custom ubuntu server main tooling host
+- SBC & other edge devices downstream
 
 ### Network layer
 
 #### Devices
+
+- OpenWRT Firewall
 
 #### Flow overview (Ports)
 
@@ -31,10 +40,8 @@
 - ArgoCD
 
 ---
-## Setup
+
+
+## 3. Roadmap
 
 ---
-## Roadmap
-
----
-## TO-DO
