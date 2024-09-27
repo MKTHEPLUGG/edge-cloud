@@ -49,7 +49,11 @@
 ### [GitOps](./2_setup/software/GitOps)
 - External Secrets
 - ArgoCD
+
+# kubernetes
 - RKE2
+- envoy gateway
+- metalLB
 
 ### Infrastack
 - Longhorn
