@@ -51,9 +51,14 @@
 - External Secrets
 - ArgoCD
   - rootapp setup
+  - Kustomize
 
 # [kubernetes](./2_setup/software/kubernetes)
 - RKE2
+  - security hardening
+    - oidc
+    - network policies
+    - kubeconfig file, create something like azure has for AKS.
 - envoy gateway
 - metalLB
 - reloader
