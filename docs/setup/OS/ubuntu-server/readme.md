@@ -113,13 +113,10 @@ To achieve a dynamic configuration where hostnames are unique but follow a speci
 ### 1. **Dynamic Hostname Generation**:
 You can use Cloud-init's `hostname` directive and combine it with built-in shell commands to generate a unique, random hostname on boot.
 
-Here’s an example `cloud-config` that sets a dynamic hostname with a fixed prefix and a random 6-character suffix.
+Here’s an example `cloud-config` snippet. that sets a dynamic hostname with a fixed prefix and a random 6-character suffix.
 
 ```yaml
-#cloud-config
-hostname: default-hostname
-manage_etc_hosts: true
-
+...
 # Dynamic hostname generation: fixed prefix + random 6-character suffix
 runcmd:
   - |
@@ -130,24 +127,7 @@ runcmd:
     hostnamectl set-hostname $NEW_HOSTNAME
     sed -i "s/default-hostname/$NEW_HOSTNAME/g" /etc/hosts
 
-users:
-  - name: michiel
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    ssh-authorized-keys:
-      - ssh-rsa your-public-ssh-key-here
-
-package_update: true
-package_upgrade: true
-
-packages:
-  - vim
-  - curl
-  - docker.io
-  - nfs-common
-
-runcmd:
-  - systemctl enable docker
-  - echo "Cloud-init configuration complete." > /var/log/cloud-init-done.log
+...
 ```
 
 ### Explanation:
@@ -215,130 +195,6 @@ Once you’ve created your configuration file, you can start by testing it local
 
 ## Create the image
 
-[//]: # (Yes, you can absolutely take the official Ubuntu Server image, add your Cloud-init configuration files directly to the `/etc` directory, and then use that image for deployment! This is a simpler and more direct approach. Here’s how you can do that:)
-
-[//]: # ()
-[//]: # (### Steps to Modify the Official Ubuntu Server Image with Cloud-Init)
-
-[//]: # ()
-[//]: # (1. **Download the Official Ubuntu Server Cloud Image**)
-
-[//]: # ()
-[//]: # (You can download the Ubuntu Server image &#40;for example, Ubuntu 20.04&#41; directly from the official website:)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (wget https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-amd64.img)
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (You can also use a more recent version if necessary.)
-
-[//]: # ()
-[//]: # (### 2. **Mount the ISO and Extract Files**)
-
-[//]: # ()
-[//]: # (To modify the image, you'll need to extract it and modify the contents.)
-
-[//]: # ()
-[//]: # (1. **Mount the ISO**:)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (mkdir /mnt/iso)
-
-[//]: # (sudo mount -o loop ubuntu-24.04-server-cloudimg-amd64.img /mnt/iso)
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (2. **Copy the Files** to a working directory:)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (mkdir ~/ubuntu-custom)
-
-[//]: # (cp -r /mnt/iso/* ~/ubuntu-custom/)
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (3. **Unmount the ISO**:)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (sudo umount /mnt/iso)
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (### 3. **Modify the Cloud-Init Configuration**)
-
-[//]: # ()
-[//]: # (Now, let's add your Cloud-init configuration files to the extracted image.)
-
-[//]: # ()
-[//]: # (1. **Navigate to the `~/ubuntu-custom` directory** where you copied the files:)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (cd ~/ubuntu-custom)
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (2. **Create the Cloud-init configuration files** inside the appropriate directories:)
-
-[//]: # ()
-[//]: # (- **Create `user-data`** in `/etc/cloud/cloud.cfg.d/99_custom.cfg`:)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (nano ~/ubuntu-custom/etc/cloud/cloud.cfg.d/99_custom.cfg)
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (Add your Cloud-init logic here:)
-
-[//]: # ()
-[//]: # ()
-[//]: # (This will allow your Cloud-init configuration to be applied on first boot.)
-
-[//]: # ()
-[//]: # (### 4. **Rebuild the ISO**)
-
-[//]: # ()
-[//]: # (Now that you've modified the image and added your Cloud-init configuration, you need to rebuild the ISO file.)
-
-[//]: # ()
-[//]: # (1. **Create the new ISO**:)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (cd ~/ubuntu-custom)
-
-[//]: # (mkisofs -o ~/ubuntu-custom-server.iso -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -J -R -V "Custom Ubuntu Server" .)
-
-[//]: # (```)
-
-[//]: # ()
-[//]: # (This command creates a bootable ISO named `ubuntu-custom-server.iso` with your Cloud-init configuration included.)
-
-[//]: # ()
-[//]: # ()
-
-my docs below
-
----
 
 ### Use Ubuntu Cloud Images
 
@@ -394,11 +250,6 @@ Ubuntu Cloud Images are designed to work with Cloud-init out of the box and are 
     ````shell
     qemu-img info <path-to-your-image>
     ````
-
-
-
-
-
 
 ### Output Example:
 

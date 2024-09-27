@@ -96,8 +96,6 @@ virt-customize -a /var/lib/libvirt/images/focal-server-cloudimg-amd64.img --root
 
 ```
 
-
-
 2. Move the image to the `/var/lib/libvirt/images/` directory for organization:
 
 ```bash
