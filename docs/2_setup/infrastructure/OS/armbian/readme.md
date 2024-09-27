@@ -112,6 +112,14 @@ Whenever you set up a new ARMBian system that boots from an SD card and runs fro
 
 This guide ensures that your ARMBian system is correctly configured to run RKE2 by enabling the required cgroup features.
 
+# Usefull stuff regarding Armbian OS
+
+
+1. Restart first run script
+    ````shell
+    sudo /usr/lib/armbian/armbian-firstrun start
+    ````
+
 ---
 
 
