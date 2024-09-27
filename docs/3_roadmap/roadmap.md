@@ -1,5 +1,10 @@
 # **ROADMAP**
 
+1. Create physical infrastructure = DONE
+2. Create main tool server used to be the egg in the chicken egg story.
+3. Create customized image
+4. Properly define Architecture for RKE2 Setup Goal is to create a PaaS/FaaS environment.
+
 ## Networking Stack
 
 ### CNI

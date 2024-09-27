@@ -12,7 +12,7 @@
 ---
 # [2. Setup](./2_setup/)
 
-## [Infrastructure Layer](./2_setup/infrastructure)
+## [Infrastructure](./2_setup/infrastructure)
 
 ### [Hardware](./2_setup/infrastructure/hardware)
 
@@ -25,12 +25,12 @@
 - Network policies
 - Security Hardening
 
-### OS
+### [OS](./2_setup/infrastructure/OS)
 
 - Armbian (ubuntu based) => to customize with packer
 - Ubuntu Server (Custom Cloud Image)
 
-## Software layer (L7)
+## [Software](./2_setup/software/)
 
 - Packer
 - Github Actions
