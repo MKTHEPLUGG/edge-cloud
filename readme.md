@@ -73,5 +73,6 @@ This folder holds all the kubernetes manifest files used in the cluster-mode clu
 - explore wake on lan capabilities
 - ~~Create Firewall Docs~~
 - encrypt openwrt admin interface with ssl
+- look for IDP system
 - tryout istio
 - look into how kubeEdge handles stuff like network traffic between the clusters.
