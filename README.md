@@ -10,7 +10,7 @@ The local cloud will be able to host various managed services like PaaS (Platfor
 
 ## Sections
 
-### [1. Build](./build)
+### 1. [Build](./build)
 This folder is used to hold all the scripts and configs for creating our custom images with packer
 ### [2. docs](./docs)
 This folder holds all the documentation related to the Mikeshop project.
