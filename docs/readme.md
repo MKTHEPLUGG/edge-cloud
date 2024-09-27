@@ -32,12 +32,10 @@
 ### [OS](./2_setup/infrastructure/OS)
 
 - Armbian (ubuntu based) => to customize with packer
-  - Create Custom Image using packer
   - configure ssd as boot device
     - [rock5a](./2_setup/infrastructure/OS/armbian/ssd-boot-device/rock5a/readme.md)
     - [rpi4b](./2_setup/infrastructure/OS/armbian/ssd-boot-device/rpi4b/readme.md)
 - Ubuntu Server (Custom Cloud Image)
-  - Create Custom Image using packer
   - [cloud init test environment](./2_setup/infrastructure/OS/ubuntu-server/cloud-init-test-env.md)
 
 
@@ -45,6 +43,7 @@
 
 ### Build tools
 - Packer
+  - Use packer to create custom images
 - Github Actions
 
 ### [GitOps](./2_setup/software/GitOps)

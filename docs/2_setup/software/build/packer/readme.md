@@ -1,0 +1,1 @@
+move docs from build dir here and set readme there to here.
