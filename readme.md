@@ -1,50 +1,38 @@
-# Mikeshop Project
+# Cluster-mode Project
 
 ## Overview
 
-In this project, I will detail how to set up a local cloud from scratch using Linux and Rancher Kubernetes environment 2 (RKE2).
+This project details the creation of a fully containerized local cloud infrastructure, built entirely on Kubernetes and containers—no virtual machines. The setup is designed for scalability, leveraging low-powered servers and edge devices (such as Raspberry Pi 4B, Rock5A) to form a robust, distributed service mesh. By continuously expanding the system with additional edge clusters, this project showcases a highly flexible and scalable cloud environment.
 
-The local cloud will be able to host various managed services like PaaS (Platform as a Service), FaaS (Function as a Service), and others.
+The homelab uses an old desktop as the central tooling host, with Armbian and Ubuntu forming the base OS. Custom images are automated through pipelines and Packer, ensuring efficient deployment across all nodes. DevOps workflows are handled using GitOps tools like ArgoCD, and Kubernetes infrastructure is powered by RKE2, allowing seamless orchestration across multiple edge clusters.
 
---
+The unique strength of this setup lies in its decentralized nature—scalability is achieved by adding more low-power devices, making it cost-effective and highly adaptable. The ultimate goal is to establish a comprehensive service mesh across numerous edge clusters, demonstrating the potential of distributed cloud services.
+
+This documentation covers the entire process—from hardware configuration, container-based OS builds, Kubernetes orchestration, to establishing a service mesh—all aimed at building a dynamic, scalable local cloud.
+
+
+[//]: # (This project outlines the setup of a complete local cloud infrastructure from scratch, transforming a homelab into a scalable environment for running services like Platform as a Service &#40;PaaS&#41; and Function as a Service &#40;FaaS&#41;.)
+
+[//]: # ()
+[//]: # (Leveraging a mix of hardware, including an old desktop serving as the primary tooling host and various SBCs &#40;Raspberry Pi 4B, Rock5A&#41;, mini servers, and custom networking &#40;OpenWRT firewall&#41;, I’ll build a flexible development and production-ready system.)
+
+[//]: # ()
+[//]: # (The stack will be based on Linux, primarily Armbian and Ubuntu, with custom images automated through pipelines and Packer. DevOps processes will be managed using GitOps tools like ArgoCD, while the Kubernetes infrastructure will rely on RKE2 for orchestration. Security, automation, CI/CD pipelines, and service management will all be integrated, providing a full view into how to design, deploy, and maintain a local cloud environment.)
+
+[//]: # ()
+[//]: # (This documentation covers the entire journey—from hardware configuration to custom OS builds, software setup, and Kubernetes orchestration—designed for anyone looking to recreate or extend such an environment.)
+
+---
 
 ## Sections
 
 ### 1. [Build](./build)
 This folder is used to hold all the scripts and configs for creating our custom images with hashicorp's ``Packer``
 ### 2. [docs](./docs)
-This folder holds all the documentation related to the Mikeshop project.
+This folder holds all the documentation related to the cluster-mode project.
 ### 3. [manifests](./manifests)
-This folder holds all the kubernetes manifest files used in the Mikeshop clusters. This folder is referenced by the rootapp. 
+This folder holds all the kubernetes manifest files used in the cluster-mode clusters. This folder is referenced by the rootapp.
 
-[//]: # (1. Router / Firewall setup => openwrt)
-
-[//]: # ()
-[//]: # (### Storage)
-
-[//]: # (1. DIY NAS)
-
-[//]: # (2. Longhorn)
-
-[//]: # ()
-[//]: # (### OS)
-
-[//]: # (1. Ubuntu)
-
-[//]: # (    1. Cloud-init config)
-
-[//]: # (2. Armbian &#40;Ubuntu-based&#41; for easy integration with our SBCs)
-
-[//]: # (    1. Boot config)
-
-[//]: # (    2. Cloud-init config )
-
-[//]: # ()
-[//]: # (### Software)
-
-[//]: # (1. RKE)
-
-[//]: # (2. Packer)
 
 ## TODO
 

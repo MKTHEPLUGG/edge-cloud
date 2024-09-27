@@ -67,6 +67,7 @@
 - envoy gateway
 - metalLB
 - reloader
+- istio service mesh
 
 ### Infrastack
 - Longhorn
