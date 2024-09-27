@@ -1,4 +1,4 @@
-# Cluster-mode Project
+# EdgeCloud
 
 ## Overview
 
@@ -33,6 +33,21 @@ This repository covers the entire process—from hardware, network, storage conf
 
 [//]: # ()
 [//]: # (This documentation covers the entire journey—from hardware configuration to custom OS builds, software setup, and Kubernetes orchestration—designed for anyone looking to recreate or extend such an environment.)
+
+---
+
+[//]: # (#DONT REMOVE BELOW -- this one might be better ???????)
+
+[//]: # (This project details the creation of a self-hosted, decentralized edge cloud that is fully powered by Kubernetes and containers—without relying on virtual machines or public cloud services. Designed for homelab enthusiasts, small businesses, or developers, the project leverages low-powered edge devices like Raspberry Pi 4B and Rock5A to create a scalable, distributed service mesh. Unlike solutions like KubeEdge, which depend on hybrid cloud-edge architectures, this project is focused entirely on building a local, self-contained cloud environment that is independent of cloud infrastructure.)
+
+[//]: # ()
+[//]: # (By continuously expanding the system with additional edge clusters, this setup demonstrates the flexibility and scalability of cloud infrastructure that runs entirely on local hardware, without incurring the high costs of public clouds.)
+
+[//]: # ()
+[//]: # (The project uses an old desktop as the central tooling server, with Armbian and Ubuntu as the base OS. Custom images are built and deployed through pipelines and Packer, ensuring efficient automation across all nodes. GitOps processes are managed via ArgoCD, and Kubernetes &#40;RKE2&#41; handles orchestration across a distributed network of edge devices.)
+
+[//]: # ()
+[//]: # (The unique strength of this project lies in its decentralized architecture: scalability is achieved by adding more low-powered servers, making it a cost-effective alternative to expensive public cloud services. The ultimate goal is to create a service mesh that spans multiple edge clusters, demonstrating the power of distributed cloud services at a fraction of the cost.)
 
 ---
 
