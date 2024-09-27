@@ -6,11 +6,11 @@
 ## 1. Architecture
 
 1. Main Architecture Drawing
-2. Hardware / network layout + devices
-3. Flows overview 
+2. infastructure devices / choices / reasoning
+3. [Flows Overview](./1_architecture/flows)
 
 ---
-## 2. Setup
+## [2. Setup](./2_setup/)
 
 ### Infrastructure Layer
 
@@ -40,6 +40,6 @@
 ---
 
 
-## 3. [Roadmap](./3_roadmap)
+## [3. Roadmap](./3_roadmap)
 
 ---
