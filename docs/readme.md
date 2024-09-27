@@ -8,11 +8,10 @@
 # [Architecture](./architecture)
 
 - Main Architecture Drawing
-- infastructure devices / choices / reasoning
+- infastructure devices / adapters / choices + reasoning
 - [Flows Overview](./architecture/flows)
 
 ## [Roadmap](./roadmap)
-
 
 
 
@@ -24,6 +23,7 @@
 
 - x86 custom ubuntu server main tooling host
 - SBC & other edge devices downstream
+- custom cases
 - dedicated loadbalancer (nginx/rpi 4gb?)
 - dual-boot docs
 - storage docs

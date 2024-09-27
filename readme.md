@@ -65,7 +65,7 @@ This folder holds all the kubernetes manifest files used in the cluster-mode clu
 
 ## TODO
 
-- Look into cloud-init (done) => automate with packer => pipeline for packer, local host the runners.
+- Look into cloud-init (done) => automate with packer => pipeline for packer needs to be created, local host the runners.
 - Netboot / usb/nvme boot => Raspberry Pi done, Rock5a issues with SPI boot (likely power delivery issue).
 - Create [Storage Docs](docs/setup/hardware/storage/NAS/readme.md) => NAS config
 - Create RKE2 setup docs
@@ -74,3 +74,4 @@ This folder holds all the kubernetes manifest files used in the cluster-mode clu
 - ~~Create Firewall Docs~~
 - encrypt openwrt admin interface with ssl
 - tryout istio
+- look into how kubeEdge handles stuff like network traffic between the clusters.
