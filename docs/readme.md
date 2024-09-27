@@ -3,32 +3,34 @@
 **Create table of contents for all the documentation here**
 
 ---
-## 1. Architecture
+# 1. Architecture
 
 1. Main Architecture Drawing
 2. infastructure devices / choices / reasoning
 3. [Flows Overview](./1_architecture/flows)
 
 ---
-## [2. Setup](./2_setup/)
+# [2. Setup](./2_setup/)
 
-### Infrastructure Layer
+## [Infrastructure Layer](./2_setup/infrastructure)
+
+### [Hardware](./2_setup/infrastructure/hardware)
 
 - x86 custom ubuntu server main tooling host
 - SBC & other edge devices downstream
 
-### Network layer
+### [Network](./2_setup/infrastructure/network)
 
 - OpenWRT Firewall
 - Network policies
 - Security Hardening
 
-### OS Layer
+### OS
 
 - Armbian (ubuntu based) => to customize with packer
 - Ubuntu Server (Custom Cloud Image)
 
-### Software layer
+## Software layer (L7)
 
 - Packer
 - Github Actions
