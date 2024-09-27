@@ -1,4 +1,4 @@
-# EdgeCloud
+# Edge Cloud
 
 ## Overview
 
