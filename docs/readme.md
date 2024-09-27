@@ -12,18 +12,16 @@
 ---
 ## 2. Setup
 
-### Hardware Layer
+### Infrastructure Layer
 
 - x86 custom ubuntu server main tooling host
 - SBC & other edge devices downstream
 
 ### Network layer
 
-#### Devices
-
 - OpenWRT Firewall
-
-#### Flow overview (Ports)
+- Network policies
+- Security Hardening
 
 ### OS Layer
 
@@ -42,6 +40,6 @@
 ---
 
 
-## 3. Roadmap
+## 3. [Roadmap](./3_roadmap)
 
 ---
