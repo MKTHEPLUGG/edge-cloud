@@ -61,6 +61,7 @@
 ### Infrastack
 - Longhorn
 - key management system = to decide, hashicorp vault? look at integrations.
+- identity provider (keyclock / goauthentik)
 
 ---
 
