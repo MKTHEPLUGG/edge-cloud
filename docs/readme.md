@@ -9,12 +9,12 @@
 2. infastructure devices / choices / reasoning
 3. [Flows Overview](./architecture/flows)
 
-## [2. Roadmap](./roadmap)
+## 2. [Roadmap](./roadmap)
 
 ---
 
 ---
-# [3. Setup](./setup/)
+#3. [Setup](./setup/)
 
 ## [Infrastructure](./setup/infrastructure)
 
