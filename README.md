@@ -13,9 +13,9 @@ The local cloud will be able to host various managed services like PaaS (Platfor
 ### 1. Build
 This folder is used to hold all the scripts and configs for creating our custom images with packer
 ### 2. docs
-This folder holds all the documentation related to the mikeshop project.
+This folder holds all the documentation related to the Mikeshop project.
 ### 3. manifests
-This folder holds all the kubernetes manifest files used in the mikeshop clusters. This folder is referenced by the rootapp. 
+This folder holds all the kubernetes manifest files used in the Mikeshop clusters. This folder is referenced by the rootapp. 
 
 [//]: # (1. Router / Firewall setup => openwrt)
 
