@@ -38,11 +38,11 @@ This repository covers the entire process—from hardware, network, storage conf
 
 ## Sections
 
-### 1. [Build](./build)
+### [Build](./build)
 This folder is used to hold all the scripts and configs for creating our custom images with hashicorp's ``Packer``
-### 2. [docs](./docs)
+### [docs](./docs)
 This folder holds all the documentation related to the cluster-mode project.
-### 3. [manifests](./manifests)
+### [manifests](./manifests)
 This folder holds all the kubernetes manifest files used in the cluster-mode clusters. This folder is referenced by the rootapp.
 
 
