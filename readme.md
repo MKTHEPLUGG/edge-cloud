@@ -8,7 +8,7 @@ The homelab uses an old desktop as the central tooling host, with Armbian and Ub
 
 The unique strength of this setup lies in its decentralized nature—scalability is achieved by adding more low-power devices, making it cost-effective and highly adaptable. This architecture not only makes it ideal for homelabs or smaller-scale environments but also opens up the potential for a decentralized, affordable alternative to expensive public cloud services. By creating a service mesh across many edge clusters, the project demonstrates the feasibility of running cloud services on distributed infrastructure, hinting at a potential SaaS solution that is both cost-effective and highly scalable.
 
-This documentation covers the entire process—from hardware configuration, container-based OS builds, Kubernetes orchestration, to establishing a service mesh—all aimed at building a dynamic, scalable local cloud.
+This repository covers the entire process—from hardware, network, storage configuration, automated OS builds, Kubernetes orchestration, to establishing a service mesh—all aimed at building a dynamic, scalable local cloud.
 
 
 [//]: # (This project details the creation of a fully containerized local cloud infrastructure, built entirely on Kubernetes and containers—no virtual machines. The setup is designed for scalability, leveraging low-powered servers and edge devices &#40;such as Raspberry Pi 4B, Rock5A&#41; to form a robust, distributed service mesh. By continuously expanding the system with additional edge clusters, this project showcases a highly flexible and scalable cloud environment.)
