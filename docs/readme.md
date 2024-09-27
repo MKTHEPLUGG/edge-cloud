@@ -5,18 +5,18 @@
 **table of contents for all the documentation Below**
 
 
-# 1. Architecture
+# [Architecture](./architecture)
 
-1. Main Architecture Drawing
-2. infastructure devices / choices / reasoning
-3. [Flows Overview](./architecture/flows)
+- Main Architecture Drawing
+- infastructure devices / choices / reasoning
+- [Flows Overview](./architecture/flows)
 
-## 2. [Roadmap](./roadmap)
-
-
+## [Roadmap](./roadmap)
 
 
-## 3. [Setup](./setup/)
+
+
+## [Setup](./setup/)
 
 ## [Infrastructure](./setup/infrastructure)
 
