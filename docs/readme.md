@@ -18,6 +18,9 @@
 
 - x86 custom ubuntu server main tooling host
 - SBC & other edge devices downstream
+- dual-boot docs
+- storage docs
+  - DIY NAS on main host
 
 ### [Network](./2_setup/infrastructure/network)
 
@@ -28,7 +31,14 @@
 ### [OS](./2_setup/infrastructure/OS)
 
 - Armbian (ubuntu based) => to customize with packer
+  - Create Custom Image using packer
+    - rock5a:
+      - configure-ssd-boot-device
+    - rpi4b
+      - configure-ss-boot-device
 - Ubuntu Server (Custom Cloud Image)
+  - Create Custom Image using packer
+  - cloud init test environment
 
 ## [Software](./2_setup/software/)
 
