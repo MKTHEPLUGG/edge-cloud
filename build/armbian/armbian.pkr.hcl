@@ -26,6 +26,7 @@ source "qemu" "armbian" {
   ssh_password     = "root"
   ssh_username     = "1234"
   vm_name          = "armbian-edgecloud.img"
+  boot_wait        = "30s"
   qemuargs = [
     ["-m", "2048M"],
     ["-smp", "2"],
