@@ -402,6 +402,7 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
 
 - [Customize MOTD](https://www.putorius.net/custom-motd-login-screen-linux.html)
 - [Original Repo Reference For Packer Config](https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main)
+- [Packer Builder ARM](https://github.com/mkaczanowski/packer-builder-arm/tree/fec4cd5c642a736e0a81c11827d085c7f1a84b0a)
 
 [//]: # (- [Guide]&#40;https://akashrajvanshi.medium.com/step-by-step-guide-creating-a-ready-to-use-ubuntu-cloud-image-on-proxmox-03d057f04fb2&#41;)
 
