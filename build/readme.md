@@ -11,6 +11,8 @@
 
 - Create proper guide 1. Architecture / 2. Setup environment / 3. Detail configuration / 4. Troubleshooting + extra's / 5. Automation via pipelines.
 
+- Figure out how to build arm images on x86 [Link](https://linuxhit.com/build-a-raspberry-pi-image-packer-packer-builder-arm/)
+
 ## Cloud-config Architecture
 
 1. **Software**
