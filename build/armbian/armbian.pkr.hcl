@@ -25,6 +25,7 @@ source "qemu" "armbian" {
   shutdown_command = "echo 'packer' | sudo -S shutdown -P now"
   ssh_password     = "root"
   ssh_username     = "1234"
+  ssh_port         = "4204"
   vm_name          = "armbian-edgecloud.img"
   boot_wait        = "30s"
   qemuargs = [
@@ -34,6 +35,7 @@ source "qemu" "armbian" {
     ["-machine", "virt"], // set to supported machine check with `qemu-system-aarch64 -machine help`, enable kvm acceleration with `,accel=kvm` if available, not available for rock5 armbian 6.1.75
     ["-cpu", "cortex-a57"], // use a supported processor to emulate, find out which ones are supported with `qemu-system-aarch64 -cpu help`
     ["-device", "virtio-net,netdev=user.0,romfile="],  // Disable the ROM file
+    ["-netdev", "user,id=user.0,hostfwd=tcp::4204-:22"], // forward ssh port
   ]
 }
 
