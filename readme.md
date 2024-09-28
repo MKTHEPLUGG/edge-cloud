@@ -36,7 +36,6 @@ This repository covers the entire process—from hardware, network, storage conf
 [//]: # ()
 [//]: # (This documentation covers the entire journey—from hardware configuration to custom OS builds, software setup, and Kubernetes orchestration—designed for anyone looking to recreate or extend such an environment.)
 
----
 
 [//]: # (#DONT REMOVE BELOW -- this one might be better ???????)
 
