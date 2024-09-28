@@ -1,12 +1,13 @@
-## automate image creation with packer
+## automate image creation with packer for ARM64 Images
 
 ### How Packer Works
 Packer uses **builders** to create images, **provisioners** to configure the system (install software, set up users, etc.), and **post-processors** to handle the output (convert the image, compress, etc.). You can define the process in a single JSON or HCL configuration file.
 
+Since we'll be building an arm based image we'll need a compatible host to be able to build it. Anything with an ARM arch will work.
 
 ### Images
 
-You can find the armbian ubuntu based images at this [location](https://fi.mirror.armbian.de/)
+You can find the armbian (ubuntu based) images at this [location](https://fi.mirror.armbian.de/)
 
 
 ### Steps to Automate Image Creation with Packer

@@ -1,6 +1,6 @@
 # WIP - Create proper documentation
 
-**maintain packer specific setup build and template to docs/packer and use the architecture docs for technical docs of the scritps used in packing the images then heree but some docs refering to the official docs in the docs dir**
+**maintain packer specific setup build and template to docs/packer and also the docs of the scripts used in packing the images then here put some docs refering to the official docs in the docs dir**
 
 [//]: # (- https://sekureco42.ch/posts/deploy-ubuntu-24.04-with-autoinstall-to-proxmox/)
 - https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main

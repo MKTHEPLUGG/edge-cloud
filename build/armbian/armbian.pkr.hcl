@@ -32,7 +32,6 @@ source "qemu" "armbian" {
     ["-serial", "mon:stdio"],
     ["-machine", "virt"], // set to supported machine check with `qemu-system-aarch64 -machine help`, enable kvm acceleration with `,accel=kvm` if available, not available for rock5 armbian 6.1.75
     ["-cpu", "cortex-a57"], // use a supported processor to emulate, find out which ones are supported with `qemu-system-aarch64 -cpu help`
-    ["-vnc", "127.0.0.1:5"], // set vnc port manually
     ["-device", "virtio-net,netdev=user.0,romfile="],  // Disable the ROM file
   ]
 }
