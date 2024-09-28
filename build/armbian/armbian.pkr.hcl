@@ -13,6 +13,7 @@ packer {
 source "qemu" "armbian" {
   accelerator      = var.qemu_accelerator
   cd_files         = ["./cloud-init/*"]
+  qemu_binary      = "/usr/bin/qemu-system-aarch64"
   cd_label         = "cidata"
   disk_compression = true
   disk_image       = true
