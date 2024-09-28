@@ -22,7 +22,7 @@ source "qemu" "armbian" {
   iso_url          = var.iso_url
   file_target_extension = "xz"
   file_unarchive_cmd = ["xz", "--decompress", "$ARCHIVE_PATH"]
-  image_build_method: "reuse"
+  image_build_method = "reuse"
   output_directory = "output-armbian"
   shutdown_command = "echo 'packer' | sudo -S shutdown -P now"
   ssh_password     = "root"
