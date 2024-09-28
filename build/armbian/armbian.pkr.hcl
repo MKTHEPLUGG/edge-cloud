@@ -1,6 +1,6 @@
-# https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main
-# when building this template supply a variable for the password for the ubuntu user in the .pkrvars file
-# sudo packer build -var-file=variables.pkrvars.hcl .
+// https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main
+// when building this template supply a variable for the password for the ubuntu user in the .pkrvars file
+// sudo packer build -var-file=variables.pkrvars.hcl .
 packer {
   required_plugins {
     qemu = {
