@@ -22,8 +22,19 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
    sudo apt update -y && sudo apt install packer qemu-system-arm qemu-system-aarch64 qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager genisoimage guestfs-tools
    packer plugins install github.com/hashicorp/qemu
    ```
+   
 
-2. **Create a Packer Template**
+2. find out proper arguments for qemu and if you want to use kvm make sure it's enabled
+
+    ```bash
+    qemu-system-aarch64 -cpu help
+    qemu-system-aarch64 -machine help
+    lsmod | grep kvm
+    # if nothing is found use
+    sudo modprobe kvm
+    ```
+
+3. **Create a Packer Template**
 
    You’ll create a Packer template that defines how to build your image. Here’s an example template in the hcl format for building an Armbian image:
 
@@ -38,6 +49,10 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
    - The **builder** uses QEMU to create the image, starting from the `focal-server-cloudimg-amd64.img`.
    - The **provisioners** run shell commands and copy the Cloud-init `user-data` file into the appropriate directory.
    - The **post-processor** converts the final image to `raw` format.
+
+
+
+
 
 3. **Create the `user-data` File** (Cloud-init Configuration)
 
