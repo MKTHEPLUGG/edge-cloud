@@ -22,8 +22,8 @@ source "qemu" "armbian" {
   iso_url          = var.iso_url
   output_directory = "output-armbian"
   shutdown_command = "echo 'packer' | sudo -S shutdown -P now"
-  ssh_password     = "ubuntu"
-  ssh_username     = "ubuntu"
+  ssh_password     = "root"
+  ssh_username     = "1234"
   vm_name          = "armbian-edgecloud.img"
   qemuargs = [
     ["-m", "2048M"],
