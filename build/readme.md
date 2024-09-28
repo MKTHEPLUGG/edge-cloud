@@ -267,9 +267,10 @@ This method forwards port `5956` from the remote host to your local machine, so 
       ssh -L 5956:127.0.0.1:5956 remote_user@remote_host
       ```
 
-
    2. **Run `vncviewer` Locally**:
       The previous step will open a ssh connection to the remote server while also forwarding the port on the local system. Run the `vncviewer` on your local machine, and connect to `127.0.0.1:5956`.
+
+   3. I'm on windows (yikes) so I'll be using ``MobaXterm`` as vncviewer.
 
 ### 4. **Running VNC in a Desktop Session**
    If you are working in a local environment with a desktop environment but still face this issue, make sure your system has a running graphical environment (e.g., GNOME, KDE, etc.).
