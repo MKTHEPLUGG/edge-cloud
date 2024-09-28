@@ -64,6 +64,7 @@
     - oidc
     - network policies
     - kubeconfig file, create something like azure has for AKS.
+    - policies ( central registry / image webhooks / ... )
 - envoy gateway
 - metalLB
 - reloader
