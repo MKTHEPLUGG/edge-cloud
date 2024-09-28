@@ -20,7 +20,7 @@ source "qemu" "armbian" {
   headless         = true
   iso_checksum     = "sha256:15dd545fb0c829b1e8fd3ddd431cf4e42614baed99910a60f33d50e4caf9cde9"
   iso_url          = var.iso_url
-  output_directory = "output-${var.ubuntu_version}"
+  output_directory = "output-armbian"
   shutdown_command = "echo 'packer' | sudo -S shutdown -P now"
   ssh_password     = "ubuntu"
   ssh_username     = "ubuntu"
