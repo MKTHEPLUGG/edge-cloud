@@ -30,9 +30,9 @@ source "qemu" "armbian" {
     ["-m", "2048M"],
     ["-smp", "2"],
     ["-serial", "mon:stdio"],
-    ["-machine", "virt"], # set to supported machine check with `qemu-system-aarch64 -machine help`, enable kvm acceleration with `,accel=kvm` if available, not available for rock5 armbian 6.1.75
-    ["-cpu", "cortex-a57"], # use a supported processor to emulate, find out which ones are supported with `qemu-system-aarch64 -cpu help`
-    ["-vnc", "127.0.0.1:5"], # set vnc port manually
+    ["-machine", "virt"], // set to supported machine check with `qemu-system-aarch64 -machine help`, enable kvm acceleration with `,accel=kvm` if available, not available for rock5 armbian 6.1.75
+    ["-cpu", "cortex-a57"], // use a supported processor to emulate, find out which ones are supported with `qemu-system-aarch64 -cpu help`
+    ["-vnc", "127.0.0.1:5"], // set vnc port manually
     ["-device", "virtio-net,netdev=user.0,romfile="],  // Disable the ROM file
   ]
 }
@@ -41,8 +41,8 @@ build {
   sources = ["source.qemu.armbian"]
 
   provisioner "file" {
-  source      = "scripts/.p10k.zsh"       # Local path relative to Packer host
-  destination = "~/.p10k.zsh"             # copy to ubuntu user home dir
+  source      = "scripts/.p10k.zsh"       // Local path relative to Packer host
+  destination = "~/.p10k.zsh"             // copy to ubuntu user home dir
   }
 
 
