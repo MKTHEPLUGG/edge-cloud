@@ -30,9 +30,10 @@ source "qemu" "armbian" {
     ["-m", "2048M"],
     ["-smp", "2"],
     ["-serial", "mon:stdio"],
-    ["-machine", "virt,accel=kvm"],
+    ["-machine", "virt,accel=kvm"], # set to supported machine check with `qemu-system-aarch64 -machine help`, enable kvm acceleration if available
     ["-cpu", "host"],
-    ["-vnc", "127.0.0.1:5"]
+    ["-vnc", "127.0.0.1:5"], # set vnc port manually
+    ["-device", "virtio-net,netdev=user.0,romfile="],  // Disable the ROM file
   ]
 }
 
