@@ -30,6 +30,9 @@ source "qemu" "armbian" {
     ["-m", "2048M"],
     ["-smp", "2"],
     ["-serial", "mon:stdio"],
+    ["-machine", "virt,accel=kvm"],
+    ["-cpu", "host"],
+    ["-vnc", "127.0.0.1:5"]
   ]
 }
 

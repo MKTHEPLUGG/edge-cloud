@@ -30,7 +30,7 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
    You’ll create a Packer template that defines how to build your image. Here’s an example template in the hcl format for building an Armbian image:
 
    ````hcl
-        TO BE REFINED
+        TO BE REFINED GET FROM UBUNTU CLOUD IMAGE
 
    ````
 
