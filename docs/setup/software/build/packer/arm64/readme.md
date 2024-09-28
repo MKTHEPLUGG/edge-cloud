@@ -6,7 +6,7 @@ Packer uses **builders** to create images, **provisioners** to configure the sys
 
 ### Images
 
-You can find the ubuntu cloud images at this [location](https://cloud-images.ubuntu.com/releases/)
+You can find the armbian ubuntu based images at this [location](https://fi.mirror.armbian.de/)
 
 
 ### Steps to Automate Image Creation with Packer
