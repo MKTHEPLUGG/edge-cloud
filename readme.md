@@ -50,7 +50,6 @@ This repository covers the entire process—from hardware, network, storage conf
 [//]: # ()
 [//]: # (The unique strength of this project lies in its decentralized architecture: scalability is achieved by adding more low-powered servers, making it a cost-effective alternative to expensive public cloud services. The ultimate goal is to create a service mesh that spans multiple edge clusters, demonstrating the power of distributed cloud services at a fraction of the cost.)
 
----
 
 ## Sections
 
