@@ -20,7 +20,7 @@ source "qemu" "armbian" {
   disk_size        = "10G"
   headless         = true
   iso_checksum     = "sha256:15dd545fb0c829b1e8fd3ddd431cf4e42614baed99910a60f33d50e4caf9cde9"
-  iso_url          = "file://Armbian_24.8.1_Rock-5a_noble_vendor_6.1.75_minimal.img"
+  iso_url          = "file:/Armbian_24.8.1_Rock-5a_noble_vendor_6.1.75_minimal.img"
   output_directory = "output-armbian"
   shutdown_command = "echo 'packer' | sudo -S shutdown -P now"
   ssh_password     = "root"
