@@ -31,7 +31,6 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
 
    ````hcl
         TO BE REFINED GET FROM UBUNTU CLOUD IMAGE
-
    ````
 
 

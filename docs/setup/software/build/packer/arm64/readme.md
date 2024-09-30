@@ -1,6 +1,6 @@
 ## automate image creation with packer for ARM64 Images
 
-### How Packer Works
+### How Packer Works for ARM64
 Packer uses **builders** to create images, **provisioners** to configure the system (install software, set up users, etc.), and **post-processors** to handle the output (convert the image, compress, etc.). You can define the process in a single JSON or HCL configuration file.
 
 Since we'll be building an arm based image we'll need a compatible host to be able to build it. Anything with an ARM arch will work.
@@ -35,7 +35,31 @@ You can find the armbian (ubuntu based) images at this [location](https://fi.mir
     sudo modprobe kvm
     ```
 
-3. **Create a Packer Template**
+3. Verify the Image Format
+   ````bash
+   qemu-img info path/to/your/image
+   ````
+
+3. Use QEMU to Boot and Access the Shell
+
+   Alternatively, if you prefer to boot the image directly and access the shell from a running system, you can use QEMU:
+
+   ```bash
+   sudo qemu-system-aarch64 -m 2048 -cpu cortex-a72 \
+     -M virt \
+     -drive file=~/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img,format=raw \
+     -serial mon:stdio \
+     -netdev user,id=user.0 \
+     -device virtio-net,netdev=user.0,romfile=
+
+   sudo qemu-system-aarch64 -m 2048 -cpu cortex-a72 \
+     -M virt \
+     -drive file=./output-noble/ubuntu-noble.qcow2,format=qcow2 \
+     -nographic -serial mon:stdio
+
+   ```
+
+4. **Create a Packer Template**
 
    You’ll create a Packer template that defines how to build your image. Here’s an example template in the hcl format for building an Armbian image:
 
