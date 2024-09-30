@@ -1,5 +1,7 @@
 # Use Armbian Build framework for custom image
 
+https://forum.armbian.com/topic/38258-running-self-build-image-on-qemu-arm64/ => docs to build on qemu and how to boot with u boot new method
+
 Armbian doesn't support cloud-init by default like the cloud images of ubuntu do, we'll have to use the build framework to create our custom image. first figure out how it works then automate it via pipelines.
 
 https://forum.armbian.com/topic/14616-cloud-init/ => **DEPRECATED** cloud init seems to have been added in:
@@ -93,37 +95,37 @@ Once the configuration is ready, proceed with building the image.
    
 fix with below
 
-[//]: # (3. Use QEMU to Boot and Access the Shell [DOCS]&#40;https://gist.github.com/wuhanstudio/e9b37b07312a52ceb5973aacf580c453&#41;)
+3. Use QEMU to Boot and Access the Shell [DOCS](https://gist.github.com/wuhanstudio/e9b37b07312a52ceb5973aacf580c453)
 
-[//]: # ()
-[//]: # (   Alternatively, if you prefer to boot the image directly and access the shell from a running system, you can use QEMU:)
 
-[//]: # ()
-[//]: # (   ```bash)
+   Alternatively, if you prefer to boot the image directly and access the shell from a running system, you can use QEMU:
 
-[//]: # (   sudo qemu-system-aarch64 -m 2048 -cpu cortex-a72 \)
 
-[//]: # (     -M virt \)
+   ```bash
 
-[//]: # (     -drive file=~/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img,format=raw \)
+   sudo qemu-system-aarch64 -m 2048 -cpu cortex-a72 \
 
-[//]: # (     -serial mon:stdio \)
+     -M virt \
 
-[//]: # (     -netdev user,id=user.0 \)
+     -drive file=~/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img,format=raw \
 
-[//]: # (     -device virtio-net,netdev=user.0,romfile=)
+     -serial mon:stdio \
 
-[//]: # ()
-[//]: # (   sudo qemu-system-aarch64 -m 2048 -cpu cortex-a72 \)
+     -netdev user,id=user.0 \
 
-[//]: # (     -M virt \)
+     -device virtio-net,netdev=user.0,romfile=
 
-[//]: # (     -drive file=./output-noble/ubuntu-noble.qcow2,format=qcow2 \)
 
-[//]: # (     -nographic -serial mon:stdio)
+   sudo qemu-system-aarch64 -m 2048 -cpu cortex-a72 \
 
-[//]: # ()
-[//]: # (   ```)
+     -M virt \
+
+     -drive file=./output-noble/ubuntu-noble.qcow2,format=qcow2 \
+
+     -nographic -serial mon:stdio
+
+
+   ```
 
 #### 5. **Flash the Image**
 
@@ -438,6 +440,95 @@ sudo umount /mnt/armbian
 
 Let me know how it goes or if you encounter any issues!
 
+
+# old way seems to be what we need ?
+
+It looks like you have everything you need to boot the system using QEMU. Here’s how you can use these files to boot your Armbian image for the Rock5A board in QEMU.
+
+### Files You Have in `/boot`:
+
+- **`Image`**: This is the kernel image.
+- **`dtb-6.1.75-vendor-rk35xx`**: This is the directory containing device tree blobs (DTBs), which describe the hardware.
+- **`uInitrd` or `initrd.img-6.1.75-vendor-rk35xx`**: This is the initial RAM disk used during boot.
+
+### Booting the Image in QEMU
+
+Now, you need to set up the QEMU command to boot the image using the extracted kernel, DTB, and initrd.
+
+#### Step 1: **Identify the Correct DTB**
+
+You’ll need to identify the correct device tree file (`.dtb`) for your Rock5A board. Since you have a directory `dtb-6.1.75-vendor-rk35xx`, list the contents:
+
+```bash
+ls /mnt/armbian/boot/dtb-6.1.75-vendor-rk35xx/rockchip
+ls /mnt/armbian/boot/dtb-6.1.75-vendor-rk35xx/rockchip | grep rock
+cp /mnt/armbian/boot/dtb-6.1.75-vendor-rk35xx/rockchip/rk3588s-rock-5a.dtb
+```
+
+Look for a `.dtb` file that corresponds to the Rock5A board (it might be named `rk3588-rock5a.dtb` or something similar).
+
+#### Step 2: **Prepare the QEMU Command**
+
+https://gist.github.com/wuhanstudio/e9b37b07312a52ceb5973aacf580c453
+https://forum.armbian.com/topic/7547-run-armbian-into-qemu/
+
+Here’s how you can construct the QEMU command to boot the Armbian image using the extracted files.
+
+```bash
+qemu-system-aarch64 \
+    -machine virt -cpu cortex-a72 -m 2048 \
+    -serial mon:stdio \
+    -kernel /mnt/armbian/boot/Image \
+    -dtb /mnt/armbian/boot/dtb-6.1.75-vendor-rk35xx/rockchip/rk3588s-rock-5a.dtb \
+    -initrd /mnt/armbian/boot/initrd.img-6.1.75-vendor-rk35xx \
+    -drive file=/home/sysadmin/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img,format=raw \
+    -append "console=ttyAMA0,115200 root=/dev/vda1" \
+    -netdev user,id=user.0 \
+    -device virtio-net,netdev=user.0,romfile=
+```
+
+**NEED TO FIGURE OUT HOW TO BOOT IT LOL**
+https://www.google.com/search?client=firefox-b-d&q=boot+armbian+with+qemu
+
+
+     
+
+
+### Explanation:
+
+- **`-kernel /mnt/armbian/boot/Image`**: This points to the kernel image (`Image`).
+- **`-dtb /mnt/armbian/boot/dtb-6.1.75-vendor-rk35xx/rockchip/rk3588-rock5a.dtb`**: This points to the correct DTB file for the Rock5A board (replace this path with the correct DTB if needed).
+- **`-initrd /mnt/armbian/boot/initrd.img-6.1.75-vendor-rk35xx`**: This points to the initial RAM disk.
+- **`-drive file=/home/sysadmin/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img,format=raw`**: This is the image file with the root filesystem.
+- **`-append "console=ttyAMA0,115200 root=/dev/vda1"`**: This passes kernel parameters, including:
+  - `console=ttyAMA0,115200`: Redirects the console to the serial interface.
+  - `root=/dev/vda1`: Specifies the root filesystem on the first virtual disk (`/dev/vda1`).
+
+- **`-nographic`**: Disables graphical output and routes everything to the terminal.
+
+#### Step 3: **Run QEMU**
+
+After running the above command, QEMU should boot the Armbian image for the Rock5A board using the kernel, DTB, and initrd you extracted. You should see the boot process in the terminal.
+
+#### Step 4: **Connect via Serial Console**
+
+Since you’re using `-serial stdio`, the serial output should be redirected to your terminal, allowing you to see the boot process and interact with U-Boot (if applicable) or the kernel.
+
+### Optional: Networking
+
+If you want to enable networking (such as SSH access), you can add port forwarding using the `-netdev` and `-device` options:
+
+```bash
+-netdev user,id=net0,hostfwd=tcp::2022-:22 -device e1000,netdev=net0
+```
+
+This will forward port 22 from the guest VM to port 2022 on your host, allowing you to SSH into the guest using:
+
+```bash
+ssh -p 2022 user@localhost
+```
+
+Let me know if you need further assistance or encounter any issues during the boot process!
 
 [//]: # (OLD WAY)
 [//]: # (To include `cloud-init` in the image, you’ll modify the Armbian build configuration files.)
