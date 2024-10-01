@@ -177,130 +177,225 @@ In order to include your custom Cloud-Init extension during the build process, y
 
    This function will copy your `user-data`, `meta-data`, and `network-config` files to the appropriate locations inside the image during the build process.
 
-#### 4. **Build the Image**
+[//]: # (#### 4. **Build the Image**)
 
-Once your patch is set up, you can build the image using the Armbian build framework as normal:
+[//]: # ()
+[//]: # (Once your patch is set up, you can build the image using the Armbian build framework as normal:)
 
-1. Run the build process:
-   ```bash
-   sudo ./compile.sh
-   ```
+[//]: # ()
+[//]: # (1. Run the build process:)
 
-2. During the build process:
-   - Select the **Rock5A board**.
-   - Choose the **Ubuntu-based OS** you want to use.
-   - Select **Server** image type for a minimal configuration.
-   - The build will pick up your custom Cloud-Init extension and include it in the final image.
+[//]: # (   ```bash)
 
-#### 5. **Use Packer to Add Additional Customizations**
+[//]: # (   sudo ./compile.sh)
 
-Once the image is built with Cloud-Init already pre-configured, you can further customize it using Packer. You can set up a Packer template to add extra software or run scripts on the first boot.
+[//]: # (   ```)
 
-1. **Create a Packer Template**:
-   Example Packer template:
-   ```json
-   {
-     "variables": {
-       "image": "output/images/Armbian_Rock5A.img"
-     },
-     "builders": [
-       {
-         "type": "qemu",
-         "accelerator": "kvm",
-         "format": "raw",
-         "ssh_username": "michiel",
-         "ssh_private_key_file": "~/.ssh/id_rsa",
-         "image_path": "{{user `image`}}",
-         "disk_interface": "virtio",
-         "communicator": "ssh"
-       }
-     ],
-     "provisioners": [
-       {
-         "type": "shell",
-         "inline": [
-           "sudo apt-get update",
-           "sudo apt-get install -y docker.io",
-           "echo 'Docker installed and ready!'"
-         ]
-       }
-     ]
-   }
-   ```
+[//]: # ()
+[//]: # (2. During the build process:)
 
-2. **Run Packer**:
-   Run Packer to further customize the image:
-   ```bash
-   packer build -var "image=output/images/Armbian_Rock5A.img" your_packer_template.json
-   ```
+[//]: # (   - Select the **Rock5A board**.)
 
-This will allow you to provision additional software on top of the base image that was created using your custom Cloud-Init configuration.
+[//]: # (   - Choose the **Ubuntu-based OS** you want to use.)
 
-### Summary
+[//]: # (   - Select **Server** image type for a minimal configuration.)
 
-- **Create a custom Cloud-Init extension**: In `userpatches/extensions/cloud-init` and customize the Cloud-Init configuration (`user-data`, `meta-data`, `network-config`).
-- **Modify `userpatches/lib.config`** to enable your extension during the build process.
-- **Run the Armbian build framework** to create the image with Cloud-Init baked in.
-- **Use Packer** for further customizations (e.g., installing software or running custom scripts).
+[//]: # (   - The build will pick up your custom Cloud-Init extension and include it in the final image.)
 
-This workflow allows you to organize your custom Cloud-Init changes in the `userpatches` directory, keeping your changes clean and manageable. Let me know if you need more details on any step!
+[//]: # ()
+[//]: # (#### 5. **Use Packer to Add Additional Customizations**)
 
-# Differences in new and old boot method
+[//]: # ()
+[//]: # (Once the image is built with Cloud-Init already pre-configured, you can further customize it using Packer. You can set up a Packer template to add extra software or run scripts on the first boot.)
 
-It sounds like you're working with a newer Armbian image setup where everything is contained in a single partition. The command you're referring to from 2024 includes the use of **U-Boot**, **QEMU**, and a single-partition setup, which simplifies things compared to older multi-partition images.
+[//]: # ()
+[//]: # (1. **Create a Packer Template**:)
 
-Let’s break down the key differences and how you can adapt this for your current setup with the Rock5A.
+[//]: # (   Example Packer template:)
 
-### Differences Between the 2021 and 2024 QEMU Commands
+[//]: # (   ```json)
 
-1. **Single Partition Setup**:
-   - In the newer images, Armbian may place everything (bootloader, kernel, root filesystem) into a single partition, meaning there’s no need to separately mount the boot partition to access the kernel, `dtb`, or `initrd`.
-   - This simplifies the command since the single image contains everything.
+[//]: # (   {)
 
-2. **U-Boot Directly with `-bios`**:
-   - In the 2024 command, U-Boot is directly provided using the `-bios` argument, which allows QEMU to use the U-Boot binary as the bootloader without needing to specify a kernel or `dtb` separately.
-   - **Older Method**: In 2021, you had to manually specify the kernel, `dtb`, and `initrd`. With U-Boot handling the boot process, this is not needed anymore.
+[//]: # (     "variables": {)
 
-3. **Using AHCI (SATA) and IDE Disk**:
-   - The newer QEMU command is setting up a disk interface using **AHCI (Advanced Host Controller Interface)** with an **IDE hard drive** attached. This mimics a more typical SATA disk interface.
-   - This can be helpful for emulating a more realistic system setup as seen on physical boards.
+[//]: # (       "image": "output/images/Armbian_Rock5A.img")
 
-### Adjusted QEMU Command for Your Rock5A Setup
+[//]: # (     },)
 
-If you’re using a U-Boot image, and your Armbian image is packed into a single partition (like in the 2024 command), you can use a similar approach.
+[//]: # (     "builders": [)
 
-Here’s a QEMU command adapted for your Rock5A setup:
+[//]: # (       {)
 
-```bash
-qemu-system-aarch64 \
-    -machine virt -cpu cortex-a72 -m 2048 \
-    -netdev user,id=net0 -device e1000,netdev=net0 \
-    -serial stdio \
-    -bios Armbian-unofficial_24.5.0-trunk_Rock-5a_bookworm_current_6.6.29_minimal.u-boot.bin \
-    -drive if=none,file=Armbian-unofficial_24.5.0-trunk_Rock-5a_bookworm_current_6.6.29_minimal.img.qcow2,id=mydisk \
-    -device ich9-ahci,id=ahci \
-    -device ide-hd,drive=mydisk,bus=ahci.0
-```
+[//]: # (         "type": "qemu",)
 
-### Key Adjustments:
-1. **`-bios`**: This points to the U-Boot binary (`u-boot.bin`). This ensures that U-Boot is the bootloader, and it will handle loading the kernel and other components from the image.
-   
-2. **`-drive`**: The `-drive` option is used with `if=none` to specify the Armbian image file. This file contains both the kernel and root filesystem.
-   
-3. **`-device ich9-ahci` and `-device ide-hd`**: These are used to emulate a SATA/IDE disk interface. It gives more flexibility in how the storage is emulated inside QEMU, allowing for better compatibility with certain OSes that expect specific disk setups.
+[//]: # (         "accelerator": "kvm",)
 
-4. **Networking**: The `-netdev user` and `-device e1000` are used to configure networking with a simple user-mode networking stack, which allows outbound traffic from the guest.
+[//]: # (         "format": "raw",)
 
-### Additional Notes:
-- **No Need to Specify Kernel, DTB, or Initrd**: Since U-Boot is provided via the `-bios` option, it will handle booting the system from the image, so there’s no need to extract and manually specify the kernel, `dtb`, or `initrd` as was required in the older method.
-- **Serial Output**: `-serial stdio` will redirect the serial output to your terminal so you can see the U-Boot and kernel messages.
+[//]: # (         "ssh_username": "michiel",)
 
-### Benefits of the Newer Setup:
-- **Simplified Process**: U-Boot takes care of loading the kernel, device tree, and other necessary components from the image, which simplifies the QEMU command and reduces manual steps.
-- **Single Partition**: Since everything is in a single partition, you don’t need to manage multiple partitions for boot and root filesystem, making image management easier.
+[//]: # (         "ssh_private_key_file": "~/.ssh/id_rsa",)
 
-### What to Watch Out For:
-- **BIOS and Image Compatibility**: Ensure that the U-Boot binary (`.u-boot.bin`) matches the Armbian image version. Incompatibilities could result in U-Boot failing to load the kernel correctly.
+[//]: # (         "image_path": "{{user `image`}}",)
 
-Let me know if you encounter any issues or if you need further adjustments to the setup!
+[//]: # (         "disk_interface": "virtio",)
+
+[//]: # (         "communicator": "ssh")
+
+[//]: # (       })
+
+[//]: # (     ],)
+
+[//]: # (     "provisioners": [)
+
+[//]: # (       {)
+
+[//]: # (         "type": "shell",)
+
+[//]: # (         "inline": [)
+
+[//]: # (           "sudo apt-get update",)
+
+[//]: # (           "sudo apt-get install -y docker.io",)
+
+[//]: # (           "echo 'Docker installed and ready!'")
+
+[//]: # (         ])
+
+[//]: # (       })
+
+[//]: # (     ])
+
+[//]: # (   })
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (2. **Run Packer**:)
+
+[//]: # (   Run Packer to further customize the image:)
+
+[//]: # (   ```bash)
+
+[//]: # (   packer build -var "image=output/images/Armbian_Rock5A.img" your_packer_template.json)
+
+[//]: # (   ```)
+
+[//]: # ()
+[//]: # (This will allow you to provision additional software on top of the base image that was created using your custom Cloud-Init configuration.)
+
+[//]: # ()
+[//]: # (### Summary)
+
+[//]: # ()
+[//]: # (- **Create a custom Cloud-Init extension**: In `userpatches/extensions/cloud-init` and customize the Cloud-Init configuration &#40;`user-data`, `meta-data`, `network-config`&#41;.)
+
+[//]: # (- **Modify `userpatches/lib.config`** to enable your extension during the build process.)
+
+[//]: # (- **Run the Armbian build framework** to create the image with Cloud-Init baked in.)
+
+[//]: # (- **Use Packer** for further customizations &#40;e.g., installing software or running custom scripts&#41;.)
+
+[//]: # ()
+[//]: # (This workflow allows you to organize your custom Cloud-Init changes in the `userpatches` directory, keeping your changes clean and manageable. Let me know if you need more details on any step!)
+
+[//]: # ()
+[//]: # (# Differences in new and old boot method)
+
+[//]: # ()
+[//]: # (It sounds like you're working with a newer Armbian image setup where everything is contained in a single partition. The command you're referring to from 2024 includes the use of **U-Boot**, **QEMU**, and a single-partition setup, which simplifies things compared to older multi-partition images.)
+
+[//]: # ()
+[//]: # (Let’s break down the key differences and how you can adapt this for your current setup with the Rock5A.)
+
+[//]: # ()
+[//]: # (### Differences Between the 2021 and 2024 QEMU Commands)
+
+[//]: # ()
+[//]: # (1. **Single Partition Setup**:)
+
+[//]: # (   - In the newer images, Armbian may place everything &#40;bootloader, kernel, root filesystem&#41; into a single partition, meaning there’s no need to separately mount the boot partition to access the kernel, `dtb`, or `initrd`.)
+
+[//]: # (   - This simplifies the command since the single image contains everything.)
+
+[//]: # ()
+[//]: # (2. **U-Boot Directly with `-bios`**:)
+
+[//]: # (   - In the 2024 command, U-Boot is directly provided using the `-bios` argument, which allows QEMU to use the U-Boot binary as the bootloader without needing to specify a kernel or `dtb` separately.)
+
+[//]: # (   - **Older Method**: In 2021, you had to manually specify the kernel, `dtb`, and `initrd`. With U-Boot handling the boot process, this is not needed anymore.)
+
+[//]: # ()
+[//]: # (3. **Using AHCI &#40;SATA&#41; and IDE Disk**:)
+
+[//]: # (   - The newer QEMU command is setting up a disk interface using **AHCI &#40;Advanced Host Controller Interface&#41;** with an **IDE hard drive** attached. This mimics a more typical SATA disk interface.)
+
+[//]: # (   - This can be helpful for emulating a more realistic system setup as seen on physical boards.)
+
+[//]: # ()
+[//]: # (### Adjusted QEMU Command for Your Rock5A Setup)
+
+[//]: # ()
+[//]: # (If you’re using a U-Boot image, and your Armbian image is packed into a single partition &#40;like in the 2024 command&#41;, you can use a similar approach.)
+
+[//]: # ()
+[//]: # (Here’s a QEMU command adapted for your Rock5A setup:)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (qemu-system-aarch64 \)
+
+[//]: # (    -machine virt -cpu cortex-a72 -m 2048 \)
+
+[//]: # (    -netdev user,id=net0 -device e1000,netdev=net0 \)
+
+[//]: # (    -serial stdio \)
+
+[//]: # (    -bios Armbian-unofficial_24.5.0-trunk_Rock-5a_bookworm_current_6.6.29_minimal.u-boot.bin \)
+
+[//]: # (    -drive if=none,file=Armbian-unofficial_24.5.0-trunk_Rock-5a_bookworm_current_6.6.29_minimal.img.qcow2,id=mydisk \)
+
+[//]: # (    -device ich9-ahci,id=ahci \)
+
+[//]: # (    -device ide-hd,drive=mydisk,bus=ahci.0)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (### Key Adjustments:)
+
+[//]: # (1. **`-bios`**: This points to the U-Boot binary &#40;`u-boot.bin`&#41;. This ensures that U-Boot is the bootloader, and it will handle loading the kernel and other components from the image.)
+
+[//]: # (   )
+[//]: # (2. **`-drive`**: The `-drive` option is used with `if=none` to specify the Armbian image file. This file contains both the kernel and root filesystem.)
+
+[//]: # (   )
+[//]: # (3. **`-device ich9-ahci` and `-device ide-hd`**: These are used to emulate a SATA/IDE disk interface. It gives more flexibility in how the storage is emulated inside QEMU, allowing for better compatibility with certain OSes that expect specific disk setups.)
+
+[//]: # ()
+[//]: # (4. **Networking**: The `-netdev user` and `-device e1000` are used to configure networking with a simple user-mode networking stack, which allows outbound traffic from the guest.)
+
+[//]: # ()
+[//]: # (### Additional Notes:)
+
+[//]: # (- **No Need to Specify Kernel, DTB, or Initrd**: Since U-Boot is provided via the `-bios` option, it will handle booting the system from the image, so there’s no need to extract and manually specify the kernel, `dtb`, or `initrd` as was required in the older method.)
+
+[//]: # (- **Serial Output**: `-serial stdio` will redirect the serial output to your terminal so you can see the U-Boot and kernel messages.)
+
+[//]: # ()
+[//]: # (### Benefits of the Newer Setup:)
+
+[//]: # (- **Simplified Process**: U-Boot takes care of loading the kernel, device tree, and other necessary components from the image, which simplifies the QEMU command and reduces manual steps.)
+
+[//]: # (- **Single Partition**: Since everything is in a single partition, you don’t need to manage multiple partitions for boot and root filesystem, making image management easier.)
+
+[//]: # ()
+[//]: # (### What to Watch Out For:)
+
+[//]: # (- **BIOS and Image Compatibility**: Ensure that the U-Boot binary &#40;`.u-boot.bin`&#41; matches the Armbian image version. Incompatibilities could result in U-Boot failing to load the kernel correctly.)
+
+[//]: # ()
+[//]: # (Let me know if you encounter any issues or if you need further adjustments to the setup!)
 

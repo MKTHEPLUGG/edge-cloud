@@ -93,11 +93,13 @@ Once the configuration is ready, proceed with building the image.
     BUILD_DESKTOP=no \
     KERNEL_CONFIGURE=no
     ````
-   
-fix with below
+
 
 
 ---
+
+
+**MOVE THIS SECTION TO PACKER ARM64**
 
 3. Use QEMU to Boot and Access the Shell [DOCS](https://gist.github.com/wuhanstudio/e9b37b07312a52ceb5973aacf580c453)
 
