@@ -23,9 +23,15 @@ if [ ! -d "$ENV/build/userpatches/extensions/cloud-init" ]; then
   mkdir -p "$ENV/build/userpatches/extensions"
   cp -r "$ENV/rock5a/cloud-init" "$ENV/build/userpatches/extensions/"
   ls -al "$ENV/build/userpatches/extensions/cloud-init"
+
+  # TODO: Improve the printing of the config to the terminal
+  echo "Configuration that will be applied:"
+  cat "$ENV/rock5a/cloud-init/defaults/meta-data"
+  cat "$ENV/rock5a/cloud-init/defaults/user-data"  # Adjust to point to the correct config file inside the cloud-init directory
 else
   echo "Directory $ENV/build/userpatches/extensions/cloud-init already exists. Skipping copy."
 fi
+
 
 
 # next run the compile command with the required env vars, I'll provide the ones for noble rock5a
