@@ -9,8 +9,9 @@ sudo apt install git curl zip unzip rsync bc -y
 git clone https://github.com/armbian/build
 
 # pack our cloud-init config into it
-mkdir "$ENV"/build/userpatches/
-mkdir "$ENV"/build/userpatches/extensions
+cd "$ENV"/build
+mkdir "$ENV"/userpatches
+mkdir "$ENV"/userpatches/extensions
 cp -r "$ENV"/rock5a/cloud-init "$ENV"/build/userpatches/extensions/
 
 # next run the compile command with the required env vars, I'll provide the ones for noble rock5a
