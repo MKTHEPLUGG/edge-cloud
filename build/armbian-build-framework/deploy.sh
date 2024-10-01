@@ -6,13 +6,26 @@ ENV=$(pwd)
 sudo apt install git curl zip unzip rsync bc -y
 
 # clone framework
-git clone https://github.com/armbian/build
+# Check if the directory exists
+if [ ! -d "$ENV/build" ]; then
+  echo "Directory $ENV/build does not exist. Cloning repository..."
+  git clone https://github.com/armbian/build
+else
+  echo "Directory $ENV/build already exists. Skipping clone."
+fi
+
 
 # pack our cloud-init config into it
-cd "$ENV"/build/
-mkdir -p userpatches/extensions
-cd ..
-cp -r "$ENV"/rock5a/cloud-init "$ENV"/build/userpatches/extensions/
+
+# Check if the target directory exists, if not create the parent dirs and copy
+if [ ! -d "$ENV/build/userpatches/extensions/cloud-init" ]; then
+  echo "Directory $ENV/build/userpatches/extensions/cloud-init does not exist. Creating and copying..."
+  mkdir -p "$ENV/build/userpatches/extensions"
+  cp -r "$ENV/rock5a/cloud-init" "$ENV/build/userpatches/extensions/"
+else
+  echo "Directory $ENV/build/userpatches/extensions/cloud-init already exists. Skipping copy."
+fi
+
 
 # next run the compile command with the required env vars, I'll provide the ones for noble rock5a
 
