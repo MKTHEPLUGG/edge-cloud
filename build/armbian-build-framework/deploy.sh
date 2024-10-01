@@ -12,6 +12,7 @@ git clone https://github.com/armbian/build
 cd "$ENV"/build
 mkdir "$ENV"/userpatches
 mkdir "$ENV"/userpatches/extensions
+cd ..
 cp -r "$ENV"/rock5a/cloud-init "$ENV"/build/userpatches/extensions/
 
 # next run the compile command with the required env vars, I'll provide the ones for noble rock5a
