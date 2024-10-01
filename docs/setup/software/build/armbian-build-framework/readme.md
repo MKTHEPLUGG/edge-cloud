@@ -56,7 +56,7 @@ To include `cloud-init` in the image, you’ll modify the Armbian build configur
      ```
 
    
-   - there is a [native](https://github.com/armbian/build/pull/6205/files) way that has been added recently. Create a Directory for this with the defaults and pack it into the image.
+   - Use the [native](https://github.com/armbian/build/pull/6205/files) way that has been added recently. Create a Directory for this with the defaults and pack it into the image.
      ```bash
      mkdir -p userpatches/extensions
      cp -r extensions/cloud-init userpatches/extensions/cloud-init
