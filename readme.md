@@ -75,3 +75,9 @@ This folder holds all the kubernetes manifest files used in the cluster-mode clu
 - tryout istio
 - look into how kubeEdge handles stuff like network traffic between the clusters.
 - figure out wake on lan to save on costs.
+
+
+## Reference
+
+just read this article the other day, this is quite comparable to our use case, use as inspiration:
+- [Similar Project](https://itnext.io/two-node-ha-kubernetes-for-edge-computing-cost-savings-9a009eb076ac)
