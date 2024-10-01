@@ -1,5 +1,9 @@
 # Use Armbian Build framework for custom image
 
+seems to me like the best way is not to try boot it via qemu and use packer but just use the build framework for everything, you can use the userpatches/customize-image.sh https://docs.armbian.com/Developer-Guide_User-Configurations/
+
+
+
 https://forum.armbian.com/topic/38258-running-self-build-image-on-qemu-arm64/ => docs to build on qemu and how to boot with u boot new method
 
 Armbian doesn't support cloud-init by default like the cloud images of ubuntu do, we'll have to use the build framework to create our custom image. first figure out how it works then automate it via pipelines.
@@ -64,10 +68,15 @@ To include `cloud-init` in the image, you’ll modify the Armbian build configur
    - Add the following line to ensure the `cloud-init` extension is enabled during the build process:
      ```bash
      EXTENSIONS="$EXTENSIONS cloud-init"
+     
+     # Enable U-Boot for Rock5A
+     BOOT_SUPPORT=yes
+     BUILD_UBOOT=yes
+
      ```
 
    
-   - there is a more [native](https://github.com/armbian/build/pull/6205/files) way that has been added recently. Create a Directory for this with the defaults and pack it into the image.
+   - there is a [native](https://github.com/armbian/build/pull/6205/files) way that has been added recently. Create a Directory for this with the defaults and pack it into the image.
      ```bash
      mkdir -p userpatches/extensions
      cp -r extensions/cloud-init userpatches/extensions/cloud-init
@@ -151,6 +160,9 @@ If you run into issues:
   ```bash
   sudo cloud-init status
   ```
+---
+
+# everything below is related to taking the image and trying to pack it with packer & qemu, this might just be stupid, above we should explore to just use the framework for everything.
 
 ### Alternatives (Using Packer):
 If you want to avoid manually modifying the build framework, you could also use a tool like **Packer** to customize the existing prebuilt image by adding `cloud-init` and other modifications. However, using the Armbian Build Framework ensures better compatibility with the Rock5A board.
@@ -182,10 +194,10 @@ Let me know if you need more detailed help with any of these steps!
 [//]: # (     -device virtio-net,netdev=user.0,romfile=)
 
 
+---
 
 
-
-# boot armbian with new methdo
+# boot armbian with new method
 
 To extract the U-Boot binary (`u-boot.bin`) from your Armbian image and set up QEMU to boot it with U-Boot, here's a full guide to walk you through the process:
 
@@ -487,13 +499,94 @@ qemu-system-aarch64 \
     -device virtio-net,netdev=user.0,romfile=
 ```
 
+qemu-system-aarch64 -m 1G,slots=3,maxmem=4G \
+                            -machine virt -cpu cortex-a72 -dtb /mnt/armbian/boot/dtb-6.1.75-vendor-rk35xx/rockchip/rk3588s-rock-5a.dtb \
+                            -smp 4 \
+                            -kernel /mnt/armbian/boot/vmlinuz-6.1.75-vendor-rk35xx -initrd /mnt/armbian/boot/initrd.img-6.1.75-vendor-rk35xx -append "earlyprintk #loglevel=8 earlycon=uart8250,mmio32,0x1c28000,115200n8 console=ttyS0 root=/dev/mmcblk0p1" \
+                            -no-reboot -nographic -serial stdio -monitor none \
+                            -drive format=raw,file=/home/sysadmin/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img \
+                            -netdev user,id=net0,hostfwd=tcp::50022-:22 \
+                            -device virtio-net-pci,netdev=net0
+
+qemu-system-aarch64 -m 1G,slots=3,maxmem=4G \
+                            -machine virt -cpu cortex-a72 -dtb /mnt/armbian/boot/dtb-6.1.75-vendor-rk35xx/rockchip/rk3588s-rock-5a.dtb \
+                            -smp 4 \
+                            -kernel /mnt/armbian/boot/vmlinuz-6.1.75-vendor-rk35xx -initrd /mnt/armbian/boot/initrd.img-6.1.75-vendor-rk35xx -append "earlyprintk #loglevel=8 earlycon=uart8250,mmio32,0x1c28000,115200n8 console=ttyS0 root=/dev/mmcblk0p1" \
+                            -no-reboot -nographic -serial stdio -monitor none \
+                            -drive format=raw,file=/home/sysadmin/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img \
+                            -netdev user,id=net0,hostfwd=tcp::50022-:22 \
+                            -device virtio-net-pci,netdev=net0,romfile=""
+
+
+qemu-system-aarch64 -m 1G,slots=3,maxmem=4G \
+                            -machine virt -cpu cortex-a72 -dtb /mnt/armbian/boot/dtb-6.1.75-vendor-rk35xx/rockchip/rk3588s-rock-5a.dtb \
+                            -smp 4 \
+                            -kernel /mnt/armbian/boot/vmlinuz-6.1.75-vendor-rk35xx -initrd /mnt/armbian/boot/initrd.img-6.1.75-vendor-rk35xx -append "earlyprintk #loglevel=8 earlycon=uart8250,mmio32,0x1c28000,115200n8 console=ttyS0 root=/dev/mmcblk0p1" \
+                            -no-reboot -nographic -serial stdio -monitor none \
+                            -drive format=raw,file=/home/sysadmin/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img \
+                            -netdev user,id=net0,hostfwd=tcp::50022-:22 \
+                            -device e1000,netdev=net0
+
+-hda Armbian_21.02.1_Nanopineo_buster_current_5.10.12.img \
+
 **NEED TO FIGURE OUT HOW TO BOOT IT LOL**
 https://www.google.com/search?client=firefox-b-d&q=boot+armbian+with+qemu
+https://raspberrypi.stackexchange.com/questions/73699/run-armbian-in-qemu
+
+hex dump of image to check if using EFI or U-Boot or whatever
+dd if=/home/sysadmin/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img bs=512 count=2048 | hexdump -C | less
+
+---
+
+## EFI setup => default when compiling our image with build framework and choosing minimal ubuntu, or maybe u boot is baked in, figure out how u boot is used in armbian
+
+### Download the EFI Firmware and enlarge it to 64mb for qemu to work with itµ
+
+1. Mount the created image with build framework
+   sudo mount -o loop,offset=16777216 /home/sysadmin/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img /mnt/armbian
 
 
-     
+apt install qemu-efi-aarch64
+sudo chmod 777 /usr/share/qemu-efi-aarch64/QEMU_EFI.fd
+dd if=/dev/zero bs=1M count=62 >> /usr/share/qemu-efi-aarch64/QEMU_EFI.fd
+
+2. Create nvram iso for EFI to store it's data inside of, qemu needs this to emulate proper setup.
+
+truncate -s 64M nvram.img
 
 
+qemu-system-aarch64 -m 1G,slots=3,maxmem=4G \
+    -machine virt -cpu cortex-a72 \
+    -drive if=pflash,format=raw,file=/usr/share/qemu-efi-aarch64/QEMU_EFI.fd,readonly=on \
+    -drive if=pflash,format=raw,file=/home/sysadmin/build/output/images/nvram.img \
+    -drive format=raw,file=/home/sysadmin/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img \
+    -netdev user,id=net0,hostfwd=tcp::50022-:22 \
+    -device virtio-net-pci,netdev=net0,romfile="" \
+    -serial stdio -monitor none \
+    -kernel /mnt/armbian/boot/vmlinuz-6.1.75-vendor-rk35xx -initrd /mnt/armbian/boot/initrd.img-6.1.75-vendor-rk35xx -append "earlyprintk #loglevel=8 earlycon=uart8250,mmio32,0x1c28000,115200n8 console=ttyS0 root=/dev/mmcblk0p1" \
+    -dtb /mnt/armbian/boot/dtb-6.1.75-vendor-rk35xx/rockchip/rk3588s-rock-5a.dtb \
+
+=> probably ditch qemu for packer and just build natively using build framework. Can't get this to work for some reason.
+=> explore u-boot to be able to use QEMU
+
+qemu-system-aarch64 -m 1G,slots=3,maxmem=4G \
+    -machine virt -cpu cortex-a72 \
+    -dtb /mnt/armbian/boot/dtb-6.1.75-vendor-rk35xx/rockchip/rk3588s-rock-5a.dtb \
+    -kernel /mnt/armbian/boot/vmlinuz-6.1.75-vendor-rk35xx \
+    -initrd /mnt/armbian/boot/initrd.img-6.1.75-vendor-rk35xx \
+    -append "earlyprintk loglevel=8 earlycon=uart8250,mmio32,0x1c28000,115200n8 console=ttyS0 root=/dev/vda1" \
+    -drive if=pflash,format=raw,file=/usr/share/qemu-efi-aarch64/QEMU_EFI.fd,readonly=on \
+    -drive if=pflash,format=raw,file=/home/sysadmin/build/output/images/nvram.img \
+    -drive if=virtio,format=raw,file=/home/sysadmin/build/output/images/Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75_minimal.img \
+    -netdev user,id=net0,hostfwd=tcp::50022-:22 \
+    -device virtio-net-pci,netdev=net0,romfile="" \
+    -nographic -serial stdio -monitor none
+
+
+---
+## U-boot Setup
+
+---
 ### Explanation:
 
 - **`-kernel /mnt/armbian/boot/Image`**: This points to the kernel image (`Image`).
@@ -506,29 +599,8 @@ https://www.google.com/search?client=firefox-b-d&q=boot+armbian+with+qemu
 
 - **`-nographic`**: Disables graphical output and routes everything to the terminal.
 
-#### Step 3: **Run QEMU**
 
-After running the above command, QEMU should boot the Armbian image for the Rock5A board using the kernel, DTB, and initrd you extracted. You should see the boot process in the terminal.
 
-#### Step 4: **Connect via Serial Console**
-
-Since you’re using `-serial stdio`, the serial output should be redirected to your terminal, allowing you to see the boot process and interact with U-Boot (if applicable) or the kernel.
-
-### Optional: Networking
-
-If you want to enable networking (such as SSH access), you can add port forwarding using the `-netdev` and `-device` options:
-
-```bash
--netdev user,id=net0,hostfwd=tcp::2022-:22 -device e1000,netdev=net0
-```
-
-This will forward port 22 from the guest VM to port 2022 on your host, allowing you to SSH into the guest using:
-
-```bash
-ssh -p 2022 user@localhost
-```
-
-Let me know if you need further assistance or encounter any issues during the boot process!
 
 [//]: # (OLD WAY)
 [//]: # (To include `cloud-init` in the image, you’ll modify the Armbian build configuration files.)
