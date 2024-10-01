@@ -1,7 +1,7 @@
 #!/bin/bash
 
 exec ../build/compile.sh \
-BOARD=rpi-4b \
+BOARD=rpi4b \
 BRANCH=vendor \
 RELEASE=noble \
 BUILD_MINIMAL=no \
