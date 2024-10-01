@@ -2,7 +2,7 @@
 
 seems to me like the best way is not to try boot it via qemu and use packer but just use the build framework for everything, you can use the userpatches/customize-image.sh https://docs.armbian.com/Developer-Guide_User-Configurations/
 
-we need to figure out how armbian is handeling the boot process from start to finish, I'm getting conflicting info
+we need to figure out how armbian is handling the boot process from start to finish, I'm getting conflicting info
 
 https://forum.armbian.com/topic/38258-running-self-build-image-on-qemu-arm64/ => docs to build on qemu and how to boot with u boot new method
 
@@ -95,6 +95,9 @@ Once the configuration is ready, proceed with building the image.
     ````
    
 fix with below
+
+
+---
 
 3. Use QEMU to Boot and Access the Shell [DOCS](https://gist.github.com/wuhanstudio/e9b37b07312a52ceb5973aacf580c453)
 
