@@ -17,11 +17,12 @@ fi
 
 # pack our cloud-init config into it
 
-# Check if the target directory exists, if not create the parent dirs and copy
+# Check if a previous config is already applied, if not create the parent dirs and copy
 if [ ! -d "$ENV/build/userpatches/extensions/cloud-init" ]; then
   echo "Directory $ENV/build/userpatches/extensions/cloud-init does not exist. Creating and copying..."
   mkdir -p "$ENV/build/userpatches/extensions"
   cp -r "$ENV/rock5a/cloud-init" "$ENV/build/userpatches/extensions/"
+  ls -al "$ENV/build/userpatches/extensions/cloud-init"
 else
   echo "Directory $ENV/build/userpatches/extensions/cloud-init already exists. Skipping copy."
 fi
