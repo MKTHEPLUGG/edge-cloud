@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script will bootstrap a build host to create an image
-
+ENV=$(pwd)
 # setup required dependencies
 sudo apt install git curl zip unzip rsync bc -y
 
@@ -9,8 +9,8 @@ sudo apt install git curl zip unzip rsync bc -y
 git clone https://github.com/armbian/build
 
 # pack our cloud-init config into it
-mkdir ./build/userpatches/extensions
-cp -r ./rock5a/cloud-init /build/userpatches/extensions/
+mkdir $ENV/build/userpatches/extensions
+cp -r $ENV/rock5a/cloud-init $ENV/build/userpatches/extensions/
 
 # next run the compile command with the required env vars, I'll provide the ones for noble rock5a
 
