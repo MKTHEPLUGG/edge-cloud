@@ -18,6 +18,6 @@ this doc will go over the main install of the framework and setting up stuff tha
 
 # Device specific docs can be found here
 - [Rock5a](./rock5a/readme.md)
-
+- [RaspberryPi 4b](./rpi4b)
 
 

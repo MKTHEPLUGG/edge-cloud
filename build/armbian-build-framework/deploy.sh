@@ -21,13 +21,13 @@ fi
 if [ ! -d "$ENV/build/userpatches/extensions/cloud-init" ]; then
   echo "Directory $ENV/build/userpatches/extensions/cloud-init does not exist. Creating and copying..."
   mkdir -p "$ENV/build/userpatches/extensions"
-  cp -r "$ENV/rock5a/cloud-init" "$ENV/build/userpatches/extensions/"
+  cp -r "$ENV/cloud-init" "$ENV/build/userpatches/extensions/"
   ls -al "$ENV/build/userpatches/extensions/cloud-init"
 
   # TODO: Improve the printing of the config to the terminal
   echo "Configuration that will be applied:"
-  cat "$ENV/rock5a/cloud-init/defaults/meta-data"
-  cat "$ENV/rock5a/cloud-init/defaults/user-data"  # Adjust to point to the correct config file inside the cloud-init directory
+  cat "$ENV/cloud-init/defaults/meta-data"
+  cat "$ENV/cloud-init/defaults/user-data"  # Adjust to point to the correct config file inside the cloud-init directory
 else
   echo "Directory $ENV/build/userpatches/extensions/cloud-init already exists. Skipping copy."
 fi
