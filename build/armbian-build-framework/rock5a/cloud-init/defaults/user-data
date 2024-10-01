@@ -1,7 +1,7 @@
 #cloud-config
 
 # Setup hostname
-
+hostname: "{{ purpose }}-{{ env }}-{{ number }}" # we use jinja2 Templating to do this, verify if this is supported, should be
 
 # Create our user
 users:
@@ -37,5 +37,4 @@ package_upgrade: true
 #  - curl
 #  - file
 #  - build-essential
-#  - zsh
 #  - neofetch

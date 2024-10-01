@@ -14,6 +14,8 @@ this doc will go over the main install of the framework and setting up stuff tha
 # Other customizations
 
 
+# Deploy via pipeline
+
 # Device specific docs can be found here
 - [Rock5a](./rock5a/readme.md)
 
