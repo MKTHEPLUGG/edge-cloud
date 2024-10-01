@@ -2,7 +2,7 @@
 
 seems to me like the best way is not to try boot it via qemu and use packer but just use the build framework for everything, you can use the userpatches/customize-image.sh https://docs.armbian.com/Developer-Guide_User-Configurations/
 
-
+we need to figure out how armbian is handeling the boot process from start to finish, I'm getting conflicting info
 
 https://forum.armbian.com/topic/38258-running-self-build-image-on-qemu-arm64/ => docs to build on qemu and how to boot with u boot new method
 
@@ -31,22 +31,7 @@ You’ll need a Linux machine (or VM) with the necessary build dependencies to c
   sudo apt-get install git curl zip unzip rsync bc
   ```
 
-#### 2. **Configure the Build for Rock5A**
-
-Now, set up the build to target the **Rock5A** board and an Ubuntu-based image:
-
-1. Start the build process:
-
-   ```bash
-   sudo ./compile.sh
-   ```
-
-2. Select the following options during the interactive setup:
-   - **Board**: Choose the **Rockchip RK3588 (Rock5A)** from the list.
-   - **OS**: Select **Ubuntu (focal)** or any newer supported Ubuntu version.
-   - **Image type**: Choose **Server Image** (this will give you a minimal image without a desktop environment).
-
-#### 3. **Add Cloud-Init to the Build**
+#### 2. **Add Cloud-Init to the Build**
 
 
 https://github.com/armbian/build/issues/6197
@@ -68,11 +53,6 @@ To include `cloud-init` in the image, you’ll modify the Armbian build configur
    - Add the following line to ensure the `cloud-init` extension is enabled during the build process:
      ```bash
      EXTENSIONS="$EXTENSIONS cloud-init"
-     
-     # Enable U-Boot for Rock5A
-     BOOT_SUPPORT=yes
-     BUILD_UBOOT=yes
-
      ```
 
    
@@ -83,6 +63,18 @@ To include `cloud-init` in the image, you’ll modify the Armbian build configur
      ```
      
 
+#### 3. **Set Overlay to enable SPI support**
+
+Figure out how to do this with the build framework we need to enable to overlay
+
+When you install the base image of armbian the SPI controller is not configured as SPI NOR FLASH, which is what we want if we want to upload the bootloader there. To enable this functionallity you need to add an overlay to the boot env file.
+
+````shell
+ls /boot/dtb/rockchip/overlay/rock-5a-spi-nor-flash.dtbo
+echo "overlays=rock-5a-spi-nor-flash" >> /boot/armbianEnv.txt
+reboot
+lsblk   # or ls /dev/mtd*
+````
 
 #### 4. **Build the Image**
 
@@ -585,6 +577,9 @@ qemu-system-aarch64 -m 1G,slots=3,maxmem=4G \
 
 ---
 ## U-boot Setup
+
+???
+
 
 ---
 ### Explanation:
