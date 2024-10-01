@@ -36,7 +36,7 @@ fi
 
 # next run the compile command with the required env vars, I'll provide the ones for noble rock5a
 
-#./compile.sh \
+#."$ENV/build/compile.sh" \
 #BOARD=rock-5a \
 #BRANCH=vendor \
 #RELEASE=noble \
