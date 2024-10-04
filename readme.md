@@ -63,18 +63,46 @@ This folder holds all the kubernetes manifest files used in the cluster-mode clu
 
 ## TODO
 
+- Found article listing all methods for cross cluster communication, this is the key to edge-cloud, investigate [link](https://oilbeater.com/en/2024/05/24/five-kubernetes-multicluster-network/?fbclid=IwZXh0bgNhZW0CMTEAAR06Na3PqrovIRWapUAopdPmHcC_ztYXdci9ijzhrRjH3Lvnr0RJclGxWLY_aem_O8-JMimnV24Tuu0eaDhcZw)
+  - Use either: ``submariner``, ``skipper`` or an ``overlay CNI`` like:
+    - ``Cilium cluster mesh``
+    - ``Antrea multicluster``
+    - ``kube-ovn with ovn-ic``
+
+
 - Look into cloud-init (done) => automate with packer => pipeline for packer needs to be created, local host the runners.
+
+
 - Netboot / usb/nvme boot => Raspberry Pi done, Rock5a issues with SPI boot (likely power delivery issue).
+
+
 - Create [Storage Docs](docs/setup/hardware/storage/NAS/readme.md) => NAS config
-- Create RKE2 setup docs
+
+
+- Create Architectural plan for the software stack (RKE2, some cross cluster network solution, build tools, ...)
+
+
 - find secret management solution
+
+
 - explore wake on lan capabilities
-- ~~Create Firewall Docs~~
+
+
 - encrypt openwrt admin interface with ssl
+
+
 - look for IDP system (authentik / keycloack)
+
+- ~~Create Firewall Docs~~
+
+
+## Side project beneficial to the main project
+
 - tryout istio
 - look into how kubeEdge handles stuff like network traffic between the clusters.
 - figure out wake on lan to save on costs.
+
+
 
 
 ## Reference
