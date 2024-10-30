@@ -1,3 +1,16 @@
+in this doc I want to deep dive into the arch of the setup. I'll be detailing
+
+- Why we choose to use the build framework
+- why we choose cloud init and how we configure it via which way with the references
+- What we customize about the images
+- ...
+
+
+
+
+---
+
+
 You are correct in noticing that the process outlined in the Armbian build framework involves baking Cloud-Init support directly into the image during the build. This is a bit different from the typical cloud-init setup where you use a base image and attach user-data/meta-data during provisioning, like in your Packer workflows.
 
 ### Breakdown of What the Cloud-Init Extension Does in the Armbian Build Framework:
