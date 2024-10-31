@@ -40,8 +40,8 @@ copy_init_files() {
   echo "[INFO] - Enable extension in lib.config"
   echo "ENABLE_EXTENSIONS=\"cloud-init\"" > "$ENV/build/userpatches/lib.config"
 
-#  echo "[INFO] - Copying Customization Script to userpatches"
-#  cp -f "$ENV/custom/customize-image.sh" "$ENV/build/userpatches/customize-image.sh"
+  echo "[INFO] - Copying Customization Script to userpatches"
+  cp -f "$ENV/custom/customize-image.sh" "$ENV/build/userpatches/customize-image.sh"
 
 
   echo "[INFO] - Configuration that will be applied:"
