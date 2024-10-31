@@ -51,7 +51,7 @@ To include `cloud-init` in the image, you’ll modify the Armbian build configur
 
    - Add the following line to ensure the `cloud-init` extension is enabled during the build process:
      ```bash
-     EXTENSIONS="$EXTENSIONS cloud-init"
+     echo "ENABLE_EXTENSIONS=\"cloud-init\"" > userpatches/config-default.conf" # or set as var when packing with compile.sh
      ```
 
    
