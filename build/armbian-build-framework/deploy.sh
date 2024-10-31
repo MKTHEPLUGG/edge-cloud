@@ -16,14 +16,26 @@ fi
 
 
 # Function to handle the copy process and directory creation
+#copy_cloud_init_files() {
+#  echo "Creating and copying files to $ENV/build/userpatches/extensions/cloud-init"
+#  mkdir -p "$ENV/build/userpatches/extensions"
+#  echo "EXTENSIONS=\"\$EXTENSIONS cloud-init\"" > "$ENV/build/userpatches/config.lib"
+#  cp -r "$ENV/cloud-init" "$ENV/build/userpatches/extensions/"
+#  ls -al "$ENV/build/userpatches/extensions/cloud-init"
+#
+#  # TODO: Improve output to terminal by either modifying the scripts or fetching vars from it
+#  echo "Configuration that will be applied:"
+#  cat "$ENV/cloud-init/defaults/meta-data"
+#  cat "$ENV/cloud-init/defaults/user-data"
+#}
+
 copy_cloud_init_files() {
   echo "Creating and copying files to $ENV/build/userpatches/extensions/cloud-init"
   mkdir -p "$ENV/build/userpatches/extensions"
-  echo "EXTENSIONS=\"\$EXTENSIONS cloud-init\"" > "$ENV/build/userpatches/config.lib"
+  echo "ENABLE_EXTENSIONS=\"cloud-init\"" > "$ENV/build/userpatches/config-default.conf"
   cp -r "$ENV/cloud-init" "$ENV/build/userpatches/extensions/"
   ls -al "$ENV/build/userpatches/extensions/cloud-init"
 
-  # TODO: Improve output to terminal by either modifying the scripts or fetching vars from it
   echo "Configuration that will be applied:"
   cat "$ENV/cloud-init/defaults/meta-data"
   cat "$ENV/cloud-init/defaults/user-data"
