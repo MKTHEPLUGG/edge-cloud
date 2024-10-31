@@ -2,8 +2,9 @@
 
 1. Create physical infrastructure = DONE
 2. Create main tool server used to be the egg in the chicken egg story.
-3. Create customized image
+3. Create customized image, we want to be capable of auto deploying an SBC host.
 4. Properly define Architecture for RKE2 Setup Goal is to create a PaaS/FaaS environment.
+5. Provide ability to deploy stuff automatically via API. Probably write it in Golang.
 
 ## Networking Stack
 
