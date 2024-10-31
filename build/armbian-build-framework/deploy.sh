@@ -29,22 +29,34 @@ fi
 #  cat "$ENV/cloud-init/defaults/user-data"
 #}
 
-copy_cloud_init_files() {
-  echo "Creating and copying files to $ENV/build/userpatches/extensions/cloud-init"
+copy_init_files() {
+  echo "[INFO] - Creating userpatches/extensions directory"
   mkdir -p "$ENV/build/userpatches/extensions"
-  echo "ENABLE_EXTENSIONS=\"cloud-init\"" > "$ENV/build/userpatches/lib.config"
+
+  echo "[INFO] - Copying files to $ENV/build/userpatches/extensions/cloud-init"
   cp -r "$ENV/cloud-init" "$ENV/build/userpatches/extensions/"
   ls -al "$ENV/build/userpatches/extensions/cloud-init"
 
-  echo "Configuration that will be applied:"
+  echo "[INFO] - Enable extension in lib.config"
+  echo "ENABLE_EXTENSIONS=\"cloud-init\"" > "$ENV/build/userpatches/lib.config"
+
+  echo "[INFO] - Copying Customization Script to userpatches"
+  cp -f "$ENV/custom/customize-image.sh" "$ENV/build/userpatches/customize-image.sh"
+
+
+  echo "[INFO] - Configuration that will be applied:"
+  echo "[INFO] - meta-data config"
   cat "$ENV/cloud-init/defaults/meta-data"
+  echo "[INFO] - user-data config"
   cat "$ENV/cloud-init/defaults/user-data"
+  echo "[INFO] - customize-image config"
+  cat "$ENV/build/userpatches/customize-image.sh"
 }
 
 # Check if a previous config is already applied, if not create the parent dirs and copy
 if [ ! -d "$ENV/build/userpatches/extensions/cloud-init" ]; then
   echo "Directory $ENV/build/userpatches/extensions/cloud-init does not exist."
-  copy_cloud_init_files
+  copy_init_files
 else
   echo "Directory $ENV/build/userpatches/extensions/cloud-init already exists."
   # Ask user if they want to remove the directory and re-copy the files
@@ -52,7 +64,7 @@ else
   if [ "$choice" = "y" ]; then
     echo "Removing directory..."
     rm -rf "$ENV/build/userpatches/extensions/cloud-init"
-    copy_cloud_init_files
+    copy_init_files
   else
     echo "Skipping the copy."
   fi
