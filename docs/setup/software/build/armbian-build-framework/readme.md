@@ -38,6 +38,8 @@ https://github.com/armbian/build/issues/6197
 https://github.com/armbian/build/pull/6205/files
 https://github.com/rpardini/armbian-build/tree/extensions/userpatches/extensions
 
+#### Reference
+[Armbian Docs - User Provided Patches/Config/Customization script](https://docs.armbian.com/Developer-Guide_User-Configurations/#user-provided-patches)
 
 To include `cloud-init` in the image, you’ll modify the Armbian build configuration files and enable the extension.
 
@@ -46,13 +48,13 @@ To include `cloud-init` in the image, you’ll modify the Armbian build configur
    - Navigate to the `userpatches` directory and create a new `lib.config` file if it doesn’t already exist:
      ```bash
      mkdir -p userpatches
-     nano userpatches/config-default.conf
+     nano userpatches/lib.config
      ```
 
    - Add the following line to ensure the `cloud-init` extension is enabled during the build process.
      Alternatively you can set it as an env var when calling compile.sh
      ```bash
-     echo "ENABLE_EXTENSIONS=\"cloud-init\"" > userpatches/config-default.conf"
+     echo "ENABLE_EXTENSIONS=\"cloud-init\"" > userpatches/lib.config"
      ```
      
    

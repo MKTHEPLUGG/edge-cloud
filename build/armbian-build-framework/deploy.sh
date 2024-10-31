@@ -32,7 +32,7 @@ fi
 copy_cloud_init_files() {
   echo "Creating and copying files to $ENV/build/userpatches/extensions/cloud-init"
   mkdir -p "$ENV/build/userpatches/extensions"
-  echo "ENABLE_EXTENSIONS=\"cloud-init\"" > "$ENV/build/userpatches/config-default.conf"
+  echo "ENABLE_EXTENSIONS=\"cloud-init\"" > "$ENV/build/userpatches/lib.config"
   cp -r "$ENV/cloud-init" "$ENV/build/userpatches/extensions/"
   ls -al "$ENV/build/userpatches/extensions/cloud-init"
 
