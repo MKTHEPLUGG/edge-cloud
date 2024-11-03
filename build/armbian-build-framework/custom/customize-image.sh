@@ -21,7 +21,7 @@ CUSTOM_SCRIPT="${MOTD_DIR}/00-mikeshop"
 
 apt install neofetch -y
 
-cp /boot/Image /boot/vmlinuz-6.6.58-current-bcm2711
+#cp /boot/Image /boot/vmlinuz-6.6.58-current-bcm2711
 
 
 # Configure Custom MOTD
