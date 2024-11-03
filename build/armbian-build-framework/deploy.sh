@@ -29,6 +29,7 @@ fi
 #}
 
 # TODO: we should modify this function so that it copies the cloud-init.sh from source and only our changes to defaults are added to it.
+# TODO: Split up function into smaller sub functions for modularity: Copy extension / Set lib config / customization script per board type
 # This is to make sure if anything changes that we won't be using an outdated script in our pipeline.
 copy_init_files() {
   echo "[INFO] - Creating userpatches/extensions directory"
