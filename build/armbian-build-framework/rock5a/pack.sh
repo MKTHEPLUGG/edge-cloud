@@ -1,7 +1,7 @@
 #!/bin/bash
 
 exec ../build/compile.sh \
-BOARD=rock5a \
+BOARD=rock-5a \
 BRANCH=current \
 RELEASE=noble \
 BUILD_MINIMAL=no \
