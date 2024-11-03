@@ -23,12 +23,13 @@ fi
 #  cp -r "$ENV/cloud-init" "$ENV/build/userpatches/extensions/"
 #  ls -al "$ENV/build/userpatches/extensions/cloud-init"
 #
-#  # TODO: Improve output to terminal by either modifying the scripts or fetching vars from it
 #  echo "Configuration that will be applied:"
 #  cat "$ENV/cloud-init/defaults/meta-data"
 #  cat "$ENV/cloud-init/defaults/user-data"
 #}
 
+# TODO: we should modify this function so that it copies the cloud-init.sh from source and only our changes to defaults are added to it.
+# This is to make sure if anything changes that we won't be using an outdated script in our pipeline.
 copy_init_files() {
   echo "[INFO] - Creating userpatches/extensions directory"
   mkdir -p "$ENV/build/userpatches/extensions"
@@ -43,7 +44,7 @@ copy_init_files() {
   echo "[INFO] - Copying Customization Script to userpatches"
   cp -f "$ENV/custom/customize-image.sh" "$ENV/build/userpatches/customize-image.sh"
 
-
+# TODO: Improve output to terminal by either modifying the scripts or fetching vars from it
   echo "[INFO] - Configuration that will be applied:"
   echo "[INFO] - meta-data config"
   cat "$ENV/cloud-init/defaults/meta-data"
