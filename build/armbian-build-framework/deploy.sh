@@ -61,7 +61,7 @@ if [ ! -d "$ENV/build/userpatches/extensions/cloud-init" ]; then
 else
   echo "Directory $ENV/build/userpatches/extensions/cloud-init already exists."
   # Ask user if they want to remove the directory and re-copy the files
-  read -p "Do you want to remove the existing directory and copy new files? (y/n): " choice
+  read -rp "Do you want to remove the existing directory and copy new files? (y/n): " choice
   if [ "$choice" = "y" ]; then
     echo "Removing directory..."
     rm -rf "$ENV/build/userpatches/extensions/cloud-init"

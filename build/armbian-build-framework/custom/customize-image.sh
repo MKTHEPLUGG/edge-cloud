@@ -15,11 +15,12 @@ LOG="/var/log/cloud-init.log"
 # vars for custom motd message
 MOTD_DIR="/etc/update-motd.d"
 BACKUP_DIR="/etc/update-motd.d/backup"
-CUSTOM_SCRIPT="${MOTD_DIR}/00-mikeshop"
+CUSTOM_SCRIPT="${MOTD_DIR}/00-edgecloud"
 
 # -- Main Script Section --
 
-apt install neofetch -y
+apt install neofetch git net-tools nfs-common curl file build-essential -y
+
 
 #cp /boot/Image /boot/vmlinuz-6.6.58-current-bcm2711
 
@@ -34,6 +35,7 @@ if ls -A "$MOTD_DIR" | grep -q -v 'backup'; then
 else
     echo "No existing MOTD scripts to back up."
 fi
+
 # Create a custom neofetch MOTD script
 echo "Setting up neofetch as the new MOTD..."
 cat <<EOF | sudo tee $CUSTOM_SCRIPT
