@@ -19,8 +19,8 @@ CUSTOM_SCRIPT="${MOTD_DIR}/00-edgecloud"
 
 # -- Main Script Section --
 
-apt install neofetch git net-tools nfs-common curl file build-essential -y
-
+apt install git nfs-common curl file build-essential -y
+# net-tools neofetch
 
 #cp /boot/Image /boot/vmlinuz-6.6.58-current-bcm2711
 
