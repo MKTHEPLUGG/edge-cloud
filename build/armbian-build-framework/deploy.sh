@@ -75,7 +75,7 @@ fi
 
 
 # next run the compile command with the required env vars, I'll provide the ones for noble rock5a
-
+# TODO: Create bash function that allows to specific which version you want to pack.
 #."$ENV/build/compile.sh" \
 #BOARD=rock-5a \
 #BRANCH=vendor \

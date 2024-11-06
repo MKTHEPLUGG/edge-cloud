@@ -1,6 +1,6 @@
 # Use Armbian Build framework for custom image
 
-seems to me like the best way is not to try boot it via qemu and use packer but just use the build framework for everything, you can use the userpatches/customize-image.sh https://docs.armbian.com/Developer-Guide_User-Configurations/
+[//]: # (seems to me like the best way is not to try boot it via qemu and use packer but just use the build framework for everything, you can use the userpatches/customize-image.sh https://docs.armbian.com/Developer-Guide_User-Configurations/)
 
 we need to figure out how armbian is handling the boot process from start to finish, I'm getting conflicting info
 
@@ -8,7 +8,7 @@ https://forum.armbian.com/topic/38258-running-self-build-image-on-qemu-arm64/ =>
 
 Armbian doesn't support cloud-init by default like the cloud images of ubuntu do, we'll have to use the build framework to create our custom image. first figure out how it works then automate it via pipelines.
 
-https://forum.armbian.com/topic/14616-cloud-init/ => **DEPRECATED** cloud init seems to have been added in:
+[//]: # (https://forum.armbian.com/topic/14616-cloud-init/ => **DEPRECATED** cloud init seems to have been added in.)
 
 To rebuild the Ubuntu-based Armbian image specifically for the Rock5A and include Cloud-Init, you can use the **Armbian Build Framework**. This will allow you to start with the same base image but customize it to include Cloud-Init and any other packages or configurations you want. Here’s a step-by-step guide to achieve that.
 
@@ -16,7 +16,24 @@ To rebuild the Ubuntu-based Armbian image specifically for the Rock5A and includ
 
 #### 1. **Set Up Armbian Build Environment**
 
+> [!IMPORTANT]
+> This is fully automated using the Deploy script in ``build/armbian-build-framework``.
+
 You’ll need a Linux machine (or VM) with the necessary build dependencies to compile the Armbian image.
+
+- First clone our edge-cloud repo
+
+  ```bash
+  # if git is not installed: apt install git
+  git clone https://github.com/MKTHEPLUGG/edge-cloud
+  cd edge-cloud
+  ```
+
+- Navigate to the folder ``build/armbian-build-framework``
+
+  ```bash
+  cd build/armbian-build-framework
+  ```
 
 - First, clone the official [Armbian build repository]https://github.com/armbian/build:
   

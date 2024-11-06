@@ -10,6 +10,32 @@ shopt -s extglob
 
 # --  Environment Variables  --
 
+
+# -- Functions  --
+log() {
+    local log_level=$1
+    shift
+    local message="$*"
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S,%3N')
+    echo "$timestamp - customize-image.sh[$log_level]: $message"
+}
+
+# also accept piped values with logging function
+#log() {
+#    local log_level=$1
+#    shift
+#    local message="$*"
+#
+#    # If data is piped, read from stdin
+#    if [ ! -t 0 ]; then
+#        local piped_message=$(< /dev/stdin)
+#        echo "$(date '+%Y-%m-%d %H:%M:%S,%3N') - script.sh[$log_level]: $piped_message $message"
+#    else
+#        echo "$(date '+%Y-%m-%d %H:%M:%S,%3N') - script.sh[$log_level]: $message"
+#    fi
+#}
+
+
 # set var to log path
 LOG="/var/log/cloud-init.log"
 # vars for custom motd message
@@ -18,11 +44,9 @@ BACKUP_DIR="/etc/update-motd.d/backup"
 CUSTOM_SCRIPT="${MOTD_DIR}/00-edgecloud"
 
 # -- Main Script Section --
+sudo apt update -y && apt upgrade -y
+sudo apt install git nfs-common curl file bpytop build-essential net-tools neofetch -y
 
-apt install git nfs-common curl file build-essential -y
-# net-tools neofetch
-
-#cp /boot/Image /boot/vmlinuz-6.6.58-current-bcm2711
 
 
 # Configure Custom MOTD
@@ -44,7 +68,24 @@ neofetch
 EOF
 # Make the new MOTD script executable
 sudo chmod +x $CUSTOM_SCRIPT
-echo "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR." >> $LOG
+log "INFO" "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR." >> $LOG
+
+
+# Enable SPI NOR Flash to hold bootloader to boot from SSD.
+
+# Path to check
+file_path="/boot/dtb/rockchip/overlay/rock-5a-spi-nor-flash.dtbo"
+# Verify if the path exists
+if [ -e "$file_path" ]; then
+    log "DEBUG" "Path exists: $file_path"
+    # Append the echo statement to /boot/armbianEnv.txt
+    echo "overlays=rock-5a-spi-nor-flash" >> /boot/armbianEnv.txt
+    log "INFO" "overlays=rock-5a-spi-nor-flash appended to /boot/armbianEnv.txt"
+else
+    log "DEBUG" "Path does not exist: $file_path"
+fi
+
+
 
 
 ## Adding Aliasses
