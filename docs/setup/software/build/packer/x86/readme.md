@@ -27,13 +27,7 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
 
 2. **Create a Packer Template**
 
-   You’ll create a Packer template that defines how to build your image. Here’s an example template in the hcl format for building an Armbian image:
-
-   ````hcl
-        TO BE REFINED GET FROM UBUNTU CLOUD IMAGE
-   ````
-
-
+   We've created a Packer template that defines how to build our ubuntu image. Here’s [an example template](./../../../../../../build/packer/ubuntu-cloud-image/ubuntu.pkr.hcl) in the hcl format for building an Armbian image:
 
    In this example:
    - The **builder** uses QEMU to create the image, starting from the `focal-server-cloudimg-amd64.img`.
@@ -44,10 +38,14 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
 
    Make sure you have a `user-data` (config) file ready. in the template above this is handled by copying cloud config to the standard dir `/etc/cloud/cloud.cfg.d/99_custom.cfg`
 
+4. **Run extra scripts for more modification not handled during cloud-init process.**
 
-4. **Run Packer**
+    We've added extra configuration to the [install.sh](./../../../../../../build/packer/ubuntu-cloud-image/scripts/install.sh)  script
 
-   Once the Packer template is ready, you can run it:
+
+5. **Run Packer**
+
+   Simply go to the directory holding the template and run it with:
 
    ```bash
    packer build .
@@ -58,11 +56,11 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
    - Customize it with your Cloud-init configuration and other provisions.
    - Convert the final output to `raw` format.
 
-5. **Result: The Final Image**
+6. **Result: The Final Image**
 
    After running the Packer build, you’ll find the final raw image in the `output-ubuntu-image` directory. You can directly copy this image to a USB drive or deploy it on any other system.
 
-6. **Automating Future Builds**
+7. **Automating Future Builds**
 
    Once you have the Packer template, you can automate your builds. You can integrate it with CI/CD pipelines (e.g., GitHub Actions, Jenkins) to rebuild the image whenever changes are made to the configuration.
 
