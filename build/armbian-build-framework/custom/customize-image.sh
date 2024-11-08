@@ -37,7 +37,7 @@ log() {
 
 
 # set var to log path
-LOG="/var/log/cloud-init.log"
+LOG="/var/log/customize-script.log"
 # vars for custom motd message
 MOTD_DIR="/etc/update-motd.d"
 BACKUP_DIR="/etc/update-motd.d/backup"
@@ -45,9 +45,10 @@ CUSTOM_SCRIPT="${MOTD_DIR}/00-edgecloud"
 
 # -- Main Script Section --
 sudo apt update -y && apt upgrade -y
-sudo apt install git nfs-common curl file bpytop build-essential net-tools neofetch -y
+sudo apt install git nfs-common curl file bpytop build-essential net-tools neofetch bash-completion -y
 
-
+# Install az-cli
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 # Configure Custom MOTD
 # Create a backup folder
@@ -85,8 +86,13 @@ else
     log "DEBUG" "Path does not exist: $file_path"
 fi
 
+# Modify sysadmin .zshrc
 
-
+cat <<EOF | sudo tee /home/sysadmin/.zshrc
+neofetch
+alias knr='kubectl get pods --field-selector=status.phase!=Running'
+source <(kubectl completion bash)
+EOF
 
 ## Adding Aliasses
 #echo "Setting up kubectl aliases"
