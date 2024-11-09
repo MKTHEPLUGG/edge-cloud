@@ -87,7 +87,6 @@ else
 fi
 
 # Modify sysadmin .zshrc
-
 cat <<EOF | sudo tee /home/sysadmin/.zshrc
 neofetch
 alias knr='kubectl get pods --field-selector=status.phase!=Running'
