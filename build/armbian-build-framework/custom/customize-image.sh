@@ -73,8 +73,10 @@ log "INFO" "Neofetch has been set as the MOTD. Backup of old scripts is in $BACK
 
 
 # Enable SPI NOR Flash to hold bootloader to boot from SSD.
+# These device tree overlays are only found in the vendor image. Going to manually try them on current image.
+# If it doesn't work will have to revert back to vendor image.
 
-# Path to check
+# Path to check = Old logic, rework.
 file_path="/boot/dtb/rockchip/overlay/rock-5a-spi-nor-flash.dtbo"
 # Verify if the path exists
 if [ -e "$file_path" ]; then
@@ -84,14 +86,21 @@ if [ -e "$file_path" ]; then
     log "INFO" "overlays=rock-5a-spi-nor-flash appended to /boot/armbianEnv.txt"
 else
     log "DEBUG" "Path does not exist: $file_path"
+    #TODO: Add section here that copies the file and moves it to the correct location
 fi
 
-# Modify sysadmin .zshrc
-cat <<EOF | sudo tee /home/sysadmin/.zshrc
-neofetch
-alias knr='kubectl get pods --field-selector=status.phase!=Running'
-source <(kubectl completion bash)
-EOF
+# Modify sysadmin .zshrc, moved to copying custom .zshrc file
+#cat <<EOF | sudo tee /home/sysadmin/.zshrc
+#neofetch
+#alias knr='kubectl get pods --field-selector=status.phase!=Running'
+#source <(kubectl completion bash)
+#EOF
+
+
+# Enable theme for zsh
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k # this will install the theme to /etc/oh-my-zsh/custom/themes/powerlevel10k
+# TODO: After install of theme via gitclone you need to replace .p10k.zsh & .zshrc with files in custom dir of build framework, same as this script. above line also needs to be ran for the theme to be installed
+
 
 ## Adding Aliasses
 #echo "Setting up kubectl aliases"
