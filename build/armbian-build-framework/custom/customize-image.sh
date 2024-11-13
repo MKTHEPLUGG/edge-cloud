@@ -74,7 +74,7 @@ log "INFO" "Neofetch has been set as the MOTD. Backup of old scripts is in $BACK
 
 # Enable SPI NOR Flash to hold bootloader to boot from SSD.
 # These device tree overlays are only found in the vendor image. Going to manually try them on current image.
-# If it doesn't work will have to revert back to vendor image.
+# If it doesn't work will have to revert back to vendor image. Or figure out how I can create one that matches my kernel version.
 
 # Path to check = Old logic, rework.
 file_path="/boot/dtb/rockchip/overlay/rock-5a-spi-nor-flash.dtbo"
