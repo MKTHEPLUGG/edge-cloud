@@ -1,4 +1,4 @@
-# **Firewall Setup for ClusterMode Project**
+# **Firewall Setup for Edge Cloud Project**
 
 ## **Introduction**
 
