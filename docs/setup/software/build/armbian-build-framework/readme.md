@@ -132,6 +132,7 @@ When working with Armbian images, you may want to check the image before trying 
 
    Run this command to create partition mappings:
    ```bash
+   sudo kpartx -av Armbian_24.8.1_Rock-5a_noble_vendor_6.1.75_minimal.img.xz
    sudo kpartx -av Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75-ci.img
    sudo kpartx -av Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75-ci_minimal.img
    ```

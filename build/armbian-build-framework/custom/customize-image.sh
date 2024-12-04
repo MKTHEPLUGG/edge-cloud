@@ -47,6 +47,8 @@ CUSTOM_SCRIPT="${MOTD_DIR}/00-edgecloud"
 sudo apt update -y && apt upgrade -y
 sudo apt install git nfs-common curl file bpytop build-essential net-tools neofetch bash-completion -y
 
+# -- setup sysadmin user --
+
 # Install az-cli
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
@@ -77,17 +79,16 @@ log "INFO" "Neofetch has been set as the MOTD. Backup of old scripts is in $BACK
 # If it doesn't work will have to revert back to vendor image. Or figure out how I can create one that matches my kernel version.
 
 # Path to check = Old logic, rework.
-file_path="/boot/dtb/rockchip/overlay/rock-5a-spi-nor-flash.dtbo"
-# Verify if the path exists
-if [ -e "$file_path" ]; then
-    log "DEBUG" "Path exists: $file_path"
-    # Append the echo statement to /boot/armbianEnv.txt
-    echo "overlays=rock-5a-spi-nor-flash" >> /boot/armbianEnv.txt
-    log "INFO" "overlays=rock-5a-spi-nor-flash appended to /boot/armbianEnv.txt"
-else
-    log "DEBUG" "Path does not exist: $file_path"
-    #TODO: Add section here that copies the file and moves it to the correct location
-fi
+#file_path="/boot/dtb/rockchip/overlay/rock-5a-spi-nor-flash.dtbo"
+## Verify if the path exists
+#if [ -e "$file_path" ]; then
+#    log "DEBUG" "Path exists: $file_path"
+#    # Append the echo statement to /boot/armbianEnv.txt
+#    echo "overlays=rock-5a-spi-nor-flash" >> /boot/armbianEnv.txt
+#    log "INFO" "overlays=rock-5a-spi-nor-flash appended to /boot/armbianEnv.txt"
+#else
+#    log "DEBUG" "Path does not exist: $file_path"
+#fi
 
 # Modify sysadmin .zshrc, moved to copying custom .zshrc file
 #cat <<EOF | sudo tee /home/sysadmin/.zshrc
