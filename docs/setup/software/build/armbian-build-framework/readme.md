@@ -17,7 +17,7 @@ You’ll need a Linux machine (or VM) with the necessary build dependencies to c
 
   ```bash
   # if git is not installed: apt install git
-  git clone https://github.com/MKTHEPLUGG/edge-cloud
+  git clone https://github.com/michielvha/edge-cloud
   cd edge-cloud
   ```
 
