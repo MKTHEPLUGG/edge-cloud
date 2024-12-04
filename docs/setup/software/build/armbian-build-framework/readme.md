@@ -140,6 +140,8 @@ When working with Armbian images, you may want to check the image before trying 
    After running this, try mounting the root partition again with:
    ```bash
    sudo mkdir -p /mnt/os
+   sudo mkdir -p /mnt/boot
+   sudo mount /dev/mapper/loop0p1 /mnt/boot
    sudo mount /dev/mapper/loop0p2 /mnt/os
    ```
 
