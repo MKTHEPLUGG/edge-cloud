@@ -73,7 +73,7 @@ EOF
 sudo chmod +x $CUSTOM_SCRIPT
 log "INFO" "Neofetch has been set as the MOTD. Backup of old scripts is in $BACKUP_DIR." >> $LOG
 
-
+#  -- no longer needed since 24.11.0 --
 # Enable SPI NOR Flash to hold bootloader to boot from SSD.
 # These device tree overlays are only found in the vendor image. Going to manually try them on current image.
 # If it doesn't work will have to revert back to vendor image. Or figure out how I can create one that matches my kernel version.

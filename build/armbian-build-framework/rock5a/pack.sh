@@ -9,3 +9,5 @@ BUILD_DESKTOP=no \
 KERNEL_CONFIGURE=no \
 BOOT_SUPPORT_SPI="yes" \
 ENABLE_EXTENSIONS="cloud-init"
+
+# it defaults to SPI since 24.11.0
