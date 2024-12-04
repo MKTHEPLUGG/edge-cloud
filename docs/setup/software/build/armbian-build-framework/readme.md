@@ -117,3 +117,46 @@ Once the configuration is ready, proceed with building the image.
 ---
 
 
+### Troubleshooting: Mounting Root Partition from Armbian Image
+
+When working with Armbian images, you may want to check the image before trying to boot from it. Here are some troubleshooting steps to help you do that.
+
+1. **Check the Loop Device**: Check which loop devices are currently in use
+   ```bash
+   sudo losetup -a
+   ```
+
+   This should show the loop device `/dev/loop0` with the associated partitions like `/dev/loop0p1` and `/dev/loop0p2`.
+
+2. **Create the Loop Device with Partition Mapping with Kpartx**:
+
+   Run this command to create partition mappings:
+   ```bash
+   sudo kpartx -av Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75-ci.img
+   ```
+
+   This should create devices like `/dev/mapper/loop0p1` and `/dev/mapper/loop0p2`.
+
+   After running this, try mounting the root partition again with:
+   ```bash
+   sudo mkdir -p /mnt/os
+   sudo mount /dev/mapper/loop0p2 /mnt/os
+   ```
+
+3. **Check Kernel Messages**:
+   ```bash
+   dmesg | tail -n 20
+   ```
+
+   This can help identify if there are any specific errors related to the loop device or partitions.
+
+4. **Unmount and Detach the Loop Device**: Once you're done troubleshooting, remember to clean up by unmounting and detaching the loop device:
+   ```bash
+   sudo umount /mnt/os
+   sudo losetup -d /dev/loop0
+   ```
+
+### Summary
+- First, use `losetup -a` to confirm that the loop device and its partitions are set up correctly.
+- If needed, use `kpartx` to create partition mappings and then mount the partition.
+- Use `dmesg` to check for any kernel-level issues related to the loop device.
