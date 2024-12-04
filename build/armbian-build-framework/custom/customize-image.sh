@@ -55,10 +55,10 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 sudo mkdir -p "$BACKUP_DIR"
 # Check if there are files in the MOTD directory, excluding the backup directory, and move them
 if ls -A "$MOTD_DIR" | grep -q -v 'backup'; then
-    echo "Backing up existing MOTD scripts to $BACKUP_DIR..."
+    log "INFO" "Backing up existing MOTD scripts to $BACKUP_DIR..."
     sudo mv "$MOTD_DIR"/!(backup) "$BACKUP_DIR"/
 else
-    echo "No existing MOTD scripts to back up."
+    log "DEBUG" "No existing MOTD scripts to back up."
 fi
 
 # Create a custom neofetch MOTD script

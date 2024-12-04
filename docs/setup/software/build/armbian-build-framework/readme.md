@@ -133,6 +133,7 @@ When working with Armbian images, you may want to check the image before trying 
    Run this command to create partition mappings:
    ```bash
    sudo kpartx -av Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75-ci.img
+   sudo kpartx -av Armbian-unofficial_24.11.0-trunk_Rock-5a_noble_vendor_6.1.75-ci_minimal.img
    ```
 
    This should create devices like `/dev/mapper/loop0p1` and `/dev/mapper/loop0p2`.
