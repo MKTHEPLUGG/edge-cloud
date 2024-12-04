@@ -84,6 +84,8 @@ To include `cloud-init` in the image, you’ll modify the Armbian build configur
 
 #### 3. **Set Overlay to enable SPI support**
 
+**Deprecated since 24.11.0**
+
 Figure out how to do this with the build framework we need to enable to overlay
 
 When you install the base image of armbian the SPI controller is not configured as SPI NOR FLASH, which is what we want if we want to upload the bootloader there. To enable this functionallity you need to add an overlay to the boot env file.
@@ -112,7 +114,8 @@ Once the configuration is ready, proceed with building the image.
     BUILD_DESKTOP=no \
     KERNEL_CONFIGURE=no
     ````
-
+    
+    [Official documentation detailing all the switches](https://docs.armbian.com/Developer-Guide_Build-Switches/)
 
 ---
 
