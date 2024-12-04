@@ -169,10 +169,10 @@ When working with Armbian images, you may want to check the image before trying 
 
 [//]: # (https://forum.armbian.com/topic/14616-cloud-init/ => **DEPRECATED** cloud init seems to have been added in.)
 
+## Important change
+
 In Armbian version 24.11.0, the SPI flash NOR overlay for the Rock5A was removed because the board's hardware design requires separate configurations for eMMC and SPI flash due to shared pins. To address this, Armbian now builds U-Boot twice for the Rock5A: once with SPI flash support and once with eMMC support. This approach eliminates the need for a separate overlay, as the necessary configurations are integrated directly into the respective U-Boot builds. 
 
-When building your image using the Armbian Build Framework, you can select the appropriate U-Boot configuration to match your intended boot device. During the build process, the framework should prompt you to choose between SPI flash and eMMC support for U-Boot. Ensure you select the option that corresponds to your target boot medium.
+When building your image using the Armbian Build Framework, you can select the appropriate U-Boot configuration to match your intended boot device using `./compile.sh menu` . During the build process, the framework will default to SPI if you want to change to eMMC use `BOOT_SUPPORT_SPI="no"`
 
-If the build framework does not provide a clear option for selecting the U-Boot configuration, you may need to manually specify the desired configuration. This can involve editing specific configuration files or applying patches that enable the appropriate support. For detailed guidance on customizing U-Boot configurations within the Armbian Build Framework, refer to the Armbian documentation or community forums.
-
-By selecting the correct U-Boot configuration during the build process, you ensure that your Rock5A board boots correctly from your chosen storage medium, whether it's SPI flash or eMMC. 
+[//]: # (If the build framework does not provide a clear option for selecting the U-Boot configuration, you may need to manually specify the desired configuration. This can involve editing specific configuration files or applying patches that enable the appropriate support. For detailed guidance on customizing U-Boot configurations within the Armbian Build Framework, refer to the Armbian documentation or community forums.)
