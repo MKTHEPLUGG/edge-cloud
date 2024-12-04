@@ -170,6 +170,8 @@ Let me know if you need more detailed help with any of these steps!
 
 ---
 
+https://forum.armbian.com/topic/38258-running-self-build-image-on-qemu-arm64/ => docs to build on qemu and how to boot with u boot new method
+
 
 # boot armbian with new method
 

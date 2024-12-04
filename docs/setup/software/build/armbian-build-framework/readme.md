@@ -1,20 +1,12 @@
 # Use Armbian Build framework for custom image
 
-[//]: # (seems to me like the best way is not to try boot it via qemu and use packer but just use the build framework for everything, you can use the userpatches/customize-image.sh https://docs.armbian.com/Developer-Guide_User-Configurations/)
+[//]: # (we need to figure out how armbian is handling the boot process from start to finish, I'm getting conflicting info)
 
-we need to figure out how armbian is handling the boot process from start to finish, I'm getting conflicting info
+Armbian doesn’t include Cloud-Init by default like Ubuntu cloud images. To enable it, use the **Armbian Build Framework** to create a custom image for the Rock5A. Afterwards we automate it with pipelines for consistent builds. Here’s how to get started.
 
-https://forum.armbian.com/topic/38258-running-self-build-image-on-qemu-arm64/ => docs to build on qemu and how to boot with u boot new method
+## Steps to Rebuild Armbian Image for Rock5A with Cloud-Init:
 
-Armbian doesn't support cloud-init by default like the cloud images of ubuntu do, we'll have to use the build framework to create our custom image. first figure out how it works then automate it via pipelines.
-
-[//]: # (https://forum.armbian.com/topic/14616-cloud-init/ => **DEPRECATED** cloud init seems to have been added in.)
-
-To rebuild the Ubuntu-based Armbian image specifically for the Rock5A and include Cloud-Init, you can use the **Armbian Build Framework**. This will allow you to start with the same base image but customize it to include Cloud-Init and any other packages or configurations you want. Here’s a step-by-step guide to achieve that.
-
-### Steps to Rebuild Armbian Image for Rock5A with Cloud-Init:
-
-#### 1. **Set Up Armbian Build Environment**
+### 1. **Set Up Armbian Build Environment**
 
 > [!IMPORTANT]
 > This is fully automated using the Deploy script in ``build/armbian-build-framework``.
@@ -48,7 +40,7 @@ You’ll need a Linux machine (or VM) with the necessary build dependencies to c
   sudo apt-get install git curl zip unzip rsync bc
   ```
 
-#### 2. **Add Cloud-Init to the Build**
+### 2. **Add Cloud-Init to the Build**
 
 
 https://github.com/armbian/build/issues/6197
@@ -56,6 +48,7 @@ https://github.com/armbian/build/pull/6205/files
 https://github.com/rpardini/armbian-build/tree/extensions/userpatches/extensions
 
 #### Reference
+
 [Armbian Docs - User Provided Patches/Config/Customization script](https://docs.armbian.com/Developer-Guide_User-Configurations/#user-provided-patches)
 
 To include `cloud-init` in the image, you’ll modify the Armbian build configuration files and enable the extension.
@@ -82,13 +75,11 @@ To include `cloud-init` in the image, you’ll modify the Armbian build configur
      ```
      
 
-#### 3. **Set Overlay to enable SPI support**
+### 3. **Set Overlay to enable SPI support**
 
 **Deprecated since 24.11.0**
 
-Figure out how to do this with the build framework we need to enable to overlay
-
-When you install the base image of armbian the SPI controller is not configured as SPI NOR FLASH, which is what we want if we want to upload the bootloader there. To enable this functionallity you need to add an overlay to the boot env file.
+When you install the base image of armbian the SPI controller is not configured as SPI NOR FLASH, which is what we want if we want to upload the bootloader there. To enable this functionality you need to add an overlay to the boot env file.
 
 ````shell
 ls /boot/dtb/rockchip/overlay/rock-5a-spi-nor-flash.dtbo
@@ -97,7 +88,7 @@ reboot
 lsblk   # or ls /dev/mtd*
 ````
 
-#### 4. **Build the Image**
+### 4. **Build the Image**
 
 Once the configuration is ready, proceed with building the image.
 
@@ -116,6 +107,12 @@ Once the configuration is ready, proceed with building the image.
     ````
     
     [Official documentation detailing all the switches](https://docs.armbian.com/Developer-Guide_Build-Switches/)
+
+3. We've supplied standard config for our supported boards in:
+   - [rpi4b](../../../../../build/armbian-build-framework/rpi4b/pack.sh)
+   - [rock5a](../../../../../build/armbian-build-framework/rock5a/pack.sh)
+
+4. Automations created in the [deploy.sh](../../../../../build/armbian-build-framework/deploy.sh) script will handle the rest.
 
 ---
 
@@ -169,6 +166,8 @@ When working with Armbian images, you may want to check the image before trying 
 - Use `dmesg` to check for any kernel-level issues related to the loop device.
 
 ---
+
+[//]: # (https://forum.armbian.com/topic/14616-cloud-init/ => **DEPRECATED** cloud init seems to have been added in.)
 
 In Armbian version 24.11.0, the SPI flash NOR overlay for the Rock5A was removed because the board's hardware design requires separate configurations for eMMC and SPI flash due to shared pins. To address this, Armbian now builds U-Boot twice for the Rock5A: once with SPI flash support and once with eMMC support. This approach eliminates the need for a separate overlay, as the necessary configurations are integrated directly into the respective U-Boot builds. 
 
