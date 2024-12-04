@@ -36,7 +36,7 @@ copy_init_files() {
   mkdir -p "$ENV/build/userpatches/extensions"
 
   echo "[INFO] - Copying files to $ENV/build/userpatches/extensions/cloud-init"
-  cp -r "$ENV/cloud-init" "$ENV/build/userpatches/extensions/"
+  cp -r "$ENV/cloud-init" "$ENV/build/userpatches/extensions/"      #TODO: this needs to be changed to the files from the repo unless we specifically modify them. to stay in line with any updates to the code.
   ls -al "$ENV/build/userpatches/extensions/cloud-init"
 
   echo "[INFO] - Enable extension in lib.config"
