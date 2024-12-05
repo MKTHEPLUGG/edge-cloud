@@ -99,7 +99,7 @@ log "INFO" "Neofetch has been set as the MOTD. Backup of old scripts is in $BACK
 
 
 # Enable theme for zsh
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k # this will install the theme to /etc/oh-my-zsh/custom/themes/powerlevel10k
+# git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k # this will install the theme to /etc/oh-my-zsh/custom/themes/powerlevel10k
 # TODO: After install of theme via gitclone you need to replace .p10k.zsh & .zshrc with files in custom dir of build framework, same as this script. above line also needs to be ran for the theme to be installed
 
 
