@@ -43,9 +43,14 @@ server {
     autoindex on;                # Enable directory listing
     autoindex_exact_size off;    # Show file sizes in KB/MB
     autoindex_localtime on;      # Show local time for files
+    client_max_body_size 5G;     # Set a maximum file size, e.g., 5GB
+    keepalive_timeout 65;        # Default keepalive timeout
+    send_timeout 600;            # Time to transmit a response to the client
+    client_body_timeout 600;     # Time to receive the entire request body
 
     location / {
         try_files \$uri \$uri/ =404;
+        add_header Accept-Ranges bytes;   # This allows users to resume partial downloads by requesting only the remaining bytes.
     }
 }
 EOF
