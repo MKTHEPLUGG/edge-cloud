@@ -44,7 +44,7 @@ BACKUP_DIR="/etc/update-motd.d/backup"
 CUSTOM_SCRIPT="${MOTD_DIR}/00-edgecloud"
 
 # -- Main Script Section --
-sudo apt update -y && apt upgrade -y
+sudo apt update -y && apt upgrade -y # && apt dist-upgrade -y # full upgrade including resolving dependencies
 sudo apt install git nfs-common curl file bpytop build-essential net-tools neofetch bash-completion -y
 
 # -- setup sysadmin user --
