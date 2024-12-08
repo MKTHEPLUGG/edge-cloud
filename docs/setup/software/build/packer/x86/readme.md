@@ -1,12 +1,14 @@
-## automate image creation with packer
+# automate image creation with packer
 
-### How Packer Works
-Packer uses **builders** to create images, **provisioners** to configure the system (install software, set up users, etc.), and **post-processors** to handle the output (convert the image, compress, etc.). You can define the process in a single JSON or HCL configuration file.
+### Packer Basics
+Packer uses **builders** to create images, **provisioners** to configure the system (install software, set up users, etc.), and **post-processors** to handle the output (convert the image, compress, etc.). 
+You can define the process in a single JSON or HCL configuration file.
 
+### images
 
-### Images
+in this section we provide a short list of the images to use with our packer templates. However, you could use any image.
 
-You can find the ubuntu cloud images at this [location](https://cloud-images.ubuntu.com/releases/)
+- [**Ubuntu Cloud Images**](https://cloud-images.ubuntu.com/releases/): Official Ubuntu images optimized for cloud environments. They come pre-installed with cloud-init for configuration.
 
 
 ### Steps to Automate Image Creation with Packer
@@ -42,7 +44,6 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
 
     We've added extra configuration to the [install.sh](./../../../../../../build/packer/ubuntu-cloud-image/scripts/install.sh)  script
 
-
 5. **Run Packer**
 
    Simply go to the directory holding the template and run it with:
@@ -65,9 +66,6 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
 
    Once you have the Packer template, you can automate your builds. You can integrate it with CI/CD pipelines (e.g., GitHub Actions, Jenkins) to rebuild the image whenever changes are made to the configuration.
 
-
-
-
 ### Example Workflow
 
 - **Builders**: Define the base image (e.g., Ubuntu Cloud Image) and settings (memory, disk size, etc.).
@@ -76,15 +74,15 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
 
 ---
 
-### Next Steps
-- Automate the image creation by integrating Packer into a CI/CD pipeline or scheduling builds as needed.
+[//]: # (### Next Steps)
+
+[//]: # (- Automate the image creation by integrating Packer into a CI/CD pipeline or scheduling builds as needed.)
 
 ---
 
 look into adding below stuff to above filtered docs.
 
 7. **When packer is building use VNC to connect to the Host**
-
 
 Yes, you can use a VNC client from your shell to connect to the VNC server at `vnc://127.0.0.1:5956`. Here are the common ways you can do this depending on your environment:
 
@@ -128,38 +126,6 @@ If you are using a remote machine and want to use VNC from your local machine, y
 
 This method forwards port `5956` from the remote host to your local machine, so you can use a VNC viewer from your local machine as if the VM were running locally.
 
-[//]: # (### 4. **Using `xfreerdp` with VNC**)
-
-[//]: # ()
-[//]: # (Alternatively, if you prefer using FreeRDP, you can install it and use it to connect to the VNC server.)
-
-[//]: # ()
-[//]: # (1. **Install FreeRDP**:)
-
-[//]: # (   ```bash)
-
-[//]: # (   sudo apt-get install freerdp2-x11)
-
-[//]: # (   ```)
-
-[//]: # ()
-[//]: # (2. **Connect to the VNC server**:)
-
-[//]: # (   ```bash)
-
-[//]: # (   xfreerdp /v:127.0.0.1:5956)
-
-[//]: # (   ```)
-
-[//]: # ()
-[//]: # (### Summary:)
-
-[//]: # (- Use `vncviewer` or `xvnc4viewer` to connect to the VNC server running on `127.0.0.1:5956`.)
-
-[//]: # (- If you're working remotely, you may need to set up SSH port forwarding to view VNC locally.)
-
-[//]: # (  )
-
 
 ### 1. **Ensure X11 Forwarding is Enabled (For Remote SSH Sessions)**
    If you're running this on a remote machine via SSH, you'll need X11 forwarding to open graphical applications.
@@ -184,44 +150,6 @@ This method forwards port `5956` from the remote host to your local machine, so 
    3. **Ensure Your Local Machine Supports X11**:
       Ensure your local machine has an X server running (e.g., `XQuartz` on macOS, `VcXsrv` or `Xming` on Windows).
 
-[//]: # (### 2. **Using `Xvfb` for Headless VNC Connection** WORKS)
-
-[//]: # (   If you're working in a completely headless environment without access to a graphical session &#40;like a remote server&#41;, you can use `Xvfb` &#40;X Virtual Framebuffer&#41; to emulate a display.)
-
-[//]: # ()
-[//]: # (   1. **Install `Xvfb`:**)
-
-[//]: # (      - On Ubuntu/Debian:)
-
-[//]: # (        ```bash)
-
-[//]: # (        sudo apt-get install xvfb)
-
-[//]: # (        ```)
-
-[//]: # ()
-[//]: # (   2. **Run `Xvfb` to Create a Virtual Display:**)
-
-[//]: # (      You can start a virtual framebuffer display on display number `:1`:)
-
-[//]: # (      ```bash)
-
-[//]: # (      Xvfb :1 -screen 0 1024x768x16 &)
-
-[//]: # (      export DISPLAY=:1)
-
-[//]: # (      ```)
-
-[//]: # ()
-[//]: # (   3. **Run `vncviewer`:**)
-
-[//]: # (      Now, you should be able to launch `vncviewer` using the virtual display:)
-
-[//]: # (      ```bash)
-
-[//]: # (      vncviewer 127.0.0.1:5956)
-
-[//]: # (      ```)
 
 ### 3. **Using VNC from Another Local Machine**
    If your current environment is fully headless, and graphical applications won't work, you can run the VNC session from another machine that supports graphical applications (like your personal computer or laptop).
