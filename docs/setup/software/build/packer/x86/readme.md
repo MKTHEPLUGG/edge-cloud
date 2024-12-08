@@ -1,15 +1,20 @@
-# automate image creation with packer
+# Automate Image Creation with Packer
 
 ## Packer Basics
-Packer uses **builders** to create images, **provisioners** to configure the system (install software, set up users, etc.), and **post-processors** to handle the output (convert the image, compress, etc.). 
-You can define the process in a single JSON or HCL configuration file.
+
+Packer simplifies the creation of custom images through three core components:
+
+- **Builders**: Define the base image (e.g., Ubuntu Cloud Image) and configure hardware settings like memory, disk size, and virtualization options.
+- **Provisioners**: Customize the image by running shell scripts, installing software, copying files, and setting up configurations.
+- **Post-processors**: Handle the final image output, such as converting it to a specific format (e.g., raw for USB deployment) or compressing it for distribution.
+
+With Packer, you can automate the entire process in a single JSON or HCL configuration file, making it easy to replicate and customize image builds.
 
 ## Ubuntu Cloud Images
 
-we'll be using ubuntu cloud image since it supports cloud-init. However, you could use any image as long as it supports cloud init. Alternatively, just you could drop cloud-init and do all the config via bash in the custom script.
+We’ll use the **Ubuntu Cloud Image**, as it supports Cloud-Init by default. However, any image that supports Cloud-Init can be used. Alternatively, you can skip Cloud-Init entirely and handle all configuration through the extra bash script we already use to perform some extra configuration.
 
 - [**Ubuntu Cloud Images**](https://cloud-images.ubuntu.com/releases/): Official Ubuntu images optimized for cloud environments. They come pre-installed with cloud-init for configuration.
-
 
 ## Automate Image Creation with Packer
 
@@ -29,64 +34,52 @@ packer plugins install github.com/hashicorp/qemu
 
 ### Packer Template
 
-   We've created a [**Packer template**](../../../../../../build/packer/ubuntu-cloud-image/ubuntu.pkr.hcl) that defines how to build our ubuntu image. Feel free to modify it to suit your specific needs. Since ubuntu supports cloud init by default via the cloud image we'll be leveraging it to do some modifications during initial boot.
+We've created a [**Packer template**](../../../../../../build/packer/ubuntu-cloud-image/ubuntu.pkr.hcl) that defines how to build our ubuntu image. Feel free to modify it to suit your specific needs. Since ubuntu supports cloud init by default via the cloud image we'll be leveraging it to do some modifications during initial boot.
 
-   In this example:
-   - The **builder** uses QEMU to create the image, starting from the `focal-server-cloudimg-amd64.img`.
-   - The **provisioners** run shell commands and copy the Cloud-init `user-data` file into the appropriate directory.
-   - The **post-processor** converts the final image to `raw` format.
+In this example:
+- The **builder** uses QEMU to create the image, starting from the `focal-server-cloudimg-amd64.img`.
+- The **provisioners** run shell commands and copy the Cloud-init `user-data` file into the appropriate directory.
+- The **post-processor** converts the final image to `raw` format.
 
-### Create the `user-data` File (Cloud-init Configuration)
+### Cloud-init Configuration - ``user-data`` file
 
-Make sure you have a `user-data` (config) file ready. in the template above this is handled by copying cloud config to the standard dir `/etc/cloud/cloud.cfg.d/99_custom.cfg`
+The configuration packs user data into the image for **Cloud-Init** because **Cloud-Init User Data is Mounted as a CD-ROM (ISO):**
+- The `cd_files` directive specifies the path to the directory containing the Cloud-Init `user-data` and `meta-data` files (`./cloud-init/*`).
+- The `cd_label` is set to `cidata`, which is the default label Cloud-Init expects for NoCloud configuration.
 
-### Run extra scripts
+When the VM boots, the Cloud-Init process in the Ubuntu cloud image automatically checks for a CD-ROM with the `cidata` label and reads the `user-data` and `meta-data` files from it to configure the instance.
+
+[//]: # (Make sure you have a `user-data` file ready. In our template this is handled by copying the contents of the ``build/packer/ubuntu-cloud-image/cloud-init`` directory to the standard dir `/etc/cloud/cloud.cfg.d/99_custom.cfg` inside the image during packer build.)
+
+### Extra scripts
 
 We've added extra configuration to the [**install.sh**](./../../../../../../build/packer/ubuntu-cloud-image/scripts/install.sh) script. This will perform extra modifications that aren't defined in cloud-init config.
 
 ### Run Packer
 
-   Simply go to the directory holding the template and run it with:
+Simply go to the directory holding the template and run it with:
 
-   ```bash
-   sudo packer build .
-   ```
+```bash
+sudo packer build .
+```
 
-   This will automatically:
-   - Download the cloud image.
-   - Customize it with your Cloud-init configuration and other provisions.
-   - Convert the final output to `raw` format.
-   - make sure to run ``packer`` as root if you are using any plugins (like qemu) that require root access.
+This will automatically:
+- Download the cloud image.
+- Customize it with our Cloud-init configuration and other provisions.
+- Convert the final output to `raw` format.
+- make sure to run ``packer`` as root if you are using any plugins (like qemu) that require root access.
 
-6. **Result: The Final Image**
+After running the Packer build, you’ll find the final raw image in the `output-ubuntu-image` directory. You can directly copy this image to a USB drive or deploy it on any other system.
 
-   After running the Packer build, you’ll find the final raw image in the `output-ubuntu-image` directory. You can directly copy this image to a USB drive or deploy it on any other system.
+### Automating Future Builds
 
-7. **Automating Future Builds**
+Once you have the Packer template, you can automate your builds. You can integrate it with CI/CD pipelines (e.g., GitHub Actions, Jenkins) to rebuild the image whenever changes are made to the configuration.
 
-   Once you have the Packer template, you can automate your builds. You can integrate it with CI/CD pipelines (e.g., GitHub Actions, Jenkins) to rebuild the image whenever changes are made to the configuration.
+**TODO: Add a section on how to automate Packer builds with CI/CD pipelines.**
 
-### Example Workflow
+## Troubleshoot image after creation
 
-- **Builders**: Define the base image (e.g., Ubuntu Cloud Image) and settings (memory, disk size, etc.).
-- **Provisioners**: Run shell scripts to install packages, copy files, and configure the image.
-- **Post-processors**: Convert the final image to a desired format (like raw for USB deployment).
-
----
-
-[//]: # (### Next Steps)
-
-[//]: # (- Automate the image creation by integrating Packer into a CI/CD pipeline or scheduling builds as needed.)
-
----
-
-look into adding below stuff to above filtered docs.
-
-7. **When packer is building use VNC to connect to the Host**
-
-Yes, you can use a VNC client from your shell to connect to the VNC server at `vnc://127.0.0.1:5956`. Here are the common ways you can do this depending on your environment:
-
-### 1. **Using `vncviewer` (from the `tigervnc` package)**
+### Connect to image via VNC during build
 
 If you're on a Linux system, you can use the `tigervnc` package, which includes the `vncviewer` command-line tool.
 
@@ -106,12 +99,12 @@ If you're on a Linux system, you can use the `tigervnc` package, which includes 
    vncviewer 127.0.0.1:5956
    ```
 
-   This will open a graphical VNC session in a new window where you can view the virtual machine's display.
+This will open a graphical VNC session in a new window where you can view the virtual machine's display. 
+However, this is only supported on a host with graphical capabilities.
 
+### SSH Tunnel for Remote Shell Use
 
-### 3. **SSH Tunnel for Remote Shell Use**
-
-If you are using a remote machine and want to use VNC from your local machine, you can forward the VNC port over SSH.
+If your current environment is fully headless, and graphical applications won't work, you can run the VNC session from another machine that supports graphical applications (like your personal computer or laptop).
 
 1. **Create an SSH tunnel** from your local machine (replace `remote_user` and `remote_host` with your credentials):
    ```bash
@@ -124,8 +117,13 @@ If you are using a remote machine and want to use VNC from your local machine, y
    vncviewer 127.0.0.1:5956
    ```
 
-This method forwards port `5956` from the remote host to your local machine, so you can use a VNC viewer from your local machine as if the VM were running locally.
+3. **for windows users**: use ``MobaXterm`` as vncviewer.
 
+This method forwards port `5956` from the remote host to your local machine, so you can use a VNC viewer from your local machine if your remote host doesn't support graphical applications.
+
+---
+
+**below needs to be refined and added if needed**
 
 ### 1. **Ensure X11 Forwarding is Enabled (For Remote SSH Sessions)**
    If you're running this on a remote machine via SSH, you'll need X11 forwarding to open graphical applications.
@@ -152,18 +150,6 @@ This method forwards port `5956` from the remote host to your local machine, so 
 
 
 ### 3. **Using VNC from Another Local Machine**
-   If your current environment is fully headless, and graphical applications won't work, you can run the VNC session from another machine that supports graphical applications (like your personal computer or laptop).
-
-   1. **Set Up SSH Tunnel**:
-      If your VM is remote, create an SSH tunnel for VNC forwarding:
-      ```bash
-      ssh -L 5956:127.0.0.1:5956 remote_user@remote_host
-      ```
-
-   2. **Run `vncviewer` Locally**:
-      The previous step will open a ssh connection to the remote server while also forwarding the port on the local system. Run the `vncviewer` on your local machine, and connect to `127.0.0.1:5956`.
-
-   3. I'm on windows (yikes) so I'll be using ``MobaXterm`` as vncviewer.
 
 ### 4. **Running VNC in a Desktop Session**
    If you are working in a local environment with a desktop environment but still face this issue, make sure your system has a running graphical environment (e.g., GNOME, KDE, etc.).
@@ -181,8 +167,6 @@ This method forwards port `5956` from the remote host to your local machine, so 
 - **Local VNC Viewer**: Forward VNC traffic through an SSH tunnel and use a local VNC viewer if possible.
 
 ---
-
-Actual accurate docs to be made here
 
 ## Gain shell access to image after creation
 
@@ -260,8 +244,6 @@ https://github.com/z-shell/zi
 ---
 
 # Troubleshooting
-
-
 
 ### 1. **Why VNC is Not Showing Anything**
 The VNC server that Packer starts is attempting to connect to a display, but since your server doesn’t have a graphical environment (like GNOME, KDE, or even a basic X server), there is no graphical output to show. The VNC is essentially connected to a "blank" screen, because the VM doesn't know what to display.
