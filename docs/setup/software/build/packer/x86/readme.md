@@ -1,6 +1,6 @@
 # Automate Image Creation with Packer
 
-in this section, we'll detailed how we leverage packer to create custom images automatically. By using this we enable a `Golder Image` approach to our infrastructure.
+in this section, we'll detailed how we leverage hashicorp's ``Packer`` to create custom images automatically. By using this we enable a `Golder Image` approach to our infrastructure.
 
 ## Table of Contents
 - [Automate Image Creation with Packer](#automate-image-creation-with-packer)
