@@ -1,6 +1,6 @@
 # automate image creation with packer
 
-### Packer Basics
+## Packer Basics
 Packer uses **builders** to create images, **provisioners** to configure the system (install software, set up users, etc.), and **post-processors** to handle the output (convert the image, compress, etc.). 
 You can define the process in a single JSON or HCL configuration file.
 
