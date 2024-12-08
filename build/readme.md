@@ -36,3 +36,7 @@
    - zsh config + theme
    - custom MODT Message
 
+### Zi a package manager for zsh
+
+- https://github.com/z-shell/zi
+- [zi install](https://wiki.zshell.dev/docs/getting_started/installation)

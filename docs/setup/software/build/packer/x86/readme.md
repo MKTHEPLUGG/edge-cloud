@@ -259,15 +259,6 @@ Summary of Options:
 - **Xvfb**: Use `Xvfb` to create a virtual display if your environment is entirely headless.
 - **Local VNC Viewer**: Forward VNC traffic through an SSH tunnel and use a local VNC viewer if possible.
 
----
-
-
-
-Zi a package manager for zsh
-
-https://github.com/z-shell/zi
-[zi install](https://wiki.zshell.dev/docs/getting_started/installation)
-
 
 ---
 
@@ -284,16 +275,6 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
    ```
 
    This tells QEMU to show the serial console (a basic terminal) in the VNC session. Now, when you connect via VNC, you should see the console output of your VM.
-
-2. **Restart your Packer build**, and try connecting again with VNC:
-
-   ```bash
-   vncviewer 127.0.0.1:5918
-   ```
-
-   You should now see the terminal output instead of a blank screen.
-
----
 
 
 
@@ -313,14 +294,12 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
 
 ---
 
-
 **Autoinstall vs Cloud-Init**
 
 - **Autoinstall**: The `autoinstall` directive is part of Ubuntu's Subiquity installer (used for server installs). It handles the initial installation process, including partitioning, user setup, and other system-wide configurations during installation.
 - **Cloud-Init**: The `user-data` part of Cloud-Init configures the instance after the system has been installed, including user setup, package installation, and other runtime configurations.
 
 If you're using the autoinstall method (via Subiquity), the `autoinstall` block is necessary to automate the server installation process. If your system is already installed and you're focusing on Cloud-Init, you only need the `#cloud-config` file (no `autoinstall` block).
-
 
 **Do You Need the Autoinstall Section?**
 
