@@ -4,10 +4,11 @@
 Packer uses **builders** to create images, **provisioners** to configure the system (install software, set up users, etc.), and **post-processors** to handle the output (convert the image, compress, etc.). 
 You can define the process in a single JSON or HCL configuration file.
 
-## images
+## Ubuntu Cloud Images
 
-in this section we provide a short list of the images to use with our packer templates. However, you could use any image.
 
+
+image:
 - [**Ubuntu Cloud Images**](https://cloud-images.ubuntu.com/releases/): Official Ubuntu images optimized for cloud environments. They come pre-installed with cloud-init for configuration.
 
 
@@ -42,7 +43,7 @@ in this section we provide a short list of the images to use with our packer tem
 
 ### Run extra scripts for more modification not handled during cloud-init process.
 
-    We've added extra configuration to the [install.sh](./../../../../../../build/packer/ubuntu-cloud-image/scripts/install.sh)  script
+We've added extra configuration to the [install.sh](./../../../../../../build/packer/ubuntu-cloud-image/scripts/install.sh) script
 
 ### Run Packer
 
