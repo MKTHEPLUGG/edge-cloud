@@ -23,7 +23,7 @@
       - [Enter a chroot environment:](#enter-a-chroot-environment)
       - [Exiting and Unmounting](#exiting-and-unmounting)
       - [If the Image Uses Partitions](#if-the-image-uses-partitions)
-    - [Reference :](#reference-)
+    - [References](#references)
 
 
 ## Packer Basics
@@ -218,7 +218,7 @@ sudo mount -o loop,offset=<partition-offset> /path/to/your/image.img /mnt/image
 
 Replace `<partition-offset>` with the appropriate offset, which can be calculated from the `fdisk` output (usually in bytes).
 
-### Reference :
+### References
 
 - [Customize MOTD](https://www.putorius.net/custom-motd-login-screen-linux.html)
 - [Original Repo Reference For Packer Config](https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main)
