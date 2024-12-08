@@ -1,5 +1,31 @@
 # Automate Image Creation with Packer
 
+## Table of Contents
+- [Automate Image Creation with Packer](#automate-image-creation-with-packer)
+  - [Table of Contents](#table-of-contents)
+  - [Packer Basics](#packer-basics)
+  - [Ubuntu Cloud Images](#ubuntu-cloud-images)
+  - [Automate Image Creation with Packer](#automate-image-creation-with-packer-1)
+    - [Install Packer](#install-packer)
+    - [Packer Template](#packer-template)
+    - [Cloud-init Configuration - ``user-data`` file](#cloud-init-configuration---user-data-file)
+    - [Extra scripts](#extra-scripts)
+    - [Run Packer](#run-packer)
+    - [Automating Future Builds](#automating-future-builds)
+  - [Troubleshoot image during creation](#troubleshoot-image-during-creation)
+    - [Connect to image via VNC during build](#connect-to-image-via-vnc-during-build)
+    - [SSH Tunnel for Remote Shell Use](#ssh-tunnel-for-remote-shell-use)
+  - [Troubleshoot image after creation](#troubleshoot-image-after-creation)
+    - [Use QEMU to Boot Image and Access the Shell](#use-qemu-to-boot-image-and-access-the-shell)
+    - [Shell Access via ``chroot``](#shell-access-via-chroot)
+      - [Create a directory to mount the image:](#create-a-directory-to-mount-the-image)
+      - [Mount the image file](#mount-the-image-file)
+      - [Enter a chroot environment:](#enter-a-chroot-environment)
+      - [Exiting and Unmounting](#exiting-and-unmounting)
+      - [If the Image Uses Partitions](#if-the-image-uses-partitions)
+    - [Reference :](#reference-)
+
+
 ## Packer Basics
 
 Packer simplifies the creation of custom images through three core components:
@@ -192,6 +218,12 @@ sudo mount -o loop,offset=<partition-offset> /path/to/your/image.img /mnt/image
 
 Replace `<partition-offset>` with the appropriate offset, which can be calculated from the `fdisk` output (usually in bytes).
 
+### Reference :
+
+- [Customize MOTD](https://www.putorius.net/custom-motd-login-screen-linux.html)
+- [Original Repo Reference For Packer Config](https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main)
+- [Packer Builder ARM](https://github.com/mkaczanowski/packer-builder-arm/tree/fec4cd5c642a736e0a81c11827d085c7f1a84b0a)
+
 ---
 
 ---
@@ -202,7 +234,7 @@ Replace `<partition-offset>` with the appropriate offset, which can be calculate
 
 **below needs to be refined and added if needed**
 
-### 1. **Ensure X11 Forwarding is Enabled (For Remote SSH Sessions)**
+**Ensure X11 Forwarding is Enabled (For Remote SSH Sessions)**
    If you're running this on a remote machine via SSH, you'll need X11 forwarding to open graphical applications.
 
    1. **Enable X11 Forwarding in SSH**:
@@ -226,19 +258,8 @@ Replace `<partition-offset>` with the appropriate offset, which can be calculate
       Ensure your local machine has an X server running (e.g., `XQuartz` on macOS, `VcXsrv` or `Xming` on Windows).
 
 
-### 3. **Using VNC from Another Local Machine**
 
-### 4. **Running VNC in a Desktop Session**
-   If you are working in a local environment with a desktop environment but still face this issue, make sure your system has a running graphical environment (e.g., GNOME, KDE, etc.).
-
-   - If you are on a headless environment but want to run GUI applications, you can install a minimal desktop environment and use `vncviewer` in it.
-
-   - For Ubuntu, for example, you can install a minimal desktop environment:
-     ```bash
-     sudo apt-get install ubuntu-desktop
-     ```
-
-### Summary of Options:
+Summary of Options:
 - **X11 Forwarding**: Use `ssh -X` if you're connecting to a remote machine and need graphical applications forwarded.
 - **Xvfb**: Use `Xvfb` to create a virtual display if your environment is entirely headless.
 - **Local VNC Viewer**: Forward VNC traffic through an SSH tunnel and use a local VNC viewer if possible.
@@ -247,20 +268,17 @@ Replace `<partition-offset>` with the appropriate offset, which can be calculate
 
 
 
-# Zi a package manager for zsh
+Zi a package manager for zsh
 
 https://github.com/z-shell/zi
 [zi install](https://wiki.zshell.dev/docs/getting_started/installation)
+
+
 ---
 
-# Troubleshooting
+**Steps to Resolve the VNC Blank Screen**
 
-### 1. **Why VNC is Not Showing Anything**
-The VNC server that Packer starts is attempting to connect to a display, but since your server doesn’t have a graphical environment (like GNOME, KDE, or even a basic X server), there is no graphical output to show. The VNC is essentially connected to a "blank" screen, because the VM doesn't know what to display.
-
-### 2. **Steps to Resolve the VNC Blank Screen**
-
-#### Option 1: Use VNC for Console Output
+Option 1: Use VNC for Console Output
 If you don’t need a GUI but want to see the **console output** (text-based terminal) in VNC, you can configure QEMU to output the console over VNC. By default, VNC may not be configured to display the console or text output.
 
 1. **Modify your Packer configuration to use a QEMU serial console with VNC**. Add the following to your `qemuargs` section:
@@ -282,11 +300,7 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
 
 ---
 
-## Reference :
 
-- [Customize MOTD](https://www.putorius.net/custom-motd-login-screen-linux.html)
-- [Original Repo Reference For Packer Config](https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main)
-- [Packer Builder ARM](https://github.com/mkaczanowski/packer-builder-arm/tree/fec4cd5c642a736e0a81c11827d085c7f1a84b0a)
 
 [//]: # (- [Guide]&#40;https://akashrajvanshi.medium.com/step-by-step-guide-creating-a-ready-to-use-ubuntu-cloud-image-on-proxmox-03d057f04fb2&#41;)
 
@@ -305,7 +319,7 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
 ---
 
 
-### 1. **Autoinstall vs Cloud-Init**
+**Autoinstall vs Cloud-Init**
 
 - **Autoinstall**: The `autoinstall` directive is part of Ubuntu's Subiquity installer (used for server installs). It handles the initial installation process, including partitioning, user setup, and other system-wide configurations during installation.
 - **Cloud-Init**: The `user-data` part of Cloud-Init configures the instance after the system has been installed, including user setup, package installation, and other runtime configurations.
@@ -313,6 +327,6 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
 If you're using the autoinstall method (via Subiquity), the `autoinstall` block is necessary to automate the server installation process. If your system is already installed and you're focusing on Cloud-Init, you only need the `#cloud-config` file (no `autoinstall` block).
 
 
-### 3. **Do You Need the Autoinstall Section?**
+**Do You Need the Autoinstall Section?**
 
 You **don't need** the `autoinstall` section in a standard Cloud-Init file. The `autoinstall` block is only needed if you’re using the Subiquity installer to automate the entire OS installation process (not just configuration after install).
