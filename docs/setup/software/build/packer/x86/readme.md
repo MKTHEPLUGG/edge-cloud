@@ -48,13 +48,14 @@ You can find the ubuntu cloud images at this [location](https://cloud-images.ubu
    Simply go to the directory holding the template and run it with:
 
    ```bash
-   packer build .
+   sudo packer build .
    ```
 
    This will automatically:
    - Download the cloud image.
    - Customize it with your Cloud-init configuration and other provisions.
    - Convert the final output to `raw` format.
+   - make sure to run ``packer`` as root if you are using any plugins (like qemu) that require root access.
 
 6. **Result: The Final Image**
 
