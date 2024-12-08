@@ -359,8 +359,6 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
 
    You should now see the terminal output instead of a blank screen.
 
---
-
 ---
 
 ## Reference :
