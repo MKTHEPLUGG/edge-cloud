@@ -6,31 +6,30 @@ You can define the process in a single JSON or HCL configuration file.
 
 ## Ubuntu Cloud Images
 
+we'll be using ubuntu cloud image since it supports cloud-init. However, you could use any image as long as it supports cloud init. Alternatively, just you could drop cloud-init and do all the config via bash in the custom script.
 
-
-image:
 - [**Ubuntu Cloud Images**](https://cloud-images.ubuntu.com/releases/): Official Ubuntu images optimized for cloud environments. They come pre-installed with cloud-init for configuration.
 
 
 ## Automate Image Creation with Packer
 
-#### Install Packer
+### Install Packer
 
-   You'll need a build host with packer installed. Here's how to install Packer on Ubuntu:
+You'll need a build host with packer installed. Here's how to install Packer on Ubuntu:
 
-   ```bash
-   curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-   # if you don't have apt-add-repository => sudo apt install software-properties-common
-   sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-   sudo apt update -y && sudo apt install packer -y
-   packer plugins install github.com/hashicorp/qemu
-   
-   # optional package list: qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager genisoimage guestfs-tools
-   ```
+```bash
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+# if you don't have apt-add-repository => sudo apt install software-properties-common
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt update -y && sudo apt install packer -y
+packer plugins install github.com/hashicorp/qemu
 
-### Create a Packer Template
+# optional package list: qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager genisoimage guestfs-tools
+```
 
-   We've created a Packer template that defines how to build our ubuntu image. Here’s [an example template](./../../../../../../build/packer/ubuntu-cloud-image/ubuntu.pkr.hcl) in the hcl format for building an Armbian image:
+### Packer Template
+
+   We've created a [**Packer template**](../../../../../../build/packer/ubuntu-cloud-image/ubuntu.pkr.hcl) that defines how to build our ubuntu image. Feel free to modify it to suit your specific needs. Since ubuntu supports cloud init by default via the cloud image we'll be leveraging it to do some modifications during initial boot.
 
    In this example:
    - The **builder** uses QEMU to create the image, starting from the `focal-server-cloudimg-amd64.img`.
@@ -39,11 +38,11 @@ image:
 
 ### Create the `user-data` File (Cloud-init Configuration)
 
-   Make sure you have a `user-data` (config) file ready. in the template above this is handled by copying cloud config to the standard dir `/etc/cloud/cloud.cfg.d/99_custom.cfg`
+Make sure you have a `user-data` (config) file ready. in the template above this is handled by copying cloud config to the standard dir `/etc/cloud/cloud.cfg.d/99_custom.cfg`
 
-### Run extra scripts for more modification not handled during cloud-init process.
+### Run extra scripts
 
-We've added extra configuration to the [install.sh](./../../../../../../build/packer/ubuntu-cloud-image/scripts/install.sh) script
+We've added extra configuration to the [**install.sh**](./../../../../../../build/packer/ubuntu-cloud-image/scripts/install.sh) script. This will perform extra modifications that aren't defined in cloud-init config.
 
 ### Run Packer
 
