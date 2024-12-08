@@ -121,73 +121,29 @@ If your current environment is fully headless, and graphical applications won't 
 
 This method forwards port `5956` from the remote host to your local machine, so you can use a VNC viewer from your local machine if your remote host doesn't support graphical applications.
 
----
-
-**below needs to be refined and added if needed**
-
-### 1. **Ensure X11 Forwarding is Enabled (For Remote SSH Sessions)**
-   If you're running this on a remote machine via SSH, you'll need X11 forwarding to open graphical applications.
-
-   1. **Enable X11 Forwarding in SSH**:
-      When you connect via SSH, add the `-X` (or `-Y` for trusted forwarding) flag to enable X11 forwarding:
-      ```bash
-      ssh -X remote_user@remote_host
-      ```
-
-   2. **Install `xauth` on the Remote System**:
-      If `xauth` is missing on the remote system, install it:
-      - On Ubuntu/Debian:
-        ```bash
-        sudo apt-get install xauth
-        ```
-      - On Fedora/CentOS:
-        ```bash
-        sudo dnf install xorg-x11-xauth
-        ```
-
-   3. **Ensure Your Local Machine Supports X11**:
-      Ensure your local machine has an X server running (e.g., `XQuartz` on macOS, `VcXsrv` or `Xming` on Windows).
-
-
-### 3. **Using VNC from Another Local Machine**
-
-### 4. **Running VNC in a Desktop Session**
-   If you are working in a local environment with a desktop environment but still face this issue, make sure your system has a running graphical environment (e.g., GNOME, KDE, etc.).
-
-   - If you are on a headless environment but want to run GUI applications, you can install a minimal desktop environment and use `vncviewer` in it.
-
-   - For Ubuntu, for example, you can install a minimal desktop environment:
-     ```bash
-     sudo apt-get install ubuntu-desktop
-     ```
-
-### Summary of Options:
-- **X11 Forwarding**: Use `ssh -X` if you're connecting to a remote machine and need graphical applications forwarded.
-- **Xvfb**: Use `Xvfb` to create a virtual display if your environment is entirely headless.
-- **Local VNC Viewer**: Forward VNC traffic through an SSH tunnel and use a local VNC viewer if possible.
-
----
-
-## Gain shell access to image after creation
+###  Gain shell access to image after creation
 
 To quickly get a shell inside the image, you can mount the image and use `chroot` to access the filesystem as if you're inside that environment. Here's how to do it:
 
-### Steps to Access the Shell Inside the Image
+#### Create a directory to mount the image:
 
-1. **Create a directory to mount the image**:
-   ```bash
-   sudo mkdir /mnt/image
-   ```
+we'll need a directory to hold our mounted image:
 
-2. **Mount the image file** (assuming the image is in raw format):
-   ```bash
-   sudo mount -o loop /path/to/your/image.raw /mnt/image
-   ```
+```bash
+sudo mkdir /mnt/image
+```
 
-   If it's still in `.img` format, you can still mount it similarly:
-   ```bash
-   sudo mount -o loop /path/to/your/image.img /mnt/image
-   ```
+#### Mount the image file
+
+assuming the image is in raw format, you can mount it using
+```bash
+sudo mount -o loop /path/to/your/image.raw /mnt/image
+```
+
+If it's still in `.img` format, you can still mount it similarly:
+```bash
+sudo mount -o loop /path/to/your/image.img /mnt/image
+```
 
 3. **Enter a chroot environment**:
    Now you can change your root directory to the mounted image's filesystem using `chroot`:
@@ -236,6 +192,55 @@ Alternatively, if you prefer to boot the image directly and access the shell fro
 ```bash
 sudo qemu-system-x86_64 -m 2048 -drive file=./output-noble/ubuntu-noble.raw,format=raw -nographic -serial mon:stdio
 ```
+
+---
+
+**below needs to be refined and added if needed**
+
+### 1. **Ensure X11 Forwarding is Enabled (For Remote SSH Sessions)**
+   If you're running this on a remote machine via SSH, you'll need X11 forwarding to open graphical applications.
+
+   1. **Enable X11 Forwarding in SSH**:
+      When you connect via SSH, add the `-X` (or `-Y` for trusted forwarding) flag to enable X11 forwarding:
+      ```bash
+      ssh -X remote_user@remote_host
+      ```
+
+   2. **Install `xauth` on the Remote System**:
+      If `xauth` is missing on the remote system, install it:
+      - On Ubuntu/Debian:
+        ```bash
+        sudo apt-get install xauth
+        ```
+      - On Fedora/CentOS:
+        ```bash
+        sudo dnf install xorg-x11-xauth
+        ```
+
+   3. **Ensure Your Local Machine Supports X11**:
+      Ensure your local machine has an X server running (e.g., `XQuartz` on macOS, `VcXsrv` or `Xming` on Windows).
+
+
+### 3. **Using VNC from Another Local Machine**
+
+### 4. **Running VNC in a Desktop Session**
+   If you are working in a local environment with a desktop environment but still face this issue, make sure your system has a running graphical environment (e.g., GNOME, KDE, etc.).
+
+   - If you are on a headless environment but want to run GUI applications, you can install a minimal desktop environment and use `vncviewer` in it.
+
+   - For Ubuntu, for example, you can install a minimal desktop environment:
+     ```bash
+     sudo apt-get install ubuntu-desktop
+     ```
+
+### Summary of Options:
+- **X11 Forwarding**: Use `ssh -X` if you're connecting to a remote machine and need graphical applications forwarded.
+- **Xvfb**: Use `Xvfb` to create a virtual display if your environment is entirely headless.
+- **Local VNC Viewer**: Forward VNC traffic through an SSH tunnel and use a local VNC viewer if possible.
+
+---
+
+
 
 # Zi a package manager for zsh
 

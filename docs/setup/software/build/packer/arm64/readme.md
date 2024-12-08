@@ -1,3 +1,4 @@
+**Deprecated, not functioning, use the build framework to build images**
 ## automate image creation with packer for ARM64 Images
 
 ### How Packer Works for ARM64
