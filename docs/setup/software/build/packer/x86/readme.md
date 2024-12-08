@@ -14,7 +14,7 @@ image:
 
 ## Automate Image Creation with Packer
 
-### Install Packer
+#### Install Packer
 
    You'll need a build host with packer installed. Here's how to install Packer on Ubuntu:
 
