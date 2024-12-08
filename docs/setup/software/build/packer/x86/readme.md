@@ -13,7 +13,7 @@ in this section we provide a short list of the images to use with our packer tem
 
 ## Steps to Automate Image Creation with Packer
 
-### **Install Packer**
+### Install Packer
 
    First, you’ll need to install Packer on your system:
 
