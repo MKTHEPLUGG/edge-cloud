@@ -226,11 +226,6 @@ Replace `<partition-offset>` with the appropriate offset, which can be calculate
 
 ---
 
----
-
----
-
----
 
 **below needs to be refined and added if needed**
 
