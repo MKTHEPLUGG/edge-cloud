@@ -11,11 +11,11 @@ in this section we provide a short list of the images to use with our packer tem
 - [**Ubuntu Cloud Images**](https://cloud-images.ubuntu.com/releases/): Official Ubuntu images optimized for cloud environments. They come pre-installed with cloud-init for configuration.
 
 
-## Steps to Automate Image Creation with Packer
+## Automate Image Creation with Packer
 
 ### Install Packer
 
-   First, you’ll need to install Packer on your system:
+   You'll need a build host with packer installed. Here's how to install Packer on Ubuntu:
 
    ```bash
    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -27,7 +27,7 @@ in this section we provide a short list of the images to use with our packer tem
    # optional package list: qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager genisoimage guestfs-tools
    ```
 
-2. **Create a Packer Template**
+### Create a Packer Template
 
    We've created a Packer template that defines how to build our ubuntu image. Here’s [an example template](./../../../../../../build/packer/ubuntu-cloud-image/ubuntu.pkr.hcl) in the hcl format for building an Armbian image:
 
@@ -36,15 +36,15 @@ in this section we provide a short list of the images to use with our packer tem
    - The **provisioners** run shell commands and copy the Cloud-init `user-data` file into the appropriate directory.
    - The **post-processor** converts the final image to `raw` format.
 
-3. **Create the `user-data` File** (Cloud-init Configuration)
+### Create the `user-data` File (Cloud-init Configuration)
 
    Make sure you have a `user-data` (config) file ready. in the template above this is handled by copying cloud config to the standard dir `/etc/cloud/cloud.cfg.d/99_custom.cfg`
 
-4. **Run extra scripts for more modification not handled during cloud-init process.**
+### Run extra scripts for more modification not handled during cloud-init process.
 
     We've added extra configuration to the [install.sh](./../../../../../../build/packer/ubuntu-cloud-image/scripts/install.sh)  script
 
-5. **Run Packer**
+### Run Packer
 
    Simply go to the directory holding the template and run it with:
 
