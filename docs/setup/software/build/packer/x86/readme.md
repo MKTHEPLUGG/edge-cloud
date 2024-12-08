@@ -77,7 +77,7 @@ Once you have the Packer template, you can automate your builds. You can integra
 
 **TODO: Add a section on how to automate Packer builds with CI/CD pipelines.**
 
-## Troubleshoot image after creation
+## Troubleshoot image during creation
 
 ### Connect to image via VNC during build
 
@@ -120,6 +120,8 @@ If your current environment is fully headless, and graphical applications won't 
 3. **for windows users**: use ``MobaXterm`` as vncviewer.
 
 This method forwards port `5956` from the remote host to your local machine, so you can use a VNC viewer from your local machine if your remote host doesn't support graphical applications.
+
+## Troubleshoot image after creation
 
 ### Use QEMU to Boot Image and Access the Shell
 
@@ -189,6 +191,12 @@ sudo mount -o loop,offset=<partition-offset> /path/to/your/image.img /mnt/image
 ```
 
 Replace `<partition-offset>` with the appropriate offset, which can be calculated from the `fdisk` output (usually in bytes).
+
+---
+
+---
+
+---
 
 ---
 
@@ -304,48 +312,7 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
 
 If you're using the autoinstall method (via Subiquity), the `autoinstall` block is necessary to automate the server installation process. If your system is already installed and you're focusing on Cloud-Init, you only need the `#cloud-config` file (no `autoinstall` block).
 
-### 2. **Combining the Working Cloud-Init with Locale Setup**
-
-Since your second configuration works, you can simply add the locale settings to it. Here's how you can modify the working `user-data` file to include locale setup:
-
-### Example of Working Cloud-Init with Locale and Keyboard Setup:
-
-```yaml
-#cloud-config
-password: ubuntu
-ssh_pwauth: true
-chpasswd:
-  expire: false
-
-# Set the locale and keyboard layout
-locale: nl_BE.UTF-8
-keyboard:
-  layout: be
-
-# Timezone setup
-timezone: Europe/Brussels
-
-# Preserve hostname
-preserve_hostname: false
-
-# Update and upgrade packages on first boot
-package_update: true
-package_upgrade: true
-```
-
-### Explanation:
-
-- **locale**: Sets the system locale to `nl_BE.UTF-8`.
-- **keyboard**: Configures the keyboard layout to Belgian (`be`).
-- **timezone**: Sets the system timezone to `Europe/Brussels`.
-- **package_update** and **package_upgrade**: Ensures the system is updated on first boot.
 
 ### 3. **Do You Need the Autoinstall Section?**
 
 You **don't need** the `autoinstall` section in a standard Cloud-Init file. The `autoinstall` block is only needed if you’re using the Subiquity installer to automate the entire OS installation process (not just configuration after install).
-
-[//]: # (### Next Steps:)
-
-[//]: # (- If you're focusing on post-installation configuration &#40;e.g., user setup, locale, SSH settings&#41;, the second working configuration with added locale setup is sufficient.)
-
-[//]: # (- If you want to automate the full OS installation process &#40;pre-partitioning, user creation during install&#41;, then the `autoinstall` block would be used in a separate pre-install configuration file.)
