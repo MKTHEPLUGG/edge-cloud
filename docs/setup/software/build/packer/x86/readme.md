@@ -223,44 +223,23 @@ Replace `<partition-offset>` with the appropriate offset, which can be calculate
 - [Customize MOTD](https://www.putorius.net/custom-motd-login-screen-linux.html)
 - [Original Repo Reference For Packer Config](https://github.com/nbarnum/packer-ubuntu-cloud-image/tree/main)
 - [Packer Builder ARM](https://github.com/mkaczanowski/packer-builder-arm/tree/fec4cd5c642a736e0a81c11827d085c7f1a84b0a)
+- [Official Qemu Docs](https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu)
+
+[//]: # (- [Guide]&#40;https://akashrajvanshi.medium.com/step-by-step-guide-creating-a-ready-to-use-ubuntu-cloud-image-on-proxmox-03d057f04fb2&#41;)
+[//]: # (- **[Example]&#40;https://shantanoo-desai.github.io/posts/technology/packer-ubuntu-qemu/&#41;**)
+[//]: # (- **[Example 2]&#40;https://github.com/rlaun/packer-ubuntu-22.04/blob/master/ubuntu-22.04.json&#41;**)
+[//]: # (- https://github.com/shantanoo-desai/packer-ubuntu-server-uefi/blob/main/templates/ubuntu.pkr.hcl)
 
 ---
 
 
-**below needs to be refined and added if needed**
-
-**Ensure X11 Forwarding is Enabled (For Remote SSH Sessions)**
-   If you're running this on a remote machine via SSH, you'll need X11 forwarding to open graphical applications.
-
-   1. **Enable X11 Forwarding in SSH**:
-      When you connect via SSH, add the `-X` (or `-Y` for trusted forwarding) flag to enable X11 forwarding:
-      ```bash
-      ssh -X remote_user@remote_host
-      ```
-
-   2. **Install `xauth` on the Remote System**:
-      If `xauth` is missing on the remote system, install it:
-      - On Ubuntu/Debian:
-        ```bash
-        sudo apt-get install xauth
-        ```
-      - On Fedora/CentOS:
-        ```bash
-        sudo dnf install xorg-x11-xauth
-        ```
-
-   3. **Ensure Your Local Machine Supports X11**:
-      Ensure your local machine has an X server running (e.g., `XQuartz` on macOS, `VcXsrv` or `Xming` on Windows).
+<!-- **below needs to be refined and added if needed**
 
 
-
-Summary of Options:
+ Summary of Options:
 - **X11 Forwarding**: Use `ssh -X` if you're connecting to a remote machine and need graphical applications forwarded.
 - **Xvfb**: Use `Xvfb` to create a virtual display if your environment is entirely headless.
-- **Local VNC Viewer**: Forward VNC traffic through an SSH tunnel and use a local VNC viewer if possible.
-
-
----
+- **Local VNC Viewer**: Forward VNC traffic through an SSH tunnel and use a local VNC viewer if possible. 
 
 **Steps to Resolve the VNC Blank Screen**
 
@@ -277,23 +256,6 @@ If you don’t need a GUI but want to see the **console output** (text-based ter
    This tells QEMU to show the serial console (a basic terminal) in the VNC session. Now, when you connect via VNC, you should see the console output of your VM.
 
 
-
-[//]: # (- [Guide]&#40;https://akashrajvanshi.medium.com/step-by-step-guide-creating-a-ready-to-use-ubuntu-cloud-image-on-proxmox-03d057f04fb2&#41;)
-
-[//]: # (- [Official Qemu Docs]&#40;https://developer.hashicorp.com/packer/integrations/hashicorp/qemu/latest/components/builder/qemu&#41;)
-
-[//]: # ()
-[//]: # (- **[Example]&#40;https://shantanoo-desai.github.io/posts/technology/packer-ubuntu-qemu/&#41;**)
-
-[//]: # ()
-[//]: # (- **[Example 2]&#40;https://github.com/rlaun/packer-ubuntu-22.04/blob/master/ubuntu-22.04.json&#41;**)
-
-[//]: # (- https://github.com/shantanoo-desai/packer-ubuntu-server-uefi/blob/main/templates/ubuntu.pkr.hcl)
-
-[//]: # (- https://github.com/shantanoo-desai/packer-ubuntu-server-uefi)
-
----
-
 **Autoinstall vs Cloud-Init**
 
 - **Autoinstall**: The `autoinstall` directive is part of Ubuntu's Subiquity installer (used for server installs). It handles the initial installation process, including partitioning, user setup, and other system-wide configurations during installation.
@@ -303,4 +265,4 @@ If you're using the autoinstall method (via Subiquity), the `autoinstall` block 
 
 **Do You Need the Autoinstall Section?**
 
-You **don't need** the `autoinstall` section in a standard Cloud-Init file. The `autoinstall` block is only needed if you’re using the Subiquity installer to automate the entire OS installation process (not just configuration after install).
+You **don't need** the `autoinstall` section in a standard Cloud-Init file. The `autoinstall` block is only needed if you’re using the Subiquity installer to automate the entire OS installation process (not just configuration after install). -->
