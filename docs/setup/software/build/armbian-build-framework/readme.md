@@ -1,8 +1,8 @@
-# Use Armbian Build framework for custom image
+# Leverage ``Armbian Build Framework`` for custom image generation
 
 [//]: # (we need to figure out how armbian is handling the boot process from start to finish, I'm getting conflicting info)
 
-Armbian doesn’t include Cloud-Init by default like Ubuntu cloud images. To enable it, use the **Armbian Build Framework** to create a custom image for the Rock5A. Afterwards we automate it with pipelines for consistent builds. Here’s how to get started.
+Armbian doesn’t include Cloud-Init by default like Ubuntu cloud images. To enable it, use the **Armbian Build Framework** to create a custom image for the Rock5A. Afterward, we automate it with pipelines for consistent builds. Here’s how to get started.
 
 ## Steps to Rebuild Armbian Image for Rock5A with Cloud-Init:
 
